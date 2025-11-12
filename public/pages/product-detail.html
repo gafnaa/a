@@ -1,0 +1,109 @@
+<div class="min-h-screen bg-base-200">
+    <!-- Navigation -->
+    <div class="navbar bg-base-100 shadow-lg">
+        <div class="container mx-auto">
+            <div class="flex-1">
+                <a href="/" class="btn btn-ghost text-xl">Telco Products</a>
+            </div>
+            <div class="flex-none gap-2">
+                <a href="/dashboard" class="btn btn-ghost">Dashboard</a>
+                <button onclick="Auth.removeToken(); router.navigate('/login')" class="btn btn-ghost">Logout</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mx-auto px-4 py-8">
+        <a href="/" class="btn btn-ghost mb-4">← Back to Products</a>
+        
+        <div id="productDetail" class="card bg-base-100 shadow-xl mb-8">
+            <!-- Product details will be loaded here -->
+        </div>
+
+        <h2 class="text-3xl font-bold mb-6">Related Recommendations</h2>
+        <div id="relatedProducts" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Related products will be loaded here -->
+        </div>
+    </div>
+</div>
+
+<script>
+async function loadProductDetail(productId) {
+    try {
+        const response = await API.getProduct(productId);
+        if (response.success) {
+            const product = response.product;
+            const detailContainer = document.getElementById('productDetail');
+            
+            detailContainer.innerHTML = `
+                <figure class="px-10 pt-10">
+                    <img src="${product.image}" alt="${product.name}" class="rounded-xl w-full max-w-2xl mx-auto" />
+                </figure>
+                <div class="card-body">
+                    <div class="flex items-center gap-2 mb-4">
+                        <h2 class="card-title text-4xl">${product.name}</h2>
+                        <div class="badge badge-primary badge-lg">${product.category.toUpperCase()}</div>
+                    </div>
+                    <p class="text-lg text-gray-600 mb-4">${product.description}</p>
+                    <div class="divider"></div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <h3 class="font-semibold mb-2">Features:</h3>
+                            <ul class="list-disc list-inside">
+                                ${product.features.map(feature => `<li>${feature}</li>`).join('')}
+                            </ul>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold mb-2">Details:</h3>
+                            <p><strong>Data Allowance:</strong> ${product.dataAllowance}</p>
+                            <p><strong>Validity:</strong> ${product.validity}</p>
+                            <p class="text-3xl font-bold text-primary mt-4">$${product.price}</p>
+                        </div>
+                    </div>
+                    <div class="card-actions justify-end">
+                        <button class="btn btn-primary btn-lg">Subscribe Now</button>
+                    </div>
+                </div>
+            `;
+
+            // Load related products
+            const relatedResponse = await API.getRelatedProducts(product.category);
+            if (relatedResponse.success && relatedResponse.products.length > 0) {
+                const relatedContainer = document.getElementById('relatedProducts');
+                // Filter out current product
+                const relatedProducts = relatedResponse.products.filter(p => p._id !== productId).slice(0, 6);
+                
+                if (relatedProducts.length > 0) {
+                    relatedContainer.innerHTML = relatedProducts.map(product => `
+                        <div class="card product-card bg-base-100 shadow-xl">
+                            <figure><img src="${product.image}" alt="${product.name}" /></figure>
+                            <div class="card-body">
+                                <h2 class="card-title">${product.name}</h2>
+                                <p>${product.description}</p>
+                                <div class="badge badge-primary">${product.category}</div>
+                                <div class="card-actions justify-end">
+                                    <div class="text-2xl font-bold">$${product.price}</div>
+                                    <a href="/product/${product._id}" class="btn btn-primary">View Details</a>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('');
+                } else {
+                    relatedContainer.innerHTML = '<p class="text-gray-500">No related products available.</p>';
+                }
+            }
+        }
+    } catch (error) {
+        console.error('Error loading product detail:', error);
+        document.getElementById('productDetail').innerHTML = `
+            <div class="card-body">
+                <div class="alert alert-error">
+                    <span>Error loading product. Please try again.</span>
+                </div>
+            </div>
+        `;
+    }
+}
+
+// This function is called from app.js after the page loads
+</script>
+

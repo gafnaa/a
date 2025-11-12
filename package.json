@@ -1,0 +1,33 @@
+{
+  "name": "telco-product-recommendation",
+  "version": "1.0.0",
+  "description": "Telco Product Recommendation Offer Based on Customer Behaviour",
+  "main": "server.js",
+  "scripts": {
+    "dev": "vite",
+    "dev:all": "concurrently \"npm run server:dev\" \"npm run dev\"",
+    "build": "vite build",
+    "preview": "vite preview",
+    "server": "node server.js",
+    "server:dev": "nodemon server.js",
+    "start": "node server.js",
+    "seed": "node scripts/seedProducts.js"
+  },
+  "keywords": ["telco", "recommendation", "ml"],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "mongoose": "^8.0.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2",
+    "vite": "^5.0.0",
+    "concurrently": "^8.2.2"
+  }
+}
+

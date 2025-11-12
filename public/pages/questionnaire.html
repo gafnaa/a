@@ -1,0 +1,155 @@
+<div class="min-h-screen bg-base-200 py-8">
+    <div class="container mx-auto px-4 max-w-3xl">
+        <div class="card bg-base-100 shadow-xl fade-in">
+            <div class="card-body">
+                <h1 class="text-3xl font-bold mb-6">Customer Behavior Questionnaire</h1>
+                <p class="text-gray-600 mb-8">Help us understand your needs to provide better recommendations</p>
+                
+                <form id="questionnaireForm">
+                    <!-- Internet Usage -->
+                    <div class="form-control mb-6">
+                        <label class="label">
+                            <span class="label-text font-semibold">How much do you use the internet daily?</span>
+                        </label>
+                        <select name="internetUsage" class="select select-bordered w-full" required>
+                            <option value="">Select an option</option>
+                            <option value="low">Low (1-2 hours)</option>
+                            <option value="medium">Medium (3-5 hours)</option>
+                            <option value="high">High (6-8 hours)</option>
+                            <option value="very-high">Very High (9+ hours)</option>
+                        </select>
+                    </div>
+
+                    <!-- Streaming Habits -->
+                    <div class="form-control mb-6">
+                        <label class="label">
+                            <span class="label-text font-semibold">How often do you stream videos/music?</span>
+                        </label>
+                        <select name="streamingHabits" class="select select-bordered w-full" required>
+                            <option value="">Select an option</option>
+                            <option value="none">Never</option>
+                            <option value="occasional">Occasionally</option>
+                            <option value="frequent">Frequently</option>
+                            <option value="daily">Daily</option>
+                        </select>
+                    </div>
+
+                    <!-- Data Consumption -->
+                    <div class="form-control mb-6">
+                        <label class="label">
+                            <span class="label-text font-semibold">How would you describe your data consumption?</span>
+                        </label>
+                        <select name="dataConsumption" class="select select-bordered w-full" required>
+                            <option value="">Select an option</option>
+                            <option value="minimal">Minimal (mostly text/email)</option>
+                            <option value="moderate">Moderate (browsing, social media)</option>
+                            <option value="heavy">Heavy (streaming, downloads)</option>
+                            <option value="extreme">Extreme (4K streaming, large downloads)</option>
+                        </select>
+                    </div>
+
+                    <!-- Voice Usage -->
+                    <div class="form-control mb-6">
+                        <label class="label">
+                            <span class="label-text font-semibold">How much do you make voice calls?</span>
+                        </label>
+                        <select name="voiceUsage" class="select select-bordered w-full" required>
+                            <option value="">Select an option</option>
+                            <option value="low">Low (rarely)</option>
+                            <option value="medium">Medium (few calls per day)</option>
+                            <option value="high">High (many calls daily)</option>
+                        </select>
+                    </div>
+
+                    <!-- SMS Usage -->
+                    <div class="form-control mb-6">
+                        <label class="label">
+                            <span class="label-text font-semibold">How often do you send SMS?</span>
+                        </label>
+                        <select name="smsUsage" class="select select-bordered w-full" required>
+                            <option value="">Select an option</option>
+                            <option value="low">Low (rarely)</option>
+                            <option value="medium">Medium (occasionally)</option>
+                            <option value="high">High (frequently)</option>
+                        </select>
+                    </div>
+
+                    <!-- VOD Interest -->
+                    <div class="form-control mb-6">
+                        <label class="label">
+                            <span class="label-text font-semibold">Are you interested in Video on Demand (VOD) services?</span>
+                        </label>
+                        <div class="flex gap-4 mt-2">
+                            <label class="label cursor-pointer">
+                                <input type="radio" name="vodInterest" value="true" class="radio radio-primary" required />
+                                <span class="label-text ml-2">Yes</span>
+                            </label>
+                            <label class="label cursor-pointer">
+                                <input type="radio" name="vodInterest" value="false" class="radio radio-primary" required />
+                                <span class="label-text ml-2">No</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Budget -->
+                    <div class="form-control mb-6">
+                        <label class="label">
+                            <span class="label-text font-semibold">What's your preferred budget range?</span>
+                        </label>
+                        <select name="budget" class="select select-bordered w-full" required>
+                            <option value="">Select an option</option>
+                            <option value="budget">Budget-friendly</option>
+                            <option value="mid-range">Mid-range</option>
+                            <option value="premium">Premium</option>
+                        </select>
+                    </div>
+
+                    <div class="form-control mt-8">
+                        <button type="submit" class="btn btn-primary btn-lg w-full">
+                            Submit Questionnaire
+                            <span class="loading loading-spinner loading-sm hidden" id="submitSpinner"></span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById('questionnaireForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const data = {};
+    
+    for (const [key, value] of formData.entries()) {
+        if (key === 'vodInterest') {
+            data[key] = value === 'true';
+        } else {
+            data[key] = value;
+        }
+    }
+
+    const spinner = document.getElementById('submitSpinner');
+    const submitBtn = e.target.querySelector('button[type="submit"]');
+    
+    spinner.classList.remove('hidden');
+    submitBtn.disabled = true;
+
+    try {
+        const response = await API.submitQuestionnaire(data);
+        if (response.success) {
+            router.navigate('/');
+        } else {
+            alert('Failed to submit questionnaire. Please try again.');
+        }
+    } catch (error) {
+        alert('An error occurred. Please try again.');
+        console.error(error);
+    } finally {
+        spinner.classList.add('hidden');
+        submitBtn.disabled = false;
+    }
+});
+</script>
+

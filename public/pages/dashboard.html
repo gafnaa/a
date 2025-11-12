@@ -1,0 +1,137 @@
+<div class="min-h-screen bg-base-200">
+    <!-- Navigation -->
+    <div class="navbar bg-base-100 shadow-lg">
+        <div class="container mx-auto">
+            <div class="flex-1">
+                <a href="/" class="btn btn-ghost text-xl">Telco Products</a>
+            </div>
+            <div class="flex-none gap-2">
+                <button onclick="Auth.removeToken(); router.navigate('/login')" class="btn btn-ghost">Logout</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-4xl font-bold mb-8">User Dashboard</h1>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Profile Card -->
+            <div class="card bg-base-100 shadow-xl">
+                <div class="card-body">
+                    <h2 class="card-title text-2xl mb-4">Profile Information</h2>
+                    <div id="profileInfo">
+                        <!-- Profile info will be loaded here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Questionnaire Data -->
+            <div class="card bg-base-100 shadow-xl">
+                <div class="card-body">
+                    <h2 class="card-title text-2xl mb-4">Questionnaire Responses</h2>
+                    <div id="questionnaireInfo">
+                        <!-- Questionnaire data will be loaded here -->
+                    </div>
+                    <div class="card-actions justify-end mt-4">
+                        <a href="/questionnaire" class="btn btn-primary">Update Questionnaire</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Current Recommendations -->
+        <div class="card bg-base-100 shadow-xl mt-6">
+            <div class="card-body">
+                <h2 class="card-title text-2xl mb-4">Current Recommendations</h2>
+                <div id="recommendationsList">
+                    <!-- Recommendations will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+async function loadDashboard() {
+    try {
+        // Load user info
+        const user = await Auth.verifyToken();
+        if (user) {
+            document.getElementById('profileInfo').innerHTML = `
+                <div class="space-y-2">
+                    <p><strong>Phone Number:</strong> ${user.phoneNumber}</p>
+                    <p><strong>User ID:</strong> ${user.id}</p>
+                    <p><strong>Questionnaire Completed:</strong> ${user.hasQuestionnaire ? 'Yes' : 'No'}</p>
+                </div>
+            `;
+        }
+
+        // Load questionnaire data
+        const questionnaireResponse = await API.getQuestionnaireData();
+        if (questionnaireResponse.success) {
+            const data = questionnaireResponse.questionnaireData;
+            if (data && data.internetUsage) {
+                document.getElementById('questionnaireInfo').innerHTML = `
+                    <div class="space-y-2">
+                        <p><strong>Internet Usage:</strong> ${data.internetUsage || 'N/A'}</p>
+                        <p><strong>Streaming Habits:</strong> ${data.streamingHabits || 'N/A'}</p>
+                        <p><strong>Data Consumption:</strong> ${data.dataConsumption || 'N/A'}</p>
+                        <p><strong>Voice Usage:</strong> ${data.voiceUsage || 'N/A'}</p>
+                        <p><strong>SMS Usage:</strong> ${data.smsUsage || 'N/A'}</p>
+                        <p><strong>VOD Interest:</strong> ${data.vodInterest ? 'Yes' : 'No'}</p>
+                        <p><strong>Budget:</strong> ${data.budget || 'N/A'}</p>
+                    </div>
+                `;
+            } else {
+                document.getElementById('questionnaireInfo').innerHTML = `
+                    <div class="alert alert-warning">
+                        <span>No questionnaire data found. Please complete the questionnaire.</span>
+                    </div>
+                `;
+            }
+
+            // Load recommendations
+            if (questionnaireResponse.recommendations && questionnaireResponse.recommendations.length > 0) {
+                document.getElementById('recommendationsList').innerHTML = `
+                    <div class="overflow-x-auto">
+                        <table class="table table-zebra">
+                            <thead>
+                                <tr>
+                                    <th>Category</th>
+                                    <th>Recommendation Score</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${questionnaireResponse.recommendations.map(rec => `
+                                    <tr>
+                                        <td><div class="badge badge-primary">${rec.category.toUpperCase()}</div></td>
+                                        <td>
+                                            <div class="flex items-center gap-2">
+                                                <progress class="progress progress-primary w-32" value="${rec.score * 100}" max="100"></progress>
+                                                <span>${Math.round(rec.score * 100)}%</span>
+                                            </div>
+                                        </td>
+                                        <td>${rec.score > 0.7 ? 'Highly Recommended' : rec.score > 0.5 ? 'Recommended' : 'Consider'}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+            } else {
+                document.getElementById('recommendationsList').innerHTML = `
+                    <div class="alert alert-info">
+                        <span>Complete the questionnaire to see your personalized recommendations.</span>
+                    </div>
+                `;
+            }
+        }
+    } catch (error) {
+        console.error('Error loading dashboard:', error);
+    }
+}
+
+// This function is called from app.js after the page loads
+</script>
+
