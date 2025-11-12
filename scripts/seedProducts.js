@@ -169,27 +169,22 @@ const sampleProducts = [
 
 async function seedProducts() {
     try {
-        await mongoose.connect(process.env.MONGODB_URI || 'mongodb+srv://your-connection-string', {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        });
-
-        console.log('Connected to MongoDB');
-
-        // Clear existing products
-        await Product.deleteMany({});
-        console.log('Cleared existing products');
-
-        // Insert sample products
-        await Product.insertMany(sampleProducts);
-        console.log(`Successfully seeded ${sampleProducts.length} products`);
-
-        process.exit(0);
+      await mongoose.connect(process.env.MONGO_URI);
+  
+      console.log('✅ Connected to MongoDB');
+  
+      await Product.deleteMany({});
+      console.log('🧹 Cleared existing products');
+  
+      await Product.insertMany(sampleProducts);
+      console.log(`🌱 Successfully seeded ${sampleProducts.length} products`);
+  
+      process.exit(0);
     } catch (error) {
-        console.error('Error seeding products:', error);
-        process.exit(1);
+      console.error('❌ Error seeding products:', error);
+      process.exit(1);
     }
-}
-
-seedProducts();
+  }
+  
+  seedProducts();
 
