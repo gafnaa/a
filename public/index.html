@@ -1,21 +1,172 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Telco Product Recommendations</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Skytelco - Stay Connected</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.4.19/dist/full.min.css" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" href="/styles.css">
-</head>
-<body>
-    <div id="app">
-        <!-- Content will be dynamically loaded here -->
-    </div>
-    <script type="module" src="/js/router.js"></script>
-    <script type="module" src="/js/auth.js"></script>
-    <script type="module" src="/js/api.js"></script>
-    <script type="module" src="/js/app.js"></script>
-</body>
-</html>
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@4.4.19/dist/full.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
 
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+      integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: #ffffff; /* Putih */
+        color: #000000; /* Hitam */
+      }
+      .text-custom-blue {
+        color: #264065;
+      }
+      .bg-custom-blue {
+        background-color: #264065;
+      }
+      .border-custom-blue {
+        border-color: #264065;
+      }
+      /* Custom styles for the rounded navbar menu */
+      .navbar-menu-container {
+        background-color: #f7f7f7; /* Slightly off-white for distinction */
+        border-radius: 9999px; /* Fully rounded */
+        padding: 0.5rem 1.5rem; /* Adjust padding as needed */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); /* subtle shadow */
+      }
+      .navbar-menu-container a {
+        color: #000000;
+        font-weight: 500; /* Medium weight */
+        padding: 0.5rem 1rem;
+        border-radius: 9999px;
+        transition: background-color 0.2s ease-in-out;
+      }
+      .navbar-menu-container a:hover {
+        background-color: rgba(0, 0, 0, 0.05); /* Light hover effect */
+      }
+    </style>
+  </head>
+  <body class="bg-white text-black">
+    <div class="navbar bg-white py-4 px-8 md:px-16 lg:px-24">
+      <div class="navbar-start">
+        <a href="/" class="flex items-center">
+          <img
+            src="https://via.placeholder.com/120x40?text=SkytelcoLogo"
+            alt="Skytelco Logo"
+            class="h-10 w-auto"
+          />
+
+          <span class="ml-3 text-2xl font-bold text-custom-blue">Skytelco</span>
+        </a>
+      </div>
+
+      <div class="navbar-center hidden md:flex">
+        <div class="navbar-menu-container items-center space-x-4">
+          <a href="#" class="text-sm">Home</a>
+          <a href="#" class="text-sm">Products</a>
+          <a href="#" class="text-sm">Services</a>
+          <a href="#" class="text-sm">About</a>
+        </div>
+      </div>
+
+      <div class="navbar-end">
+        <div class="flex items-center space-x-6">
+          <button
+            class="btn btn-ghost btn-circle text-gray-700 hover:text-custom-blue"
+          >
+            <i class="fas fa-search text-lg"></i>
+          </button>
+          <button
+            class="btn btn-ghost btn-circle text-gray-700 hover:text-custom-blue"
+          >
+            <i class="fas fa-user-circle text-lg"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="min-h-[calc(100vh-200px)] flex items-center justify-center text-center px-4 md:px-16 lg:px-24"
+    >
+      <div class="max-w-5xl mx-auto">
+        <h1 class="font-extrabold leading-tight" style="letter-spacing: -2px">
+          <span class="block text-5xl md:text-6xl lg:text-7xl">
+            Stay Connected
+          </span>
+          <span class="block text-custom-blue text-5xl md:text-6xl lg:text-7xl">
+            Everywhere and Anytime
+          </span>
+        </h1>
+        <p
+          class="mb-8 text-lg md:text-xl text-gray-600 font-normal leading-relaxed mt-8"
+        >
+          Lorem ipsum is simply dummy text of the printing and typesetting
+          industry. Lorem Ipsum has been the industry's standard dummy text ever
+          since the 1500s,
+        </p>
+        <button
+          class="btn bg-custom-blue text-white hover:bg-opacity-90 border-none rounded-full px-8 py-3 text-lg font-medium"
+        >
+          Learn More <i class="fas fa-arrow-right ml-2 text-sm"></i>
+        </button>
+      </div>
+    </div>
+
+    <section class="py-16 bg-white">
+      <div class="container mx-auto px-4">
+        <h2 class="text-4xl font-extrabold text-center mb-12 text-gray-900">
+          Produk Unggulan Kami
+        </h2>
+
+        <p class="text-center text-gray-600">
+          (Sisa halaman akan diisi dengan bagian produk per kategori dan footer
+          seperti yang kita diskusikan sebelumnya.)
+        </p>
+      </div>
+    </section>
+
+    <footer class="footer p-10 bg-gray-100 text-gray-800 mt-16">
+      <aside>
+        <i class="fas fa-store text-4xl text-custom-blue"></i>
+        <p class="font-bold text-lg">
+          Skytelco <br /><span class="font-normal text-sm"
+            >Menyediakan produk berkualitas sejak 2023</span
+          >
+        </p>
+      </aside>
+      <nav>
+        <h6 class="footer-title">Layanan</h6>
+        <a class="link link-hover">Branding</a>
+        <a class="link link-hover">Desain</a>
+        <a class="link link-hover">Pemasaran</a>
+        <a class="link link-hover">Iklan</a>
+      </nav>
+      <nav>
+        <h6 class="footer-title">Perusahaan</h6>
+        <a class="link link-hover">Tentang kami</a>
+        <a class="link link-hover">Kontak</a>
+        <a class="link link-hover">Pekerjaan</a>
+        <a class="link link-hover">Press kit</a>
+      </nav>
+      <nav>
+        <h6 class="footer-title">Legal</h6>
+        <a class="link link-hover">Syarat penggunaan</a>
+        <a class="link link-hover">Kebijakan privasi</a>
+        <a class="link link-hover">Kebijakan cookie</a>
+      </nav>
+    </footer>
+  </body>
+</html>
