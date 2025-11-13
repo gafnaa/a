@@ -53,11 +53,23 @@
           >
             <i class="fas fa-search text-lg"></i>
           </button>
-          <button
-            class="btn btn-ghost btn-circle text-gray-700 hover:text-custom-blue"
-          >
-            <i class="fas fa-user-circle text-lg"></i>
-          </button>
+          <!-- Conditional rendering for auth -->
+          <div id="auth-nav-item" class="flex items-center space-x-2">
+            <!-- Login button (shown when not authenticated) -->
+            <a
+              href="/login"
+              id="login-button"
+              class="btn btn-primary rounded-full px-4 py-2 text-sm font-medium"
+              >Login</a
+            >
+            <!-- Profile icon (shown when authenticated) -->
+            <button
+              id="profile-icon"
+              class="btn btn-ghost btn-circle text-gray-700 hover:text-custom-blue hidden"
+            >
+              <i class="fas fa-user-circle text-lg"></i>
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -132,5 +144,6 @@
         <a class="link link-hover">Kebijakan cookie</a>
       </nav>
     </footer>
+    <script type="module" src="js/app.js"></script>
   </body>
 </html>
