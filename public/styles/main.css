@@ -42,3 +42,16 @@ body {
 .hero-title {
   letter-spacing: -2px;
 }
+
+/* Profile dropdown */
+#profile-dropdown {
+  /* Tailwind classes already handle positioning and basic styling */
+}
+
+#profile-dropdown a {
+  transition: background-color 0.2s ease-in-out;
+}
+
+#profile-dropdown a:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}

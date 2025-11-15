@@ -1,55 +1,67 @@
-<div class="min-h-screen bg-base-200">
-    <!-- Navigation -->
-    <div class="navbar bg-base-100 shadow-lg">
-        <div class="container mx-auto">
-            <div class="flex-1">
-                <a class="btn btn-ghost text-xl">Telco Products</a>
-            </div>
-            <div class="flex-none gap-2">
-                <a href="/dashboard" class="btn btn-ghost">Dashboard</a>
-                <button onclick="Auth.removeToken(); router.navigate('/login')" class="btn btn-ghost">Logout</button>
-            </div>
-        </div>
+<div
+      class="min-h-[calc(100vh-200px)] flex items-center justify-center text-center px-4 md:px-16 lg:px-24"
+    >
+      <div class="max-w-5xl mx-auto">
+        <h1 class="font-extrabold leading-tight" style="letter-spacing: -2px">
+          <span class="block text-5xl md:text-6xl lg:text-7xl">
+            Stay Connected
+          </span>
+          <span class="block text-custom-blue text-5xl md:text-6xl lg:text-7xl">
+            Everywhere and Anytime
+          </span>
+        </h1>
+        <p
+          class="mb-8 text-lg md:text-xl text-gray-600 font-normal leading-relaxed mt-8"
+        >
+          Lorem ipsum is simply dummy text of the printing and typesetting
+          industry. Lorem Ipsum has been the industry's standard dummy text ever
+          since the 1500s,
+        </p>
+        <button
+          class="btn bg-custom-blue text-white hover:bg-opacity-90 border-none rounded-full px-8 py-3 text-lg font-medium"
+        >
+          Learn More <i class="fas fa-arrow-right ml-2 text-sm"></i>
+        </button>
+      </div>
     </div>
 
-    <!-- Hero Section -->
-    <div class="hero bg-gradient-to-r from-blue-600 to-purple-600 text-white py-20">
-        <div class="hero-content text-center">
-            <div class="max-w-md">
-                <h1 class="mb-5 text-5xl font-bold">Find Your Perfect Plan</h1>
-                <p class="mb-5">Discover tailored telco products based on your usage patterns</p>
-            </div>
-        </div>
-    </div>
+    <section class="py-16 bg-white">
+      <div class="container mx-auto px-4">
+        <h2 class="text-4xl font-extrabold text-center mb-12 text-gray-900">
+          Produk Unggulan Kami
+        </h2>
 
-    <!-- Featured Products -->
-    <div class="container mx-auto px-4 py-12">
-        <h2 class="text-3xl font-bold mb-8">Featured Products</h2>
-        <div id="featuredProducts" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-            <!-- Products will be loaded here -->
-        </div>
-    </div>
+        <p class="text-center text-gray-600">
+          (Sisa halaman akan diisi dengan bagian produk per kategori dan footer
+          seperti yang kita diskusikan sebelumnya.)
+        </p>
+      </div>
 
-    <!-- Recommended for You -->
-    <div class="container mx-auto px-4 py-12 bg-base-100">
-        <h2 class="text-3xl font-bold mb-8">Recommended for You</h2>
-        <div id="recommendations" class="mb-8">
-            <!-- Recommendations will be loaded here -->
-        </div>
-        <div id="recommendedProducts" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- Recommended products will be loaded here -->
-        </div>
+  <!-- Recommended for You -->
+  <div class="container mx-auto px-4 py-12">
+    <h2 class="text-3xl text-center font-bold mb-8 ">Recommended for You</h2>
+    <div id="recommendations" class="mb-8">
+      <!-- Recommendations will be loaded here -->
     </div>
+    <div
+      id="recommendedProducts"
+      class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+    >
+      <!-- Recommended products will be loaded here -->
+    </div>
+  </div>
 </div>
 
 <script>
-async function loadLandingPage() {
+  async function loadLandingPage() {
     // Load featured products
     try {
-        const productsResponse = await API.getProducts(null, true);
-        if (productsResponse.success && productsResponse.products.length > 0) {
-            const featuredContainer = document.getElementById('featuredProducts');
-            featuredContainer.innerHTML = productsResponse.products.map(product => `
+      const productsResponse = await API.getProducts(null, true);
+      if (productsResponse.success && productsResponse.products.length > 0) {
+        const featuredContainer = document.getElementById("featuredProducts");
+        featuredContainer.innerHTML = productsResponse.products
+          .map(
+            (product) => `
                 <div class="card product-card bg-base-100 shadow-xl">
                     <figure><img src="${product.image}" alt="${product.name}" /></figure>
                     <div class="card-body">
@@ -62,21 +74,28 @@ async function loadLandingPage() {
                         </div>
                     </div>
                 </div>
-            `).join('');
-        }
+            `
+          )
+          .join("");
+      }
     } catch (error) {
-        console.error('Error loading featured products:', error);
+      console.error("Error loading featured products:", error);
     }
 
     // Load recommendations
     try {
-        const recResponse = await API.getUserRecommendations();
-        if (recResponse.success) {
-            const recContainer = document.getElementById('recommendations');
-            const productsContainer = document.getElementById('recommendedProducts');
+      const recResponse = await API.getUserRecommendations();
+      if (recResponse.success) {
+        const recContainer = document.getElementById("recommendations");
+        const productsContainer = document.getElementById(
+          "recommendedProducts"
+        );
 
-            if (recResponse.recommendations && recResponse.recommendations.length > 0) {
-                recContainer.innerHTML = `
+        if (
+          recResponse.recommendations &&
+          recResponse.recommendations.length > 0
+        ) {
+          recContainer.innerHTML = `
                     <div class="alert alert-info">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current shrink-0 w-6 h-6">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
@@ -84,16 +103,25 @@ async function loadLandingPage() {
                         <div>
                             <h3 class="font-bold">Based on your preferences, we recommend:</h3>
                             <div class="flex flex-wrap gap-2 mt-2">
-                                ${recResponse.recommendations.slice(0, 3).map(rec => `
-                                    <div class="badge badge-primary badge-lg">${rec.category.toUpperCase()} (${Math.round(rec.score * 100)}%)</div>
-                                `).join('')}
+                                ${recResponse.recommendations
+                                  .slice(0, 3)
+                                  .map(
+                                    (rec) => `
+                                    <div class="badge badge-primary badge-lg">${rec.category.toUpperCase()} (${Math.round(
+                                      rec.score * 100
+                                    )}%)</div>
+                                `
+                                  )
+                                  .join("")}
                             </div>
                         </div>
                     </div>
                 `;
 
-                if (recResponse.products && recResponse.products.length > 0) {
-                    productsContainer.innerHTML = recResponse.products.map(product => `
+          if (recResponse.products && recResponse.products.length > 0) {
+            productsContainer.innerHTML = recResponse.products
+              .map(
+                (product) => `
                         <div class="card product-card bg-base-100 shadow-xl">
                             <figure><img src="${product.image}" alt="${product.name}" /></figure>
                             <div class="card-body">
@@ -106,12 +134,15 @@ async function loadLandingPage() {
                                 </div>
                             </div>
                         </div>
-                    `).join('');
-                } else {
-                    productsContainer.innerHTML = '<p class="text-gray-500">No recommended products available at the moment.</p>';
-                }
-            } else {
-                recContainer.innerHTML = `
+                    `
+              )
+              .join("");
+          } else {
+            productsContainer.innerHTML =
+              '<p class="text-gray-500">No recommended products available at the moment.</p>';
+          }
+        } else {
+          recContainer.innerHTML = `
                     <div class="alert alert-warning">
                         <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
@@ -120,13 +151,12 @@ async function loadLandingPage() {
                         <a href="/questionnaire" class="btn btn-sm">Take Questionnaire</a>
                     </div>
                 `;
-            }
         }
+      }
     } catch (error) {
-        console.error('Error loading recommendations:', error);
+      console.error("Error loading recommendations:", error);
     }
-}
+  }
 
-// This function is called from app.js after the page loads
+  // This function is called from app.js after the page loads
 </script>
-
