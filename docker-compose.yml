@@ -1,0 +1,39 @@
+version: "3.8"
+
+services:
+  express_api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000" # Map host port 3000 to container port 3000
+    environment:
+      NODE_ENV: development # Or production, depending on your needs
+      PORT: 3000
+      MONGODB_URI: ${MONGODB_URI} # Load from .env file
+      # Add other environment variables needed by the Express app
+    volumes:
+      - .:/app # Mount current directory to /app in container for development
+      - /app/node_modules # Prevent host node_modules from overwriting container's
+    depends_on:
+      - ml_service # Ensure ML service is started before or alongside API
+      # Add other dependencies like MongoDB if it were a separate service
+
+  ml_service:
+    build:
+      context: ./flask_api
+      dockerfile: Dockerfile
+    ports:
+      - "5001:5001" # Map host port 5001 to container port 5001
+    environment:
+      FLASK_APP: app.py
+      FLASK_RUN_HOST: 0.0.0.0
+      FLASK_RUN_PORT: 5001
+      # Add any other environment variables needed by the Flask app
+    volumes:
+      - ./flask_api:/app # Mount flask_api directory to /app in container
+      # If model.pkl is large or frequently updated, consider a named volume for it
+      # - ml_model_volume:/app/model.pkl
+# Define named volumes if needed (e.g., for persistent model storage)
+# volumes:
+#   ml_model_volume:
