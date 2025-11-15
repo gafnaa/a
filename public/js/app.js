@@ -5,6 +5,14 @@ import router from "./router.js";
 import Auth from "./auth.js";
 import API from "./api.js";
 
+// === TAMBAHAN PENTING ===
+// Menjadikan modul global agar bisa diakses oleh
+// <script> di dalam file HTML yang dimuat
+window.router = router;
+window.Auth = Auth;
+window.API = API;
+// === AKHIR TAMBAHAN ===
+
 document.addEventListener("DOMContentLoaded", async () => {
   // Check authentication
   const user = await Auth.verifyToken();
@@ -41,6 +49,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     app.innerHTML = await response.text();
     // Wait for script to load, then call loadLandingPage
     setTimeout(async () => {
+      // Skrip dari landing.html sekarang bisa memanggil API
       if (typeof loadLandingPage === "function") {
         await loadLandingPage();
       }
@@ -58,6 +67,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     app.innerHTML = await response.text();
     // Wait for script to load, then call loadDashboard
     setTimeout(async () => {
+      // Skrip dari dashboard.html sekarang bisa memanggil API
       if (typeof loadDashboard === "function") {
         await loadDashboard();
       }
@@ -85,6 +95,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Wait for script to load, then call loadProductDetail
     setTimeout(async () => {
+      // Skrip dari product-detail.html sekarang bisa memanggil API
       if (typeof loadProductDetail === "function") {
         await loadProductDetail(productId);
       }
@@ -124,10 +135,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   // --- Navbar Auth Toggle Logic ---
   const loginButton = document.getElementById("login-button");
   const profileIcon = document.getElementById("profile-icon");
-  const authNavItem = document.getElementById("auth-nav-item");
 
-  function updateNavbarAuth() {
+  // BUAT FUNGSI INI GLOBAL agar bisa dipanggil dari login.html
+  window.updateNavbarAuth = function () {
     console.log(`Auth.isAuthenticated(): ${Auth.isAuthenticated()}`);
+
     if (Auth.isAuthenticated()) {
       // User is authenticated, show profile icon, hide login button
       if (loginButton) loginButton.classList.add("hidden");
@@ -139,33 +151,9 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (profileIcon) profileIcon.classList.add("hidden");
       console.log("Navbar updated: Showing login button, hiding profile icon.");
     }
-  }
+  };
 
   // Call the function on initial load
-  updateNavbarAuth();
-
+  window.updateNavbarAuth();
   // --- End Navbar Auth Toggle Logic ---
-
-  // --- Debugging Click Handler ---
-  // Add a broad click listener to the document to see if any clicks are registered
-  document.addEventListener("click", (e) => {
-    console.log("Broad document click event triggered."); // Log any click on the document
-    const link = e.target.closest("a");
-    if (link && link.href) {
-      const url = new URL(link.href);
-      if (url.origin === window.location.origin) {
-        console.log(`Intercepted click on internal link: ${url.pathname}`);
-        e.preventDefault();
-        console.log(`Calling router.navigate('${url.pathname}')`);
-        router.navigate(url.pathname);
-      }
-    }
-  });
-  // --- End Debugging Click Handler ---
-
-  // --- Debugging Login Route Handler ---
-  // Removed temporary modification of the login route handler for now to focus on click interception.
-  // The original route definition should be used.
-  // If the click handler works, we can re-add logs to the route handler if needed.
-  // --- End Debugging Login Route Handler ---
 });

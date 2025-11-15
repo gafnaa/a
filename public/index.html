@@ -33,7 +33,6 @@
       <div class="navbar-start">
         <a href="/" class="flex items-center">
           <img src="images/logo.png" alt="Skytelco Logo" class="h-9 w-auto" />
-
           <span class="ml-3 text-2xl font-bold text-custom-blue">Skytelco</span>
         </a>
       </div>
@@ -54,16 +53,14 @@
           >
             <i class="fas fa-search text-lg"></i>
           </button>
-          <!-- Conditional rendering for auth -->
+
           <div id="auth-nav-item" class="flex items-center space-x-2">
-            <!-- Login button (shown when not authenticated) -->
             <a
               href="/login"
               id="login-button"
-              class="btn btn-primary rounded-full px-4 py-2 text-sm font-medium"
+              class="btn bg-custom-blue text-white hover:bg-opacity-90 border-none rounded-full px-4 py-2 text-sm font-medium"
               >Login</a
             >
-            <!-- Profile icon (shown when authenticated) -->
             <button
               id="profile-icon"
               class="btn btn-ghost btn-circle text-gray-700 hover:text-custom-blue hidden"
@@ -75,45 +72,7 @@
       </div>
     </div>
 
-    <div
-      class="min-h-[calc(100vh-200px)] flex items-center justify-center text-center px-4 md:px-16 lg:px-24"
-    >
-      <div class="max-w-5xl mx-auto">
-        <h1 class="font-extrabold leading-tight" style="letter-spacing: -2px">
-          <span class="block text-5xl md:text-6xl lg:text-7xl">
-            Stay Connected
-          </span>
-          <span class="block text-custom-blue text-5xl md:text-6xl lg:text-7xl">
-            Everywhere and Anytime
-          </span>
-        </h1>
-        <p
-          class="mb-8 text-lg md:text-xl text-gray-600 font-normal leading-relaxed mt-8"
-        >
-          Lorem ipsum is simply dummy text of the printing and typesetting
-          industry. Lorem Ipsum has been the industry's standard dummy text ever
-          since the 1500s,
-        </p>
-        <button
-          class="btn bg-custom-blue text-white hover:bg-opacity-90 border-none rounded-full px-8 py-3 text-lg font-medium"
-        >
-          Learn More <i class="fas fa-arrow-right ml-2 text-sm"></i>
-        </button>
-      </div>
-    </div>
-
-    <section class="py-16 bg-white">
-      <div class="container mx-auto px-4">
-        <h2 class="text-4xl font-extrabold text-center mb-12 text-gray-900">
-          Produk Unggulan Kami
-        </h2>
-
-        <p class="text-center text-gray-600">
-          (Sisa halaman akan diisi dengan bagian produk per kategori dan footer
-          seperti yang kita diskusikan sebelumnya.)
-        </p>
-      </div>
-    </section>
+    <main id="app" class="min-h-screen"></main>
 
     <footer class="footer p-10 bg-gray-100 text-gray-800 mt-16">
       <aside>
@@ -145,6 +104,7 @@
         <a class="link link-hover">Kebijakan cookie</a>
       </nav>
     </footer>
+
     <script type="module" src="js/app.js"></script>
   </body>
 </html>
