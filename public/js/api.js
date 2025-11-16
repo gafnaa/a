@@ -2,8 +2,8 @@ import router from "./router.js";
 import Auth from "./auth.js";
 
 const API = {
-  // Set the correct baseURL for the Flask API
-  baseURL: "http://localhost:5001",
+  // Use relative URL for same-origin requests
+  baseURL: "",
 
   async request(endpoint, options = {}) {
     const token = Auth.getToken();
@@ -58,16 +58,10 @@ const API = {
     });
   },
 
-  async register(userData) {
-    // This is now a placeholder as registration is client-side simulated
-    // If a backend registration is needed, this would be implemented differently.
-    console.warn(
-      "API.register called, but registration is client-side simulated."
-    );
-    return Promise.resolve({
-      success: true,
-      token: null,
-      user: { ...userData, hasQuestionnaire: false },
+  async register(fullName, phoneNumber) {
+    return this.request("/api/auth/register", {
+      method: "POST",
+      body: JSON.stringify({ fullName, phoneNumber }),
     });
   },
 

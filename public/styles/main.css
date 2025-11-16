@@ -59,27 +59,37 @@ body {
 /* Notification Alerts */
 .notification-container {
   position: fixed;
-  top: 20%;
-  left: 50%;
-  transform: translate(
-    -50%,
-    -50%
-  ); /* Center horizontally, adjust vertical position */
+  top: 20px;
+  right: 20px;
   z-index: 1000; /* Ensure it's above other content */
-  width: 80%;
-  max-width: 400px; /* Max width for the alert */
+  width: 90%;
+  max-width: 500px; /* Max width for the alert */
   opacity: 0; /* Start hidden */
-  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+  transform: translateX(100%); /* Start from right (off-screen) */
+  transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
 }
 
 .notification-container.visible {
   opacity: 1;
-  transform: translate(-50%, 0); /* Move down to final position */
+  transform: translateX(0); /* Slide in from right */
 }
 
 .notification-container.hidden {
   opacity: 0;
-  transform: translate(-50%, -50%); /* Move up to hide */
+  transform: translateX(100%); /* Slide out to right */
+}
+
+.notification-content {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.notification-close-btn {
+  cursor: pointer;
+  transition: color 0.2s ease-in-out;
+}
+
+.notification-close-btn:hover {
+  color: #ef4444 !important;
 }
 
 /* Specific alert styles are handled by DaisyUI classes (alert, alert-success, alert-error) */

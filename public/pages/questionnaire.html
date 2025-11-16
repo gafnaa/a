@@ -1,17 +1,20 @@
-<div class="min-h-screen bg-base-200 py-8">
-    <div class="container mx-auto px-4 max-w-3xl">
-        <div class="card bg-base-100 shadow-xl fade-in">
-            <div class="card-body">
-                <h1 class="text-3xl font-bold mb-6">Customer Behavior Questionnaire</h1>
-                <p class="text-gray-600 mb-8">Help us understand your needs to provide better recommendations</p>
+<div class="min-h-screen bg-white py-16">
+    <div class="container mx-auto px-4 max-w-2xl">
+        <div class="card w-full bg-white shadow-xl border border-gray-200 fade-in">
+            <div class="card-body p-8">
+                <h1 class="text-4xl font-extrabold text-center text-custom-blue mb-4">
+                    Customer Questionnaire
+                </h1>
+                <p class="text-gray-600 mb-8 text-center">
+                    Help us understand your needs to provide better recommendations
+                </p>
                 
                 <form id="questionnaireForm">
-                    <!-- Internet Usage -->
                     <div class="form-control mb-6">
                         <label class="label">
                             <span class="label-text font-semibold">How much do you use the internet daily?</span>
                         </label>
-                        <select name="internetUsage" class="select select-bordered w-full" required>
+                        <select name="internetUsage" class="select select-bordered w-full bg-white text-black" required>
                             <option value="">Select an option</option>
                             <option value="low">Low (1-2 hours)</option>
                             <option value="medium">Medium (3-5 hours)</option>
@@ -20,12 +23,11 @@
                         </select>
                     </div>
 
-                    <!-- Streaming Habits -->
                     <div class="form-control mb-6">
                         <label class="label">
                             <span class="label-text font-semibold">How often do you stream videos/music?</span>
                         </label>
-                        <select name="streamingHabits" class="select select-bordered w-full" required>
+                        <select name="streamingHabits" class="select select-bordered w-full bg-white text-black" required>
                             <option value="">Select an option</option>
                             <option value="none">Never</option>
                             <option value="occasional">Occasionally</option>
@@ -34,12 +36,11 @@
                         </select>
                     </div>
 
-                    <!-- Data Consumption -->
                     <div class="form-control mb-6">
                         <label class="label">
                             <span class="label-text font-semibold">How would you describe your data consumption?</span>
                         </label>
-                        <select name="dataConsumption" class="select select-bordered w-full" required>
+                        <select name="dataConsumption" class="select select-bordered w-full bg-white text-black" required>
                             <option value="">Select an option</option>
                             <option value="minimal">Minimal (mostly text/email)</option>
                             <option value="moderate">Moderate (browsing, social media)</option>
@@ -48,12 +49,11 @@
                         </select>
                     </div>
 
-                    <!-- Voice Usage -->
                     <div class="form-control mb-6">
                         <label class="label">
                             <span class="label-text font-semibold">How much do you make voice calls?</span>
                         </label>
-                        <select name="voiceUsage" class="select select-bordered w-full" required>
+                        <select name="voiceUsage" class="select select-bordered w-full bg-white text-black" required>
                             <option value="">Select an option</option>
                             <option value="low">Low (rarely)</option>
                             <option value="medium">Medium (few calls per day)</option>
@@ -61,12 +61,11 @@
                         </select>
                     </div>
 
-                    <!-- SMS Usage -->
                     <div class="form-control mb-6">
                         <label class="label">
                             <span class="label-text font-semibold">How often do you send SMS?</span>
                         </label>
-                        <select name="smsUsage" class="select select-bordered w-full" required>
+                        <select name="smsUsage" class="select select-bordered w-full bg-white text-black" required>
                             <option value="">Select an option</option>
                             <option value="low">Low (rarely)</option>
                             <option value="medium">Medium (occasionally)</option>
@@ -74,7 +73,6 @@
                         </select>
                     </div>
 
-                    <!-- VOD Interest -->
                     <div class="form-control mb-6">
                         <label class="label">
                             <span class="label-text font-semibold">Are you interested in Video on Demand (VOD) services?</span>
@@ -91,12 +89,11 @@
                         </div>
                     </div>
 
-                    <!-- Budget -->
                     <div class="form-control mb-6">
                         <label class="label">
                             <span class="label-text font-semibold">What's your preferred budget range?</span>
                         </label>
-                        <select name="budget" class="select select-bordered w-full" required>
+                        <select name="budget" class="select select-bordered w-full bg-white text-black" required>
                             <option value="">Select an option</option>
                             <option value="budget">Budget-friendly</option>
                             <option value="mid-range">Mid-range</option>
@@ -105,7 +102,10 @@
                     </div>
 
                     <div class="form-control mt-8">
-                        <button type="submit" class="btn btn-primary btn-lg w-full">
+                        <button 
+                            type="submit" 
+                            class="btn bg-custom-blue text-white hover:bg-opacity-90 border-none rounded-full py-3 text-base font-medium btn-lg w-full"
+                        >
                             Submit Questionnaire
                             <span class="loading loading-spinner loading-sm hidden" id="submitSpinner"></span>
                         </button>
@@ -139,12 +139,14 @@ document.getElementById('questionnaireForm').addEventListener('submit', async (e
     try {
         const response = await API.submitQuestionnaire(data);
         if (response.success) {
+            // Setelah submit, arahkan ke halaman index (landing)
             router.navigate('/');
         } else {
-            alert('Failed to submit questionnaire. Please try again.');
+            // Tampilkan notifikasi error
+            showNotification('error', 'Gagal mengirim questionnaire', 'Silakan coba lagi.');
         }
     } catch (error) {
-        alert('An error occurred. Please try again.');
+        showNotification('error', 'Terjadi kesalahan', 'Silakan coba lagi.');
         console.error(error);
     } finally {
         spinner.classList.add('hidden');
@@ -152,4 +154,3 @@ document.getElementById('questionnaireForm').addEventListener('submit', async (e
     }
 });
 </script>
-

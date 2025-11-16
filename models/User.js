@@ -14,13 +14,6 @@ const userSchema = new mongoose.Schema(
       unique: true,
       trim: true,
     },
-    username: {
-      // Added username field
-      type: String,
-      required: true,
-      unique: true,
-      trim: true,
-    },
     questionnaireData: {
       internetUsage: {
         type: String,

@@ -1,160 +1,350 @@
+<!-- Hero Section -->
 <div
-      class="min-h-[calc(100vh-200px)] flex items-center justify-center text-center px-4 md:px-16 lg:px-24"
+  class="min-h-[calc(100vh-200px)] flex items-center justify-center text-center px-4 md:px-16 lg:px-24 bg-gradient-to-b from-white to-gray-50"
+>
+  <div class="max-w-5xl mx-auto">
+    <h1 class="font-extrabold leading-tight" style="letter-spacing: -2px">
+      <span class="block text-5xl md:text-6xl lg:text-7xl">
+        Stay Connected
+      </span>
+      <span class="block text-custom-blue text-5xl md:text-6xl lg:text-7xl">
+        Everywhere and Anytime
+      </span>
+    </h1>
+    <p
+      class="mb-8 text-lg md:text-xl text-gray-600 font-normal leading-relaxed mt-8"
     >
-      <div class="max-w-5xl mx-auto">
-        <h1 class="font-extrabold leading-tight" style="letter-spacing: -2px">
-          <span class="block text-5xl md:text-6xl lg:text-7xl">
-            Stay Connected
-          </span>
-          <span class="block text-custom-blue text-5xl md:text-6xl lg:text-7xl">
-            Everywhere and Anytime
-          </span>
-        </h1>
-        <p
-          class="mb-8 text-lg md:text-xl text-gray-600 font-normal leading-relaxed mt-8"
-        >
-          Lorem ipsum is simply dummy text of the printing and typesetting
-          industry. Lorem Ipsum has been the industry's standard dummy text ever
-          since the 1500s,
-        </p>
-        <button
-          class="btn bg-custom-blue text-white hover:bg-opacity-90 border-none rounded-full px-8 py-3 text-lg font-medium"
-        >
-          Learn More <i class="fas fa-arrow-right ml-2 text-sm"></i>
-        </button>
-      </div>
-    </div>
-
-    <section class="py-16 bg-white">
-      <div class="container mx-auto px-4">
-        <h2 class="text-4xl font-extrabold text-center mb-12 text-gray-900">
-          Produk Unggulan Kami
-        </h2>
-
-        <p class="text-center text-gray-600">
-          (Sisa halaman akan diisi dengan bagian produk per kategori dan footer
-          seperti yang kita diskusikan sebelumnya.)
-        </p>
-      </div>
-
-  <!-- Recommended for You -->
-  <div class="container mx-auto px-4 py-12">
-    <h2 class="text-3xl text-center font-bold mb-8 ">Recommended for You</h2>
-    <div id="recommendations" class="mb-8">
-      <!-- Recommendations will be loaded here -->
-    </div>
-    <div
-      id="recommendedProducts"
-      class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+      SkyTelco menghadirkan solusi telekomunikasi terdepan dengan paket data, suara, dan SMS terbaik untuk kebutuhan Anda. Nikmati koneksi cepat dan stabil di mana saja.
+    </p>
+    <button
+      class="btn bg-custom-blue text-white hover:bg-opacity-90 border-none rounded-full px-8 py-3 text-lg font-medium"
+      onclick="router.navigate('/questionnaire')"
     >
-      <!-- Recommended products will be loaded here -->
-    </div>
+      Dapatkan Rekomendasi <i class="fas fa-arrow-right ml-2 text-sm"></i>
+    </button>
   </div>
 </div>
 
+<!-- Recommended Products Section -->
+<section class="py-16 bg-white" id="recommendationsSection">
+  <div class="container mx-auto px-4">
+    <h2 class="text-4xl font-extrabold text-center mb-4 text-gray-900">
+      Rekomendasi untuk Anda
+    </h2>
+    <p class="text-center text-gray-600 mb-12">
+      Produk yang kami rekomendasikan berdasarkan preferensi Anda
+    </p>
+    
+    <div id="recommendations" class="mb-8">
+      <!-- Recommendations will be loaded here -->
+    </div>
+    
+    <div
+      id="recommendedProducts"
+      class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8"
+    >
+      <!-- Recommended products will be loaded here -->
+    </div>
+    
+    <div class="text-center">
+      <button
+        id="viewAllRecommendedBtn"
+        class="btn bg-custom-blue text-white hover:bg-opacity-90 border-none rounded-full px-8 py-3 text-base font-medium hidden"
+        onclick="router.navigate('/dashboard')"
+      >
+        Lihat Selengkapnya
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- Featured Products Showcase -->
+<section class="py-16 bg-gray-50">
+  <div class="container mx-auto px-4">
+    <h2 class="text-4xl font-extrabold text-center mb-4 text-gray-900">
+      Produk Unggulan Kami
+    </h2>
+    <p class="text-center text-gray-600 mb-12">
+      Pilihan paket terbaik dari berbagai kategori untuk memenuhi kebutuhan komunikasi Anda
+    </p>
+    
+    <div
+      id="featuredProducts"
+      class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8"
+    >
+      <!-- Featured products will be loaded here -->
+    </div>
+    
+    <div class="text-center">
+      <button
+        id="viewAllProductsBtn"
+        class="btn bg-custom-blue text-white hover:bg-opacity-90 border-none rounded-full px-8 py-3 text-base font-medium"
+        onclick="router.navigate('/dashboard')"
+      >
+        Lihat Selengkapnya
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- Why Choose SkyTelco Section -->
+<section class="py-16 bg-white">
+  <div class="container mx-auto px-4">
+    <h2 class="text-4xl font-extrabold text-center mb-4 text-gray-900">
+      Mengapa Harus Memilih SkyTelco?
+    </h2>
+    <p class="text-center text-gray-600 mb-12">
+      Kami berkomitmen memberikan layanan terbaik untuk pengalaman komunikasi yang optimal
+    </p>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div class="text-center p-6 rounded-lg hover:shadow-lg transition-shadow">
+        <div class="mb-4 flex justify-center">
+          <div class="w-16 h-16 bg-custom-blue rounded-full flex items-center justify-center">
+            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+            </svg>
+          </div>
+        </div>
+        <h3 class="text-xl font-bold mb-2 text-gray-900">Kecepatan Tinggi</h3>
+        <p class="text-gray-600">Jaringan 4G/5G terdepan dengan kecepatan maksimal untuk streaming dan browsing tanpa buffering</p>
+      </div>
+      
+      <div class="text-center p-6 rounded-lg hover:shadow-lg transition-shadow">
+        <div class="mb-4 flex justify-center">
+          <div class="w-16 h-16 bg-custom-blue rounded-full flex items-center justify-center">
+            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+          </div>
+        </div>
+        <h3 class="text-xl font-bold mb-2 text-gray-900">Harga Terjangkau</h3>
+        <p class="text-gray-600">Paket dengan harga kompetitif dan fleksibel sesuai kebutuhan dan budget Anda</p>
+      </div>
+      
+      <div class="text-center p-6 rounded-lg hover:shadow-lg transition-shadow">
+        <div class="mb-4 flex justify-center">
+          <div class="w-16 h-16 bg-custom-blue rounded-full flex items-center justify-center">
+            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+            </svg>
+          </div>
+        </div>
+        <h3 class="text-xl font-bold mb-2 text-gray-900">Jaringan Luas</h3>
+        <p class="text-gray-600">Cakupan jaringan yang luas di seluruh Indonesia untuk koneksi stabil di mana pun Anda berada</p>
+      </div>
+      
+      <div class="text-center p-6 rounded-lg hover:shadow-lg transition-shadow">
+        <div class="mb-4 flex justify-center">
+          <div class="w-16 h-16 bg-custom-blue rounded-full flex items-center justify-center">
+            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"></path>
+            </svg>
+          </div>
+        </div>
+        <h3 class="text-xl font-bold mb-2 text-gray-900">Layanan 24/7</h3>
+        <p class="text-gray-600">Customer service siap membantu Anda kapan saja dengan respon cepat dan solusi tepat</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Product Categories Section -->
+<section class="py-16 bg-gray-50">
+  <div class="container mx-auto px-4">
+    <h2 class="text-4xl font-extrabold text-center mb-4 text-gray-900">
+      Kategori Produk
+    </h2>
+    <p class="text-center text-gray-600 mb-12">
+      Pilih kategori yang sesuai dengan kebutuhan komunikasi Anda
+    </p>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+      <div class="card bg-white shadow-lg hover:shadow-xl transition-shadow cursor-pointer" onclick="router.navigate('/dashboard?category=data')">
+        <div class="card-body text-center">
+          <div class="text-4xl mb-4">📶</div>
+          <h3 class="card-title justify-center text-lg">Paket Data</h3>
+          <p class="text-sm text-gray-600">Internet cepat untuk browsing, streaming, dan download</p>
+        </div>
+      </div>
+      
+      <div class="card bg-white shadow-lg hover:shadow-xl transition-shadow cursor-pointer" onclick="router.navigate('/dashboard?category=voice')">
+        <div class="card-body text-center">
+          <div class="text-4xl mb-4">📞</div>
+          <h3 class="card-title justify-center text-lg">Paket Suara</h3>
+          <p class="text-sm text-gray-600">Pulsa telepon untuk komunikasi suara berkualitas</p>
+        </div>
+      </div>
+      
+      <div class="card bg-white shadow-lg hover:shadow-xl transition-shadow cursor-pointer" onclick="router.navigate('/dashboard?category=sms')">
+        <div class="card-body text-center">
+          <div class="text-4xl mb-4">💬</div>
+          <h3 class="card-title justify-center text-lg">Paket SMS</h3>
+          <p class="text-sm text-gray-600">Kuota SMS untuk komunikasi teks yang praktis</p>
+        </div>
+      </div>
+      
+      <div class="card bg-white shadow-lg hover:shadow-xl transition-shadow cursor-pointer" onclick="router.navigate('/dashboard?category=vod')">
+        <div class="card-body text-center">
+          <div class="text-4xl mb-4">🎬</div>
+          <h3 class="card-title justify-center text-lg">Video on Demand</h3>
+          <p class="text-sm text-gray-600">Akses konten video streaming tanpa batas</p>
+        </div>
+      </div>
+      
+      <div class="card bg-white shadow-lg hover:shadow-xl transition-shadow cursor-pointer" onclick="router.navigate('/dashboard?category=bundle')">
+        <div class="card-body text-center">
+          <div class="text-4xl mb-4">📦</div>
+          <h3 class="card-title justify-center text-lg">Paket Bundle</h3>
+          <p class="text-sm text-gray-600">Paket lengkap data, suara, dan SMS dalam satu paket</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Stats Section -->
+<section class="py-16 bg-custom-blue text-white">
+  <div class="container mx-auto px-4">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
+      <div>
+        <div class="text-5xl font-bold mb-2">1M+</div>
+        <div class="text-lg opacity-90">Pengguna Aktif</div>
+      </div>
+      <div>
+        <div class="text-5xl font-bold mb-2">99%</div>
+        <div class="text-lg opacity-90">Uptime Jaringan</div>
+      </div>
+      <div>
+        <div class="text-5xl font-bold mb-2">24/7</div>
+        <div class="text-lg opacity-90">Layanan Support</div>
+      </div>
+      <div>
+        <div class="text-5xl font-bold mb-2">500+</div>
+        <div class="text-lg opacity-90">Kota Terjangkau</div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <script>
   async function loadLandingPage() {
-    // Load featured products
-    try {
-      const productsResponse = await API.getProducts(null, true);
-      if (productsResponse.success && productsResponse.products.length > 0) {
-        const featuredContainer = document.getElementById("featuredProducts");
-        featuredContainer.innerHTML = productsResponse.products
-          .map(
-            (product) => `
-                <div class="card product-card bg-base-100 shadow-xl">
-                    <figure><img src="${product.image}" alt="${product.name}" /></figure>
-                    <div class="card-body">
-                        <h2 class="card-title">${product.name}</h2>
-                        <p>${product.description}</p>
-                        <div class="badge badge-primary">${product.category}</div>
-                        <div class="card-actions justify-end">
-                            <div class="text-2xl font-bold">$${product.price}</div>
-                            <a href="/product/${product._id}" class="btn btn-primary">View Details</a>
-                        </div>
-                    </div>
-                </div>
-            `
-          )
-          .join("");
-      }
-    } catch (error) {
-      console.error("Error loading featured products:", error);
-    }
-
     // Load recommendations
     try {
       const recResponse = await API.getUserRecommendations();
       if (recResponse.success) {
         const recContainer = document.getElementById("recommendations");
-        const productsContainer = document.getElementById(
-          "recommendedProducts"
-        );
+        const productsContainer = document.getElementById("recommendedProducts");
+        const viewAllBtn = document.getElementById("viewAllRecommendedBtn");
 
         if (
           recResponse.recommendations &&
           recResponse.recommendations.length > 0
         ) {
           recContainer.innerHTML = `
-                    <div class="alert alert-info">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current shrink-0 w-6 h-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                        <div>
-                            <h3 class="font-bold">Based on your preferences, we recommend:</h3>
-                            <div class="flex flex-wrap gap-2 mt-2">
-                                ${recResponse.recommendations
-                                  .slice(0, 3)
-                                  .map(
-                                    (rec) => `
-                                    <div class="badge badge-primary badge-lg">${rec.category.toUpperCase()} (${Math.round(
-                                      rec.score * 100
-                                    )}%)</div>
-                                `
-                                  )
-                                  .join("")}
-                            </div>
-                        </div>
-                    </div>
-                `;
+            <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-lg mb-6">
+              <div class="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current text-blue-500 shrink-0 w-6 h-6 mr-3">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <div class="flex-1">
+                  <h3 class="font-bold text-gray-900">Berdasarkan preferensi Anda, kami merekomendasikan:</h3>
+                  <div class="flex flex-wrap gap-2 mt-2">
+                    ${recResponse.recommendations
+                      .slice(0, 3)
+                      .map(
+                        (rec) => `
+                        <span class="badge bg-custom-blue text-white badge-lg">${rec.category.toUpperCase()} (${Math.round(
+                          rec.score * 100
+                        )}%)</span>
+                      `
+                      )
+                      .join("")}
+                  </div>
+                </div>
+              </div>
+            </div>
+          `;
 
           if (recResponse.products && recResponse.products.length > 0) {
             productsContainer.innerHTML = recResponse.products
+              .slice(0, 6)
               .map(
                 (product) => `
-                        <div class="card product-card bg-base-100 shadow-xl">
-                            <figure><img src="${product.image}" alt="${product.name}" /></figure>
-                            <div class="card-body">
-                                <h2 class="card-title">${product.name}</h2>
-                                <p>${product.description}</p>
-                                <div class="badge badge-primary">${product.category}</div>
-                                <div class="card-actions justify-end">
-                                    <div class="text-2xl font-bold">$${product.price}</div>
-                                    <a href="/product/${product._id}" class="btn btn-primary">View Details</a>
-                                </div>
-                            </div>
-                        </div>
-                    `
+                  <div class="card bg-white shadow-xl hover:shadow-2xl transition-shadow">
+                    <figure class="h-48 overflow-hidden">
+                      <img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover" />
+                    </figure>
+                    <div class="card-body">
+                      <h2 class="card-title text-lg">${product.name}</h2>
+                      <p class="text-sm text-gray-600 line-clamp-2">${product.description}</p>
+                      <div class="badge badge-primary">${product.category}</div>
+                      <div class="card-actions justify-between items-center mt-4">
+                        <div class="text-2xl font-bold text-custom-blue">Rp ${product.price.toLocaleString('id-ID')}</div>
+                        <a href="/product/${product._id}" class="btn btn-sm bg-custom-blue text-white border-none">Detail</a>
+                      </div>
+                    </div>
+                  </div>
+                `
               )
               .join("");
+            
+            if (recResponse.products.length > 6) {
+              viewAllBtn.classList.remove("hidden");
+            }
           } else {
             productsContainer.innerHTML =
-              '<p class="text-gray-500">No recommended products available at the moment.</p>';
+              '<p class="text-gray-500 col-span-full text-center">Tidak ada produk rekomendasi tersedia saat ini.</p>';
           }
         } else {
           recContainer.innerHTML = `
-                    <div class="alert alert-warning">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                        </svg>
-                        <span>Please complete the questionnaire to see personalized recommendations.</span>
-                        <a href="/questionnaire" class="btn btn-sm">Take Questionnaire</a>
-                    </div>
-                `;
+            <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 rounded-lg">
+              <div class="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current text-yellow-500 shrink-0 h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+                <div class="flex-1">
+                  <span class="text-gray-700">Silakan lengkapi questionnaire untuk melihat rekomendasi yang dipersonalisasi.</span>
+                  <a href="/questionnaire" class="btn btn-sm bg-custom-blue text-white border-none ml-4">Isi Questionnaire</a>
+                </div>
+              </div>
+            </div>
+          `;
         }
       }
     } catch (error) {
       console.error("Error loading recommendations:", error);
+    }
+
+    // Load featured products
+    try {
+      const productsResponse = await API.getProducts(null, true);
+      if (productsResponse.success && productsResponse.products.length > 0) {
+        const featuredContainer = document.getElementById("featuredProducts");
+        featuredContainer.innerHTML = productsResponse.products
+          .slice(0, 6)
+          .map(
+            (product) => `
+              <div class="card bg-white shadow-xl hover:shadow-2xl transition-shadow">
+                <figure class="h-48 overflow-hidden">
+                  <img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover" />
+                </figure>
+                <div class="card-body">
+                  <h2 class="card-title text-lg">${product.name}</h2>
+                  <p class="text-sm text-gray-600 line-clamp-2">${product.description}</p>
+                  <div class="badge badge-primary">${product.category}</div>
+                  <div class="card-actions justify-between items-center mt-4">
+                    <div class="text-2xl font-bold text-custom-blue">Rp ${product.price.toLocaleString('id-ID')}</div>
+                    <a href="/product/${product._id}" class="btn btn-sm bg-custom-blue text-white border-none">Detail</a>
+                  </div>
+                </div>
+              </div>
+            `
+          )
+          .join("");
+      }
+    } catch (error) {
+      console.error("Error loading featured products:", error);
     }
   }
 
