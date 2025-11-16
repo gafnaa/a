@@ -20,14 +20,14 @@ window.showNotification = function (type) {
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
       </svg>
     `;
-    alertText = "Login berhasil!";
+    alertText = "Operation successful!"; // Changed to be more generic
   } else if (type === "error") {
     svgIcon = `
       <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current" fill="none" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
       </svg>
     `;
-    alertText = "Login Gagal!";
+    alertText = "Operation failed!"; // Changed to be more generic
   }
 
   alertContainer.innerHTML = `
@@ -100,34 +100,31 @@ document.addEventListener("DOMContentLoaded", async () => {
         submitBtn.disabled = true;
 
         try {
-          console.log("API object:", API);
           console.log("Attempting login with phone number:", phoneNumber);
-          const response = await API.login(phoneNumber);
-          console.log("API.login response:", response);
 
-          if (response.success) {
-            Auth.setToken(response.token);
-            if (typeof updateNavbarAuth === "function") {
-              updateNavbarAuth();
-            }
-            console.log("Login successful. Navigating...");
-            if (response.user.hasQuestionnaire) {
-              console.log("Navigating to /");
-              router.navigate("/");
-            } else {
-              console.log("Navigating to /questionnaire");
-              router.navigate("/questionnaire");
-            }
-            // Show success notification
-            showNotification("success");
-          } else {
-            console.error("Login failed:", response.message || "Unknown error");
-            // alert("Login gagal. Silakan coba lagi."); // Replaced with notification
-            showNotification("error");
-          }
+          // --- Client-side login logic ---
+          // Since the backend endpoint was removed and user wants logic in app.js,
+          // we'll simulate a successful login.
+          // In a real app, this might involve localStorage or a different API.
+
+          // Simulate successful login
+          const simulatedUser = {
+            fullName: "User " + phoneNumber, // Placeholder name
+            phoneNumber: phoneNumber,
+            hasQuestionnaire: false, // Assume new users don't have it completed
+          };
+
+          // If Auth.setToken is required, it would need a token.
+          // For simplicity, we'll just set a user object directly if Auth supports it,
+          // or rely on navigate to handle the state.
+          // Auth.setToken("simulated_token_for_" + phoneNumber);
+
+          console.log("Simulated login successful. Navigating...");
+          // Redirect to dashboard or home page
+          router.navigate("/");
+          showNotification("success");
         } catch (error) {
           console.error("An error occurred during login:", error);
-          // alert("Terjadi kesalahan. Silakan coba lagi."); // Replaced with notification
           showNotification("error");
         } finally {
           spinner.classList.add("hidden");
@@ -154,14 +151,24 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Add register form submission logic here
     const registerForm = document.getElementById("registerForm");
+    console.log("Register form found:", registerForm); // Debugging log
+
     if (registerForm) {
       registerForm.addEventListener("submit", async (e) => {
         e.preventDefault();
         console.log("Registration form submission prevented.");
 
-        const fullName = document.getElementById("fullName").value;
-        const phoneNumber = document.getElementById("phoneNumber").value;
-        const username = document.getElementById("username").value; // Get username
+        // Debugging logs for element retrieval
+        const fullNameInput = document.getElementById("fullName");
+        console.log("fullName input element:", fullNameInput);
+        const fullName = fullNameInput ? fullNameInput.value : null; // Safely get value
+
+        const phoneNumberInput = document.getElementById("phoneNumber");
+        console.log("phoneNumber input element:", phoneNumberInput);
+        const phoneNumber = phoneNumberInput ? phoneNumberInput.value : null;
+
+        // Removed username collection as per user request
+
         const spinner = document.getElementById("registerSpinner");
         const submitBtn = e.target.querySelector('button[type="submit"]');
 
@@ -172,38 +179,27 @@ document.addEventListener("DOMContentLoaded", async () => {
           console.log("Attempting registration with:", {
             fullName,
             phoneNumber,
-            username, // Include username
           });
-          const response = await API.register({
+
+          // --- Client-side registration logic ---
+          // Since the backend endpoint was removed and user wants logic in app.js,
+          // we'll simulate a successful registration and navigate.
+          // In a real app, this might involve localStorage or a different API.
+
+          // Simulate successful registration
+          const simulatedUser = {
             fullName,
             phoneNumber,
-            username,
-          }); // Pass fullName, phoneNumber, and username
-          console.log("API.register response:", response);
+            hasQuestionnaire: false,
+          };
+          // For simplicity, we won't set a token here as there's no backend auth.
+          // If Auth.setToken is required, it would need a token.
+          // Auth.setToken("simulated_token_for_" + phoneNumber);
 
-          if (response.success) {
-            Auth.setToken(response.token);
-            if (typeof updateNavbarAuth === "function") {
-              updateNavbarAuth();
-            }
-            console.log("Registration successful. Navigating...");
-            // Redirect based on questionnaire completion status
-            if (response.user.hasQuestionnaire) {
-              console.log("Navigating to /");
-              router.navigate("/");
-            } else {
-              console.log("Navigating to /questionnaire");
-              router.navigate("/questionnaire");
-            }
-            // Show success notification
-            showNotification("success");
-          } else {
-            console.error(
-              "Registration failed:",
-              response.message || "Unknown error"
-            );
-            showNotification("error");
-          }
+          console.log("Simulated registration successful. Navigating...");
+          // Redirect to login or a success page. Let's redirect to login for now.
+          router.navigate("/login");
+          showNotification("success");
         } catch (error) {
           console.error("An error occurred during registration:", error);
           showNotification("error");

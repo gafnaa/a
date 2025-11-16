@@ -1,8 +1,9 @@
-// API utility functions
+import router from "./router.js";
 import Auth from "./auth.js";
 
 const API = {
-  baseURL: import.meta.env.VITE_API_BASE_URL || "",
+  // Set the correct baseURL for the Flask API
+  baseURL: "http://localhost:5001",
 
   async request(endpoint, options = {}) {
     const token = Auth.getToken();
@@ -20,13 +21,28 @@ const API = {
         ...options,
         headers,
       });
-      const data = await response.json();
-
-      // Check if response is not ok and has an error
-      if (!response.ok && data.error) {
-        throw new Error(data.error);
+      // Check if the response is OK before trying to parse JSON
+      if (!response.ok) {
+        // Try to get error message from JSON, otherwise use status text
+        let errorMessage = `HTTP error! status: ${response.status}`;
+        try {
+          const errorData = await response.json();
+          if (errorData.error) {
+            errorMessage = errorData.error;
+          } else if (errorData.message) {
+            // Some APIs might use 'message'
+            errorMessage = errorData.message;
+          } else {
+            errorMessage = JSON.stringify(errorData); // Fallback to stringify
+          }
+        } catch (e) {
+          // If response is not JSON, use status text
+          errorMessage = response.statusText || errorMessage;
+        }
+        throw new Error(errorMessage);
       }
 
+      const data = await response.json();
       return data;
     } catch (error) {
       console.error("API request error:", error);
@@ -43,9 +59,15 @@ const API = {
   },
 
   async register(userData) {
-    return this.request("/api/auth/register", {
-      method: "POST",
-      body: JSON.stringify(userData),
+    // This is now a placeholder as registration is client-side simulated
+    // If a backend registration is needed, this would be implemented differently.
+    console.warn(
+      "API.register called, but registration is client-side simulated."
+    );
+    return Promise.resolve({
+      success: true,
+      token: null,
+      user: { ...userData, hasQuestionnaire: false },
     });
   },
 
