@@ -6,6 +6,55 @@ window.router = router;
 window.Auth = Auth;
 window.API = API;
 
+// Function to show notifications
+window.showNotification = function (type) {
+  const alertContainer = document.createElement("div");
+  alertContainer.className = "notification-container";
+
+  let svgIcon = "";
+  let alertText = "";
+
+  if (type === "success") {
+    svgIcon = `
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current" fill="none" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+    `;
+    alertText = "Login berhasil!";
+  } else if (type === "error") {
+    svgIcon = `
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current" fill="none" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+    `;
+    alertText = "Login Gagal!";
+  }
+
+  alertContainer.innerHTML = `
+    <div role="alert" class="alert alert-${type}">
+      ${svgIcon}
+      <span>${alertText}</span>
+    </div>
+  `;
+
+  document.body.appendChild(alertContainer);
+
+  // Trigger fade-in animation
+  setTimeout(() => {
+    alertContainer.classList.add("visible");
+  }, 100); // Small delay to allow element to be added to DOM before transition
+
+  // Auto-hide the notification
+  setTimeout(() => {
+    alertContainer.classList.remove("visible");
+    alertContainer.classList.add("hidden");
+    // Remove the element from the DOM after the fade-out transition
+    setTimeout(() => {
+      alertContainer.remove();
+    }, 300); // Match the CSS transition duration
+  }, 5000); // Hide after 5 seconds
+};
+
 document.addEventListener("DOMContentLoaded", async () => {
   // === NAVBAR AUTH HANDLER ===
   window.updateNavbarAuth = async function () {
@@ -69,13 +118,17 @@ document.addEventListener("DOMContentLoaded", async () => {
               console.log("Navigating to /questionnaire");
               router.navigate("/questionnaire");
             }
+            // Show success notification
+            showNotification("success");
           } else {
             console.error("Login failed:", response.message || "Unknown error");
-            alert("Login gagal. Silakan coba lagi.");
+            // alert("Login gagal. Silakan coba lagi."); // Replaced with notification
+            showNotification("error");
           }
         } catch (error) {
           console.error("An error occurred during login:", error);
-          alert("Terjadi kesalahan. Silakan coba lagi.");
+          // alert("Terjadi kesalahan. Silakan coba lagi."); // Replaced with notification
+          showNotification("error");
         } finally {
           spinner.classList.add("hidden");
           submitBtn.disabled = false;
