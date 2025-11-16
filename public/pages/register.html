@@ -2,14 +2,27 @@
   <div class="card w-full max-w-md bg-white shadow-xl border border-gray-200">
     <div class="card-body p-8">
       <h2 class="text-3xl font-bold text-center text-custom-blue mb-4">
-        Login
+        Register
       </h2>
 
-      <p class="text-center text-gray-600 mb-6">
-        Masukkan nomor telepon Anda untuk melanjutkan
-      </p>
+      <p class="text-center text-gray-600 mb-6">Buat akun baru Anda</p>
 
-      <form id="loginForm">
+      <form id="registerForm">
+        <div class="form-control mb-4">
+          <label class="label">
+            <span class="label-text font-medium text-gray-700"
+              >Nama Lengkap</span
+            >
+          </label>
+          <input
+            type="text"
+            id="fullName"
+            placeholder="Nama Lengkap Anda"
+            class="input input-bordered w-full bg-white text-black"
+            required
+          />
+        </div>
+
         <div class="form-control mb-4">
           <label class="label">
             <span class="label-text font-medium text-gray-700"
@@ -19,6 +32,7 @@
           <input
             type="tel"
             id="phoneNumber"
+            placeholder="+628123456789"
             class="input input-bordered w-full bg-white text-black"
             required
           />
@@ -29,20 +43,18 @@
             type="submit"
             class="btn bg-custom-blue text-white hover:bg-opacity-90 border-none rounded-full py-3 text-base font-medium"
           >
-            Lanjutkan
+            Daftar
             <span
               class="loading loading-spinner loading-sm hidden"
-              id="loginSpinner"
+              id="registerSpinner"
             ></span>
           </button>
         </div>
       </form>
       <p class="text-center text-sm text-gray-500 mt-4">
-        Don’t have an account?
-        <a
-          href="/register"
-          class="text-custom-blue font-semibold hover:underline"
-          >Register here.</a
+        Sudah punya akun?
+        <a href="/login" class="text-custom-blue font-semibold hover:underline"
+          >Login di sini.</a
         >
       </p>
     </div>

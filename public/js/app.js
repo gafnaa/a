@@ -139,6 +139,82 @@ document.addEventListener("DOMContentLoaded", async () => {
     setTimeout(() => window.updateNavbarAuth(), 10);
   });
 
+  // === REGISTER ROUTE ===
+  router.addRoute("/register", async () => {
+    const app = document.getElementById("app");
+
+    // If user is already logged in, redirect to home
+    if (await Auth.verifyToken()) {
+      router.navigate("/");
+      return;
+    }
+
+    const response = await fetch("/pages/register.html");
+    app.innerHTML = await response.text();
+
+    // Add register form submission logic here
+    const registerForm = document.getElementById("registerForm");
+    if (registerForm) {
+      registerForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        console.log("Registration form submission prevented.");
+
+        const fullName = document.getElementById("fullName").value;
+        const phoneNumber = document.getElementById("phoneNumber").value;
+        const username = document.getElementById("username").value; // Get username
+        const spinner = document.getElementById("registerSpinner");
+        const submitBtn = e.target.querySelector('button[type="submit"]');
+
+        spinner.classList.remove("hidden");
+        submitBtn.disabled = true;
+
+        try {
+          console.log("Attempting registration with:", {
+            fullName,
+            phoneNumber,
+            username, // Include username
+          });
+          const response = await API.register({
+            fullName,
+            phoneNumber,
+            username,
+          }); // Pass fullName, phoneNumber, and username
+          console.log("API.register response:", response);
+
+          if (response.success) {
+            Auth.setToken(response.token);
+            if (typeof updateNavbarAuth === "function") {
+              updateNavbarAuth();
+            }
+            console.log("Registration successful. Navigating...");
+            // Redirect based on questionnaire completion status
+            if (response.user.hasQuestionnaire) {
+              console.log("Navigating to /");
+              router.navigate("/");
+            } else {
+              console.log("Navigating to /questionnaire");
+              router.navigate("/questionnaire");
+            }
+            // Show success notification
+            showNotification("success");
+          } else {
+            console.error(
+              "Registration failed:",
+              response.message || "Unknown error"
+            );
+            showNotification("error");
+          }
+        } catch (error) {
+          console.error("An error occurred during registration:", error);
+          showNotification("error");
+        } finally {
+          spinner.classList.add("hidden");
+          submitBtn.disabled = false;
+        }
+      });
+    }
+  });
+
   router.addRoute("/", async () => {
     if (!(await Auth.verifyToken())) {
       router.navigate("/login");

@@ -13,6 +13,16 @@ function generatePhoneNumber() {
   return phoneNumber;
 }
 
+// Function to generate a random username
+function generateUsername() {
+  const adjectives = ["quick", "lazy", "sleepy", "noisy", "hungry"];
+  const nouns = ["fox", "dog", "wolf", "bear", "lion"];
+  const adjective = adjectives[Math.floor(Math.random() * adjectives.length)];
+  const noun = nouns[Math.floor(Math.random() * nouns.length)];
+  const randomNumber = Math.floor(Math.random() * 1000);
+  return `${adjective}${noun}${randomNumber}`;
+}
+
 // Function to generate random questionnaire data
 function generateQuestionnaireData() {
   const internetUsageOptions = ["low", "medium", "high", "very-high"];
@@ -49,7 +59,9 @@ const numberOfUsersToSeed = 10; // You can adjust this number
 
 for (let i = 0; i < numberOfUsersToSeed; i++) {
   sampleUsers.push({
+    fullName: `User ${i + 1}`, // Placeholder for full name
     phoneNumber: generatePhoneNumber(),
+    username: generateUsername(), // Added username
     questionnaireData: generateQuestionnaireData(),
   });
 }
