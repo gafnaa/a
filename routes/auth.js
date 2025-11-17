@@ -3,6 +3,63 @@ const router = express.Router();
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 
+// Register endpoint
+router.post('/register', async (req, res) => {
+  try {
+    const { fullName, phoneNumber } = req.body;
+
+    if (!fullName || !phoneNumber) {
+      return res.status(400).json({ error: 'Full name and phone number are required' });
+    }
+
+    // Simple phone number validation
+    const cleanPhone = phoneNumber.replace(/\D/g, '');
+    if (cleanPhone.length < 10) {
+      return res.status(400).json({ error: 'Invalid phone number' });
+    }
+
+    // Check if user already exists
+    const existingUser = await User.findOne({ phoneNumber: cleanPhone });
+    if (existingUser) {
+      return res.status(400).json({ error: 'Phone number already registered' });
+    }
+
+    // Create new user
+    const user = new User({
+      fullName: fullName.trim(),
+      phoneNumber: cleanPhone,
+      questionnaireData: {},
+      recommendations: []
+    });
+
+    await user.save();
+
+    // Generate JWT token
+    const token = jwt.sign(
+      { userId: user._id, phoneNumber: user.phoneNumber },
+      process.env.JWT_SECRET || 'your-secret-key',
+      { expiresIn: '7d' }
+    );
+
+    res.json({
+      success: true,
+      token,
+      user: {
+        id: user._id,
+        fullName: user.fullName,
+        phoneNumber: user.phoneNumber,
+        hasQuestionnaire: !!user.questionnaireData.internetUsage
+      }
+    });
+  } catch (error) {
+    console.error('Register error:', error);
+    if (error.code === 11000) {
+      return res.status(400).json({ error: 'Phone number already exists' });
+    }
+    res.status(500).json({ error: 'Server error during registration' });
+  }
+});
+
 // Phone number login/register
 router.post('/login', async (req, res) => {
   try {
@@ -18,16 +75,11 @@ router.post('/login', async (req, res) => {
       return res.status(400).json({ error: 'Invalid phone number' });
     }
 
-    // Find or create user
-    let user = await User.findOne({ phoneNumber: cleanPhone });
+    // Find user (don't auto-create, user must register first)
+    const user = await User.findOne({ phoneNumber: cleanPhone });
 
     if (!user) {
-      user = new User({
-        phoneNumber: cleanPhone,
-        questionnaireData: {},
-        recommendations: []
-      });
-      await user.save();
+      return res.status(404).json({ error: 'User not found. Please register first.' });
     }
 
     // Generate JWT token
@@ -42,6 +94,7 @@ router.post('/login', async (req, res) => {
       token,
       user: {
         id: user._id,
+        fullName: user.fullName,
         phoneNumber: user.phoneNumber,
         hasQuestionnaire: !!user.questionnaireData.internetUsage
       }
@@ -72,6 +125,7 @@ router.get('/verify', async (req, res) => {
       success: true,
       user: {
         id: user._id,
+        fullName: user.fullName,
         phoneNumber: user.phoneNumber,
         hasQuestionnaire: !!user.questionnaireData.internetUsage
       }

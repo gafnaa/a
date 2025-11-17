@@ -49,6 +49,7 @@ const numberOfUsersToSeed = 10; // You can adjust this number
 
 for (let i = 0; i < numberOfUsersToSeed; i++) {
   sampleUsers.push({
+    fullName: `User ${i + 1}`, // Placeholder for full name
     phoneNumber: generatePhoneNumber(),
     questionnaireData: generateQuestionnaireData(),
   });

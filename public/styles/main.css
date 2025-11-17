@@ -55,3 +55,64 @@ body {
 #profile-dropdown a:hover {
   background-color: rgba(0, 0, 0, 0.05);
 }
+
+/* Notification Alerts */
+.notification-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000; /* Ensure it's above other content */
+  width: 90%;
+  max-width: 500px; /* Max width for the alert */
+  opacity: 0; /* Start hidden */
+  transform: translateX(100%); /* Start from right (off-screen) */
+  transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
+}
+
+.notification-container.visible {
+  opacity: 1;
+  transform: translateX(0); /* Slide in from right */
+}
+
+.notification-container.hidden {
+  opacity: 0;
+  transform: translateX(100%); /* Slide out to right */
+}
+
+.notification-content {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.notification-close-btn {
+  cursor: pointer;
+  transition: color 0.2s ease-in-out;
+}
+
+.notification-close-btn:hover {
+  color: #ef4444 !important;
+}
+
+/* Specific alert styles are handled by DaisyUI classes (alert, alert-success, alert-error) */
+/* We might need to add custom styles if DaisyUI doesn't cover animations/positioning */
+
+/* Ensure alerts have a base style that works with animations */
+.alert {
+  margin-bottom: 1rem; /* Space between multiple alerts if they were to stack */
+}
+
+/* Reduce opacity for success and error alerts */
+.alert-success {
+  background-color: rgba(76, 175, 80, 0.85); /* Green with reduced opacity */
+  color: white;
+}
+
+.alert-error {
+  background-color: rgba(244, 67, 54, 0.85); /* Red with reduced opacity */
+  color: white;
+}
+
+/* Ensure the SVG icons are also white for better contrast */
+.alert-success svg,
+.alert-error svg {
+  color: white;
+}
