@@ -1,137 +1,338 @@
-<div class="min-h-screen bg-base-200">
-    <!-- Navigation -->
-    <div class="navbar bg-base-100 shadow-lg">
-        <div class="container mx-auto">
-            <div class="flex-1">
-                <a href="/" class="btn btn-ghost text-xl">Telco Products</a>
-            </div>
-            <div class="flex-none gap-2">
-                <button onclick="Auth.removeToken(); router.navigate('/login')" class="btn btn-ghost">Logout</button>
-            </div>
-        </div>
+<div class="min-h-screen bg-gray-50">
+  <div class="container mx-auto px-4 md:px-8 lg:px-16 py-8">
+    <!-- Header Section -->
+    <div class="mb-8">
+      <h1 class="text-4xl font-extrabold text-gray-900 mb-2">Dashboard</h1>
+      <p class="text-gray-600">Kelola profil dan preferensi Anda</p>
     </div>
 
-    <div class="container mx-auto px-4 py-8">
-        <h1 class="text-4xl font-bold mb-8">User Dashboard</h1>
-        
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <!-- Profile Card -->
-            <div class="card bg-base-100 shadow-xl">
-                <div class="card-body">
-                    <h2 class="card-title text-2xl mb-4">Profile Information</h2>
-                    <div id="profileInfo">
-                        <!-- Profile info will be loaded here -->
-                    </div>
+    <!-- Profile Card -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+      <!-- User Info Card -->
+      <div class="lg:col-span-1">
+        <div class="card bg-white shadow-lg border border-gray-100">
+          <div class="card-body p-6">
+            <div class="flex items-center space-x-4 mb-6">
+              <div class="avatar placeholder">
+                <div class="bg-custom-blue text-white rounded-full w-16 h-16">
+                  <span class="text-2xl" id="userInitials">U</span>
                 </div>
+              </div>
+              <div class="flex-1">
+                <h2 class="text-xl font-bold text-gray-900" id="userName">
+                  Loading...
+                </h2>
+                <p class="text-sm text-gray-500" id="userPhone">-</p>
+              </div>
             </div>
 
-            <!-- Questionnaire Data -->
-            <div class="card bg-base-100 shadow-xl">
-                <div class="card-body">
-                    <h2 class="card-title text-2xl mb-4">Questionnaire Responses</h2>
-                    <div id="questionnaireInfo">
-                        <!-- Questionnaire data will be loaded here -->
-                    </div>
-                    <div class="card-actions justify-end mt-4">
-                        <a href="/questionnaire" class="btn btn-primary">Update Questionnaire</a>
-                    </div>
-                </div>
-            </div>
-        </div>
+            <div class="divider my-4"></div>
 
-        <!-- Current Recommendations -->
-        <div class="card bg-base-100 shadow-xl mt-6">
-            <div class="card-body">
-                <h2 class="card-title text-2xl mb-4">Current Recommendations</h2>
-                <div id="recommendationsList">
-                    <!-- Recommendations will be loaded here -->
+            <div class="space-y-3">
+              <div
+                class="flex items-center justify-between p-3 bg-blue-50 rounded-lg"
+              >
+                <div class="flex items-center space-x-3">
+                  <div
+                    class="w-10 h-10 bg-custom-blue rounded-full flex items-center justify-center"
+                  >
+                    <i class="fas fa-check text-white"></i>
+                  </div>
+                  <div>
+                    <p class="text-sm font-medium text-gray-900">
+                      Status Questionnaire
+                    </p>
+                    <p class="text-xs text-gray-600" id="questionnaireStatus">
+                      -
+                    </p>
+                  </div>
                 </div>
+              </div>
+
+              <div
+                class="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
+              >
+                <div class="flex items-center space-x-3">
+                  <div
+                    class="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center"
+                  >
+                    <i class="fas fa-calendar text-white"></i>
+                  </div>
+                  <div>
+                    <p class="text-sm font-medium text-gray-900">
+                      Member Since
+                    </p>
+                    <p class="text-xs text-gray-600" id="memberSince">-</p>
+                  </div>
+                </div>
+              </div>
             </div>
+          </div>
         </div>
+      </div>
+
+      <!-- Questionnaire Data Card -->
+      <div class="lg:col-span-2">
+        <div class="card bg-white shadow-lg border border-gray-100">
+          <div class="card-body p-6">
+            <div class="flex items-center justify-between mb-6">
+              <div>
+                <h2 class="text-2xl font-bold text-gray-900">
+                  Preferensi Anda
+                </h2>
+                <p class="text-sm text-gray-600 mt-1">
+                  Data dari questionnaire Anda
+                </p>
+              </div>
+              <a
+                href="/questionnaire"
+                class="btn btn-sm bg-custom-blue text-white border-none rounded-full px-4"
+              >
+                <i class="fas fa-edit mr-2"></i>Update
+              </a>
+            </div>
+
+            <div
+              id="questionnaireInfo"
+              class="grid grid-cols-1 md:grid-cols-2 gap-4"
+            >
+              <!-- Questionnaire data will be loaded here -->
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+
+    <!-- Recommendation Categories -->
+    <div class="card bg-white shadow-lg border border-gray-100">
+      <div class="card-body p-6">
+        <div class="mb-6">
+          <h2 class="text-2xl font-bold text-gray-900">Kategori Rekomendasi</h2>
+          <p class="text-sm text-gray-600 mt-1">
+            Berdasarkan preferensi dan kebutuhan Anda
+          </p>
+        </div>
+
+        <div
+          id="recommendationsList"
+          class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+        >
+          <!-- Recommendations will be loaded here -->
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script>
-async function loadDashboard() {
+  async function loadDashboard() {
     try {
-        // Load user info
-        const user = await Auth.verifyToken();
-        if (user) {
-            document.getElementById('profileInfo').innerHTML = `
-                <div class="space-y-2">
-                    <p><strong>Phone Number:</strong> ${user.phoneNumber}</p>
-                    <p><strong>User ID:</strong> ${user.id}</p>
-                    <p><strong>Questionnaire Completed:</strong> ${user.hasQuestionnaire ? 'Yes' : 'No'}</p>
-                </div>
-            `;
+      // Load user info
+      const user = await Auth.verifyToken();
+      if (user) {
+        // Set user name and phone
+        document.getElementById("userName").textContent =
+          user.fullName || "User";
+        document.getElementById("userPhone").textContent =
+          user.phoneNumber || "-";
+
+        // Set user initials
+        const initials = user.fullName
+          ? user.fullName
+              .split(" ")
+              .map((n) => n[0])
+              .join("")
+              .toUpperCase()
+              .slice(0, 2)
+          : "U";
+        document.getElementById("userInitials").textContent = initials;
+
+        // Set questionnaire status
+        document.getElementById("questionnaireStatus").textContent =
+          user.hasQuestionnaire ? "Sudah Lengkap" : "Belum Lengkap";
+
+        // Set member since (you can get this from createdAt if available)
+        document.getElementById("memberSince").textContent =
+          new Date().toLocaleDateString("id-ID", {
+            year: "numeric",
+            month: "long",
+          });
+      }
+
+      // Load questionnaire data
+      const questionnaireResponse = await API.getQuestionnaireData();
+      if (questionnaireResponse.success) {
+        const data = questionnaireResponse.questionnaireData;
+        if (data && data.internetUsage) {
+          const labelMap = {
+            internetUsage: "Penggunaan Internet",
+            streamingHabits: "Kebiasaan Streaming",
+            dataConsumption: "Konsumsi Data",
+            voiceUsage: "Penggunaan Suara",
+            smsUsage: "Penggunaan SMS",
+            vodInterest: "Minat VOD",
+            budget: "Budget",
+          };
+
+          const valueMap = {
+            low: "Rendah",
+            medium: "Sedang",
+            high: "Tinggi",
+            "very-high": "Sangat Tinggi",
+            none: "Tidak Pernah",
+            occasional: "Kadang-kadang",
+            frequent: "Sering",
+            daily: "Setiap Hari",
+            minimal: "Minimal",
+            moderate: "Moderat",
+            heavy: "Berat",
+            extreme: "Ekstrem",
+            budget: "Hemat",
+            "mid-range": "Menengah",
+            premium: "Premium",
+            true: "Ya",
+            false: "Tidak",
+          };
+
+          const icons = {
+            internetUsage: "fa-wifi",
+            streamingHabits: "fa-play-circle",
+            dataConsumption: "fa-database",
+            voiceUsage: "fa-phone",
+            smsUsage: "fa-comment",
+            vodInterest: "fa-film",
+            budget: "fa-money-bill-wave",
+          };
+
+          document.getElementById("questionnaireInfo").innerHTML = Object.keys(
+            labelMap
+          )
+            .map((key) => {
+              let value = data[key];
+              if (key === "vodInterest") value = value ? "true" : "false";
+              const displayValue = valueMap[value] || value || "N/A";
+
+              return `
+                        <div class="flex items-center space-x-3 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                            <div class="w-10 h-10 bg-custom-blue rounded-full flex items-center justify-center flex-shrink-0">
+                                <i class="fas ${icons[key]} text-white"></i>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <p class="text-xs text-gray-500 font-medium">${labelMap[key]}</p>
+                                <p class="text-sm font-semibold text-gray-900 truncate">${displayValue}</p>
+                            </div>
+                        </div>
+                    `;
+            })
+            .join("");
+        } else {
+          document.getElementById("questionnaireInfo").innerHTML = `
+                    <div class="col-span-2 text-center py-8">
+                        <div class="inline-block p-4 bg-yellow-50 rounded-full mb-4">
+                            <i class="fas fa-clipboard-list text-4xl text-yellow-500"></i>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-900 mb-2">Questionnaire Belum Diisi</h3>
+                        <p class="text-gray-600 mb-4">Lengkapi questionnaire untuk mendapatkan rekomendasi terbaik</p>
+                        <a href="/questionnaire" class="btn bg-custom-blue text-white border-none rounded-full px-6">
+                            Isi Sekarang
+                        </a>
+                    </div>
+                `;
         }
 
-        // Load questionnaire data
-        const questionnaireResponse = await API.getQuestionnaireData();
-        if (questionnaireResponse.success) {
-            const data = questionnaireResponse.questionnaireData;
-            if (data && data.internetUsage) {
-                document.getElementById('questionnaireInfo').innerHTML = `
-                    <div class="space-y-2">
-                        <p><strong>Internet Usage:</strong> ${data.internetUsage || 'N/A'}</p>
-                        <p><strong>Streaming Habits:</strong> ${data.streamingHabits || 'N/A'}</p>
-                        <p><strong>Data Consumption:</strong> ${data.dataConsumption || 'N/A'}</p>
-                        <p><strong>Voice Usage:</strong> ${data.voiceUsage || 'N/A'}</p>
-                        <p><strong>SMS Usage:</strong> ${data.smsUsage || 'N/A'}</p>
-                        <p><strong>VOD Interest:</strong> ${data.vodInterest ? 'Yes' : 'No'}</p>
-                        <p><strong>Budget:</strong> ${data.budget || 'N/A'}</p>
-                    </div>
-                `;
-            } else {
-                document.getElementById('questionnaireInfo').innerHTML = `
-                    <div class="alert alert-warning">
-                        <span>No questionnaire data found. Please complete the questionnaire.</span>
-                    </div>
-                `;
-            }
+        // Load recommendations
+        if (
+          questionnaireResponse.recommendations &&
+          questionnaireResponse.recommendations.length > 0
+        ) {
+          const categoryIcons = {
+            data: "fa-signal",
+            voice: "fa-phone-alt",
+            sms: "fa-sms",
+            vod: "fa-video",
+            bundle: "fa-box",
+          };
 
-            // Load recommendations
-            if (questionnaireResponse.recommendations && questionnaireResponse.recommendations.length > 0) {
-                document.getElementById('recommendationsList').innerHTML = `
-                    <div class="overflow-x-auto">
-                        <table class="table table-zebra">
-                            <thead>
-                                <tr>
-                                    <th>Category</th>
-                                    <th>Recommendation Score</th>
-                                    <th>Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                ${questionnaireResponse.recommendations.map(rec => `
-                                    <tr>
-                                        <td><div class="badge badge-primary">${rec.category.toUpperCase()}</div></td>
-                                        <td>
-                                            <div class="flex items-center gap-2">
-                                                <progress class="progress progress-primary w-32" value="${rec.score * 100}" max="100"></progress>
-                                                <span>${Math.round(rec.score * 100)}%</span>
+          const categoryNames = {
+            data: "Paket Data",
+            voice: "Paket Suara",
+            sms: "Paket SMS",
+            vod: "Video on Demand",
+            bundle: "Paket Bundle",
+          };
+
+          const categoryColors = {
+            data: "bg-blue-500",
+            voice: "bg-green-500",
+            sms: "bg-purple-500",
+            vod: "bg-red-500",
+            bundle: "bg-orange-500",
+          };
+
+          document.getElementById("recommendationsList").innerHTML =
+            questionnaireResponse.recommendations
+              .sort((a, b) => b.score - a.score)
+              .map((rec) => {
+                const percentage = Math.round(rec.score * 100);
+                const status =
+                  percentage > 70
+                    ? "Sangat Direkomendasikan"
+                    : percentage > 50
+                    ? "Direkomendasikan"
+                    : "Pertimbangkan";
+
+                return `
+                            <div class="card bg-gradient-to-br from-white to-gray-50 shadow-md hover:shadow-xl transition-shadow border border-gray-100">
+                                <div class="card-body p-5">
+                                    <div class="flex items-start justify-between mb-4">
+                                        <div class="flex items-center space-x-3">
+                                            <div class="${
+                                              categoryColors[rec.category]
+                                            } w-12 h-12 rounded-lg flex items-center justify-center">
+                                                <i class="fas ${
+                                                  categoryIcons[rec.category]
+                                                } text-white text-xl"></i>
                                             </div>
-                                        </td>
-                                        <td>${rec.score > 0.7 ? 'Highly Recommended' : rec.score > 0.5 ? 'Recommended' : 'Consider'}</td>
-                                    </tr>
-                                `).join('')}
-                            </tbody>
-                        </table>
+                                            <div>
+                                                <h3 class="font-bold text-gray-900">${
+                                                  categoryNames[rec.category]
+                                                }</h3>
+                                                <p class="text-xs text-gray-500">${status}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="space-y-2">
+                                        <div class="flex items-center justify-between">
+                                            <span class="text-xs text-gray-600">Skor Kesesuaian</span>
+                                            <span class="text-sm font-bold text-custom-blue">${percentage}%</span>
+                                        </div>
+                                        <div class="w-full bg-gray-200 rounded-full h-2">
+                                            <div class="bg-custom-blue h-2 rounded-full transition-all duration-500" 
+                                                 style="width: ${percentage}%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+              })
+              .join("");
+        } else {
+          document.getElementById("recommendationsList").innerHTML = `
+                    <div class="col-span-3 text-center py-12">
+                        <div class="inline-block p-4 bg-blue-50 rounded-full mb-4">
+                            <i class="fas fa-star text-4xl text-custom-blue"></i>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-900 mb-2">Belum Ada Rekomendasi</h3>
+                        <p class="text-gray-600">Lengkapi questionnaire untuk melihat rekomendasi yang dipersonalisasi</p>
                     </div>
                 `;
-            } else {
-                document.getElementById('recommendationsList').innerHTML = `
-                    <div class="alert alert-info">
-                        <span>Complete the questionnaire to see your personalized recommendations.</span>
-                    </div>
-                `;
-            }
         }
+      }
     } catch (error) {
-        console.error('Error loading dashboard:', error);
+      console.error("Error loading dashboard:", error);
     }
-}
+  }
 
-// This function is called from app.js after the page loads
+  // This function is called from app.js after the page loads
 </script>
-
