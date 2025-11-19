@@ -98,6 +98,25 @@ window.showNotification = function (type, title, message) {
 };
 
 document.addEventListener("DOMContentLoaded", async () => {
+  // === PAGE TRANSITION HELPER ===
+  window.pageTransition = async function (loadPageFunction) {
+    const app = document.getElementById("app");
+
+    // Fade out
+    app.style.opacity = "0";
+
+    // Wait for fade out animation
+    await new Promise((resolve) => setTimeout(resolve, 150));
+
+    // Load new page content
+    await loadPageFunction();
+
+    // Fade in
+    setTimeout(() => {
+      app.style.opacity = "1";
+    }, 50);
+  };
+
   // === NAVBAR AUTH HANDLER ===
   window.updateNavbarAuth = async function () {
     const user = await Auth.verifyToken();
