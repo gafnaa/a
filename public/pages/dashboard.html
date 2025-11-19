@@ -1,338 +1,461 @@
-<div class="min-h-screen bg-gray-50">
-  <div class="container mx-auto px-4 md:px-8 lg:px-16 py-8">
-    <!-- Header Section -->
-    <div class="mb-8">
-      <h1 class="text-4xl font-extrabold text-gray-900 mb-2">Dashboard</h1>
-      <p class="text-gray-600">Kelola profil dan preferensi Anda</p>
-    </div>
-
-    <!-- Profile Card -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-      <!-- User Info Card -->
-      <div class="lg:col-span-1">
-        <div class="card bg-white shadow-lg border border-gray-100">
-          <div class="card-body p-6">
-            <div class="flex items-center space-x-4 mb-6">
-              <div class="avatar placeholder">
-                <div class="bg-custom-blue text-white rounded-full w-16 h-16">
-                  <span class="text-2xl" id="userInitials">U</span>
-                </div>
-              </div>
-              <div class="flex-1">
-                <h2 class="text-xl font-bold text-gray-900" id="userName">
-                  Loading...
-                </h2>
-                <p class="text-sm text-gray-500" id="userPhone">-</p>
-              </div>
-            </div>
-
-            <div class="divider my-4"></div>
-
-            <div class="space-y-3">
-              <div
-                class="flex items-center justify-between p-3 bg-blue-50 rounded-lg"
-              >
-                <div class="flex items-center space-x-3">
-                  <div
-                    class="w-10 h-10 bg-custom-blue rounded-full flex items-center justify-center"
-                  >
-                    <i class="fas fa-check text-white"></i>
-                  </div>
-                  <div>
-                    <p class="text-sm font-medium text-gray-900">
-                      Status Questionnaire
-                    </p>
-                    <p class="text-xs text-gray-600" id="questionnaireStatus">
-                      -
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div
-                class="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
-              >
-                <div class="flex items-center space-x-3">
-                  <div
-                    class="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center"
-                  >
-                    <i class="fas fa-calendar text-white"></i>
-                  </div>
-                  <div>
-                    <p class="text-sm font-medium text-gray-900">
-                      Member Since
-                    </p>
-                    <p class="text-xs text-gray-600" id="memberSince">-</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              "custom-blue": "#3b82f6",
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+  <body class="bg-gray-50 font-sans">
+    <div class="container mx-auto px-4 md:px-8 py-10 max-w-5xl">
+      <div class="mb-8">
+        <h1
+          class="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight"
+          id="headerGreeting"
+        >
+          Halo, User!
+        </h1>
+        <p class="text-gray-600 mt-2 text-lg">
+          Selamat datang kembali di panel profil Anda.
+        </p>
       </div>
 
-      <!-- Questionnaire Data Card -->
-      <div class="lg:col-span-2">
-        <div class="card bg-white shadow-lg border border-gray-100">
-          <div class="card-body p-6">
-            <div class="flex items-center justify-between mb-6">
-              <div>
-                <h2 class="text-2xl font-bold text-gray-900">
-                  Preferensi Anda
-                </h2>
-                <p class="text-sm text-gray-600 mt-1">
-                  Data dari questionnaire Anda
-                </p>
-              </div>
-              <a
-                href="/questionnaire"
-                class="btn btn-sm bg-custom-blue text-white border-none rounded-full px-4"
+      <div
+        class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 mb-8 transition hover:shadow-md"
+      >
+        <div
+          class="flex flex-col md:flex-row items-center md:items-start gap-6"
+        >
+          <div class="flex-shrink-0">
+            <div
+              class="w-24 h-24 bg-gradient-to-br from-custom-blue to-blue-600 rounded-full flex items-center justify-center text-white text-3xl font-bold shadow-lg ring-4 ring-blue-50"
+            >
+              <span id="userInitials">U</span>
+            </div>
+          </div>
+
+          <div class="flex-1 text-center md:text-left w-full">
+            <div
+              class="flex flex-col md:flex-row md:justify-between md:items-center mb-2"
+            >
+              <h2 class="text-2xl font-bold text-gray-900" id="userName">
+                Memuat...
+              </h2>
+
+              <span
+                id="statusBadge"
+                class="mt-2 md:mt-0 inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800"
               >
-                <i class="fas fa-edit mr-2"></i>Update
-              </a>
+                Checking...
+              </span>
             </div>
 
             <div
-              id="questionnaireInfo"
-              class="grid grid-cols-1 md:grid-cols-2 gap-4"
+              class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 bg-gray-50 p-4 rounded-xl border border-gray-100"
             >
-              <!-- Questionnaire data will be loaded here -->
+              <div class="flex items-center justify-center md:justify-start">
+                <div
+                  class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-custom-blue mr-3 shadow-sm border border-gray-100"
+                >
+                  <i class="fas fa-phone-alt text-sm"></i>
+                </div>
+                <div>
+                  <p
+                    class="text-xs text-gray-500 uppercase tracking-wider font-bold"
+                  >
+                    Nomor Telepon
+                  </p>
+                  <p class="font-semibold text-gray-800" id="userPhone">-</p>
+                </div>
+              </div>
+
+              <div class="flex items-center justify-center md:justify-start">
+                <div
+                  class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-green-600 mr-3 shadow-sm border border-gray-100"
+                >
+                  <i class="fas fa-calendar-check text-sm"></i>
+                </div>
+                <div>
+                  <p
+                    class="text-xs text-gray-500 uppercase tracking-wider font-bold"
+                  >
+                    Member Since
+                  </p>
+                  <p class="font-semibold text-gray-800" id="memberSince">-</p>
+                </div>
+              </div>
             </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div
+          class="flex items-center justify-between mb-6 border-b border-gray-200 pb-4"
+        >
+          <h3 class="text-xl font-bold text-gray-800">Data Preferensi</h3>
+          <a
+            href="/questionnaire.html"
+            class="text-sm font-semibold text-custom-blue hover:text-blue-700 flex items-center transition group"
+          >
+            <span class="group-hover:underline">Edit Data</span>
+            <i class="fas fa-chevron-right ml-2 text-xs"></i>
+          </a>
+        </div>
+
+        <div id="loadingState" class="text-center py-12">
+          <div
+            class="animate-spin rounded-full h-12 w-12 border-b-2 border-custom-blue mx-auto"
+          ></div>
+          <p class="text-gray-400 mt-4 text-sm">Mengambil data...</p>
+        </div>
+
+        <div
+          id="emptyState"
+          class="hidden bg-white rounded-xl shadow-sm border border-dashed border-gray-300 p-10 text-center"
+        >
+          <div
+            class="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4 text-gray-400"
+          >
+            <i class="fas fa-clipboard-list text-2xl"></i>
+          </div>
+          <h3 class="text-lg font-bold text-gray-900">Data Belum Tersedia</h3>
+          <p class="text-gray-500 mb-6">
+            Lengkapi profil penggunaan Anda untuk hasil rekomendasi yang akurat.
+          </p>
+          <a
+            href="/questionnaire.html"
+            class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-custom-blue hover:bg-blue-700 transition shadow-sm"
+          >
+            Isi Kuesioner
+          </a>
+        </div>
+
+        <div
+          id="dataGrid"
+          class="hidden grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"
+        >
+          <div
+            class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 hover:border-blue-400 transition group relative overflow-hidden"
+          >
+            <div
+              class="absolute top-0 right-0 w-16 h-16 bg-blue-50 rounded-bl-full -mr-8 -mt-8 opacity-50 group-hover:scale-150 transition-transform duration-500"
+            ></div>
+            <div class="flex items-center justify-between mb-3 relative z-10">
+              <span class="text-xs font-bold text-gray-400 uppercase"
+                >Internet</span
+              >
+              <i class="fas fa-wifi text-blue-500"></i>
+            </div>
+            <p
+              class="text-xl font-bold text-gray-800 group-hover:text-custom-blue transition relative z-10"
+              id="valInternet"
+            >
+              -
+            </p>
+            <p class="text-xs text-gray-500 mt-1 relative z-10">
+              Penggunaan Harian
+            </p>
+          </div>
+
+          <div
+            class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 hover:border-green-400 transition group relative overflow-hidden"
+          >
+            <div
+              class="absolute top-0 right-0 w-16 h-16 bg-green-50 rounded-bl-full -mr-8 -mt-8 opacity-50 group-hover:scale-150 transition-transform duration-500"
+            ></div>
+            <div class="flex items-center justify-between mb-3 relative z-10">
+              <span class="text-xs font-bold text-gray-400 uppercase"
+                >Budget</span
+              >
+              <i class="fas fa-wallet text-green-500"></i>
+            </div>
+            <p
+              class="text-xl font-bold text-gray-800 group-hover:text-green-600 transition relative z-10"
+              id="valBudget"
+            >
+              -
+            </p>
+            <p class="text-xs text-gray-500 mt-1 relative z-10">
+              Estimasi Bulanan
+            </p>
+          </div>
+
+          <div
+            class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 hover:border-red-400 transition group relative overflow-hidden"
+          >
+            <div
+              class="absolute top-0 right-0 w-16 h-16 bg-red-50 rounded-bl-full -mr-8 -mt-8 opacity-50 group-hover:scale-150 transition-transform duration-500"
+            ></div>
+            <div class="flex items-center justify-between mb-3 relative z-10">
+              <span class="text-xs font-bold text-gray-400 uppercase"
+                >Streaming</span
+              >
+              <i class="fas fa-play-circle text-red-500"></i>
+            </div>
+            <p
+              class="text-xl font-bold text-gray-800 group-hover:text-red-600 transition relative z-10"
+              id="valStream"
+            >
+              -
+            </p>
+            <p class="text-xs text-gray-500 mt-1 relative z-10">
+              Kebiasaan Nonton
+            </p>
+          </div>
+
+          <div
+            class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 hover:border-yellow-400 transition group relative overflow-hidden"
+          >
+            <div
+              class="absolute top-0 right-0 w-16 h-16 bg-yellow-50 rounded-bl-full -mr-8 -mt-8 opacity-50 group-hover:scale-150 transition-transform duration-500"
+            ></div>
+            <div class="flex items-center justify-between mb-3 relative z-10">
+              <span class="text-xs font-bold text-gray-400 uppercase"
+                >Telepon</span
+              >
+              <i class="fas fa-phone text-yellow-500"></i>
+            </div>
+            <p
+              class="text-xl font-bold text-gray-800 group-hover:text-yellow-600 transition relative z-10"
+              id="valVoice"
+            >
+              -
+            </p>
+            <p class="text-xs text-gray-500 mt-1 relative z-10">
+              Intensitas Panggilan
+            </p>
+          </div>
+
+          <div
+            class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 hover:border-purple-400 transition group relative overflow-hidden"
+          >
+            <div
+              class="absolute top-0 right-0 w-16 h-16 bg-purple-50 rounded-bl-full -mr-8 -mt-8 opacity-50 group-hover:scale-150 transition-transform duration-500"
+            ></div>
+            <div class="flex items-center justify-between mb-3 relative z-10">
+              <span class="text-xs font-bold text-gray-400 uppercase">SMS</span>
+              <i class="fas fa-comment-alt text-purple-500"></i>
+            </div>
+            <p
+              class="text-xl font-bold text-gray-800 group-hover:text-purple-600 transition relative z-10"
+              id="valSMS"
+            >
+              -
+            </p>
+            <p class="text-xs text-gray-500 mt-1 relative z-10">
+              Penggunaan Pesan
+            </p>
+          </div>
+
+          <div
+            class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 hover:border-indigo-400 transition group relative overflow-hidden"
+          >
+            <div
+              class="absolute top-0 right-0 w-16 h-16 bg-indigo-50 rounded-bl-full -mr-8 -mt-8 opacity-50 group-hover:scale-150 transition-transform duration-500"
+            ></div>
+            <div class="flex items-center justify-between mb-3 relative z-10">
+              <span class="text-xs font-bold text-gray-400 uppercase"
+                >VOD Service</span
+              >
+              <i class="fas fa-film text-indigo-500"></i>
+            </div>
+            <p
+              class="text-xl font-bold text-gray-800 group-hover:text-indigo-600 transition relative z-10"
+              id="valVOD"
+            >
+              -
+            </p>
+            <p class="text-xs text-gray-500 mt-1 relative z-10">
+              Minat Layanan
+            </p>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Recommendation Categories -->
-    <div class="card bg-white shadow-lg border border-gray-100">
-      <div class="card-body p-6">
-        <div class="mb-6">
-          <h2 class="text-2xl font-bold text-gray-900">Kategori Rekomendasi</h2>
-          <p class="text-sm text-gray-600 mt-1">
-            Berdasarkan preferensi dan kebutuhan Anda
-          </p>
-        </div>
+    <script>
+      const API_BASE_URL = "http://localhost:5000/api";
 
-        <div
-          id="recommendationsList"
-          class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
-        >
-          <!-- Recommendations will be loaded here -->
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+      document.addEventListener("DOMContentLoaded", () => {
+        loadProfileData();
+      });
 
-<script>
-  async function loadDashboard() {
-    try {
-      // Load user info
-      const user = await Auth.verifyToken();
-      if (user) {
-        // Set user name and phone
-        document.getElementById("userName").textContent =
-          user.fullName || "User";
-        document.getElementById("userPhone").textContent =
-          user.phoneNumber || "-";
+      async function loadProfileData() {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          window.location.href = "/login.html";
+          return;
+        }
 
-        // Set user initials
-        const initials = user.fullName
-          ? user.fullName
-              .split(" ")
-              .map((n) => n[0])
-              .join("")
-              .toUpperCase()
-              .slice(0, 2)
-          : "U";
-        document.getElementById("userInitials").textContent = initials;
+        const loadingEl = document.getElementById("loadingState");
+        const dataGridEl = document.getElementById("dataGrid");
+        const emptyStateEl = document.getElementById("emptyState");
 
-        // Set questionnaire status
-        document.getElementById("questionnaireStatus").textContent =
-          user.hasQuestionnaire ? "Sudah Lengkap" : "Belum Lengkap";
+        // Reset UI
+        loadingEl.classList.remove("hidden");
+        dataGridEl.classList.add("hidden");
+        emptyStateEl.classList.add("hidden");
 
-        // Set member since (you can get this from createdAt if available)
-        document.getElementById("memberSince").textContent =
-          new Date().toLocaleDateString("id-ID", {
-            year: "numeric",
-            month: "long",
+        try {
+          // 1. Fetch Data
+          const response = await fetch(`${API_BASE_URL}/questionnaire/data`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
           });
+
+          if (response.status === 401) {
+            localStorage.removeItem("token");
+            window.location.href = "/login.html";
+            return;
+          }
+
+          const result = await response.json();
+          const userData = result.user || {};
+
+          // ---------------------------------------------------------
+          // UPDATE HEADER & PROFILE CARD
+          // ---------------------------------------------------------
+
+          // 1. Nama User
+          const name = userData.fullName || "Pengguna";
+
+          // Update Sapaan di Header (Halo, [Nama]!)
+          document.getElementById(
+            "headerGreeting"
+          ).textContent = `Halo, ${name}!`;
+
+          // Update Nama di Card
+          document.getElementById("userName").textContent = name;
+
+          // Update Initials Avatar
+          document.getElementById("userInitials").textContent = name
+            .charAt(0)
+            .toUpperCase();
+
+          // 2. Phone Number
+          document.getElementById("userPhone").textContent =
+            userData.phoneNumber || "-";
+
+          // 3. Member Since
+          if (userData.createdAt) {
+            const dateObj = new Date(userData.createdAt);
+            const options = { year: "numeric", month: "long", day: "numeric" };
+            document.getElementById("memberSince").textContent =
+              dateObj.toLocaleDateString("id-ID", options);
+          } else {
+            document.getElementById("memberSince").textContent = "-";
+          }
+
+          // ---------------------------------------------------------
+          // UPDATE PREFERENCE DATA
+          // ---------------------------------------------------------
+          const qData = result.questionnaireData || {};
+
+          if (qData && Object.keys(qData).length > 0) {
+            // Update Badge Status
+            const badge = document.getElementById("statusBadge");
+            badge.className =
+              "mt-2 md:mt-0 inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800";
+            badge.innerHTML =
+              '<i class="fas fa-check-circle mr-1"></i> Profil Lengkap';
+
+            // Mapping Data
+            document.getElementById("valInternet").textContent = mapValue(
+              qData.internetUsage,
+              "usage"
+            );
+            document.getElementById("valBudget").textContent = mapValue(
+              qData.budget,
+              "budget"
+            );
+            document.getElementById("valStream").textContent = mapValue(
+              qData.streamingHabits,
+              "freq"
+            );
+            document.getElementById("valVoice").textContent = mapValue(
+              qData.voiceUsage,
+              "usage"
+            );
+            document.getElementById("valSMS").textContent = mapValue(
+              qData.smsUsage,
+              "usage"
+            );
+
+            const vodText =
+              qData.vodInterest === true || qData.vodInterest === "true"
+                ? "Berminat"
+                : "Tidak";
+            document.getElementById("valVOD").textContent = vodText;
+
+            loadingEl.classList.add("hidden");
+            dataGridEl.classList.remove("hidden");
+          } else {
+            // Data Kosong
+            const badge = document.getElementById("statusBadge");
+            badge.className =
+              "mt-2 md:mt-0 inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800";
+            badge.innerHTML =
+              '<i class="fas fa-exclamation-circle mr-1"></i> Belum Lengkap';
+
+            loadingEl.classList.add("hidden");
+            emptyStateEl.classList.remove("hidden");
+          }
+        } catch (error) {
+          console.error("Error loading dashboard:", error);
+          loadingEl.innerHTML =
+            '<p class="text-red-500">Gagal memuat data.</p>';
+        }
       }
 
-      // Load questionnaire data
-      const questionnaireResponse = await API.getQuestionnaireData();
-      if (questionnaireResponse.success) {
-        const data = questionnaireResponse.questionnaireData;
-        if (data && data.internetUsage) {
-          const labelMap = {
-            internetUsage: "Penggunaan Internet",
-            streamingHabits: "Kebiasaan Streaming",
-            dataConsumption: "Konsumsi Data",
-            voiceUsage: "Penggunaan Suara",
-            smsUsage: "Penggunaan SMS",
-            vodInterest: "Minat VOD",
-            budget: "Budget",
-          };
-
-          const valueMap = {
+      function mapValue(val, type) {
+        if (!val) return "-";
+        const v = val.toString().toLowerCase();
+        const maps = {
+          usage: {
             low: "Rendah",
             medium: "Sedang",
             high: "Tinggi",
             "very-high": "Sangat Tinggi",
+            moderate: "Moderat",
+          },
+          budget: {
+            economy: "Ekonomis",
+            standard: "Standar",
+            premium: "Premium",
+            "mid-range": "Menengah",
+            vip: "Sultan",
+          },
+          freq: {
             none: "Tidak Pernah",
-            occasional: "Kadang-kadang",
+            occasional: "Kadang",
             frequent: "Sering",
             daily: "Setiap Hari",
-            minimal: "Minimal",
-            moderate: "Moderat",
-            heavy: "Berat",
-            extreme: "Ekstrem",
-            budget: "Hemat",
-            "mid-range": "Menengah",
-            premium: "Premium",
-            true: "Ya",
-            false: "Tidak",
-          };
-
-          const icons = {
-            internetUsage: "fa-wifi",
-            streamingHabits: "fa-play-circle",
-            dataConsumption: "fa-database",
-            voiceUsage: "fa-phone",
-            smsUsage: "fa-comment",
-            vodInterest: "fa-film",
-            budget: "fa-money-bill-wave",
-          };
-
-          document.getElementById("questionnaireInfo").innerHTML = Object.keys(
-            labelMap
-          )
-            .map((key) => {
-              let value = data[key];
-              if (key === "vodInterest") value = value ? "true" : "false";
-              const displayValue = valueMap[value] || value || "N/A";
-
-              return `
-                        <div class="flex items-center space-x-3 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-                            <div class="w-10 h-10 bg-custom-blue rounded-full flex items-center justify-center flex-shrink-0">
-                                <i class="fas ${icons[key]} text-white"></i>
-                            </div>
-                            <div class="flex-1 min-w-0">
-                                <p class="text-xs text-gray-500 font-medium">${labelMap[key]}</p>
-                                <p class="text-sm font-semibold text-gray-900 truncate">${displayValue}</p>
-                            </div>
-                        </div>
-                    `;
-            })
-            .join("");
-        } else {
-          document.getElementById("questionnaireInfo").innerHTML = `
-                    <div class="col-span-2 text-center py-8">
-                        <div class="inline-block p-4 bg-yellow-50 rounded-full mb-4">
-                            <i class="fas fa-clipboard-list text-4xl text-yellow-500"></i>
-                        </div>
-                        <h3 class="text-lg font-semibold text-gray-900 mb-2">Questionnaire Belum Diisi</h3>
-                        <p class="text-gray-600 mb-4">Lengkapi questionnaire untuk mendapatkan rekomendasi terbaik</p>
-                        <a href="/questionnaire" class="btn bg-custom-blue text-white border-none rounded-full px-6">
-                            Isi Sekarang
-                        </a>
-                    </div>
-                `;
-        }
-
-        // Load recommendations
-        if (
-          questionnaireResponse.recommendations &&
-          questionnaireResponse.recommendations.length > 0
-        ) {
-          const categoryIcons = {
-            data: "fa-signal",
-            voice: "fa-phone-alt",
-            sms: "fa-sms",
-            vod: "fa-video",
-            bundle: "fa-box",
-          };
-
-          const categoryNames = {
-            data: "Paket Data",
-            voice: "Paket Suara",
-            sms: "Paket SMS",
-            vod: "Video on Demand",
-            bundle: "Paket Bundle",
-          };
-
-          const categoryColors = {
-            data: "bg-blue-500",
-            voice: "bg-green-500",
-            sms: "bg-purple-500",
-            vod: "bg-red-500",
-            bundle: "bg-orange-500",
-          };
-
-          document.getElementById("recommendationsList").innerHTML =
-            questionnaireResponse.recommendations
-              .sort((a, b) => b.score - a.score)
-              .map((rec) => {
-                const percentage = Math.round(rec.score * 100);
-                const status =
-                  percentage > 70
-                    ? "Sangat Direkomendasikan"
-                    : percentage > 50
-                    ? "Direkomendasikan"
-                    : "Pertimbangkan";
-
-                return `
-                            <div class="card bg-gradient-to-br from-white to-gray-50 shadow-md hover:shadow-xl transition-shadow border border-gray-100">
-                                <div class="card-body p-5">
-                                    <div class="flex items-start justify-between mb-4">
-                                        <div class="flex items-center space-x-3">
-                                            <div class="${
-                                              categoryColors[rec.category]
-                                            } w-12 h-12 rounded-lg flex items-center justify-center">
-                                                <i class="fas ${
-                                                  categoryIcons[rec.category]
-                                                } text-white text-xl"></i>
-                                            </div>
-                                            <div>
-                                                <h3 class="font-bold text-gray-900">${
-                                                  categoryNames[rec.category]
-                                                }</h3>
-                                                <p class="text-xs text-gray-500">${status}</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="space-y-2">
-                                        <div class="flex items-center justify-between">
-                                            <span class="text-xs text-gray-600">Skor Kesesuaian</span>
-                                            <span class="text-sm font-bold text-custom-blue">${percentage}%</span>
-                                        </div>
-                                        <div class="w-full bg-gray-200 rounded-full h-2">
-                                            <div class="bg-custom-blue h-2 rounded-full transition-all duration-500" 
-                                                 style="width: ${percentage}%"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        `;
-              })
-              .join("");
-        } else {
-          document.getElementById("recommendationsList").innerHTML = `
-                    <div class="col-span-3 text-center py-12">
-                        <div class="inline-block p-4 bg-blue-50 rounded-full mb-4">
-                            <i class="fas fa-star text-4xl text-custom-blue"></i>
-                        </div>
-                        <h3 class="text-lg font-semibold text-gray-900 mb-2">Belum Ada Rekomendasi</h3>
-                        <p class="text-gray-600">Lengkapi questionnaire untuk melihat rekomendasi yang dipersonalisasi</p>
-                    </div>
-                `;
-        }
+            rarely: "Jarang",
+            sometimes: "Kadang",
+            often: "Sering",
+          },
+        };
+        return maps[type] && maps[type][v]
+          ? maps[type][v]
+          : v.charAt(0).toUpperCase() + v.slice(1);
       }
-    } catch (error) {
-      console.error("Error loading dashboard:", error);
-    }
-  }
-
-  // This function is called from app.js after the page loads
-</script>
+    </script>
+  </body>
+</html>
