@@ -1,156 +1,208 @@
-<div class="min-h-screen bg-white py-16">
-    <div class="container mx-auto px-4 max-w-2xl">
-        <div class="card w-full bg-white shadow-xl border border-gray-200 fade-in">
-            <div class="card-body p-8">
-                <h1 class="text-4xl font-extrabold text-center text-custom-blue mb-4">
-                    Customer Questionnaire
-                </h1>
-                <p class="text-gray-600 mb-8 text-center">
-                    Help us understand your needs to provide better recommendations
-                </p>
-                
-                <form id="questionnaireForm">
-                    <div class="form-control mb-6">
-                        <label class="label">
-                            <span class="label-text font-semibold">How much do you use the internet daily?</span>
-                        </label>
-                        <select name="internetUsage" class="select select-bordered w-full bg-white text-black" required>
-                            <option value="">Select an option</option>
-                            <option value="low">Low (1-2 hours)</option>
-                            <option value="medium">Medium (3-5 hours)</option>
-                            <option value="high">High (6-8 hours)</option>
-                            <option value="very-high">Very High (9+ hours)</option>
-                        </select>
-                    </div>
+<div class="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
+  <div class="card w-full max-w-2xl bg-white shadow-xl border border-gray-200 fade-in">
+    <div class="card-body p-8 sm:p-10">
+      
+      <div class="text-center mb-8">
+        <h1 class="text-3xl font-extrabold text-custom-blue mb-3">
+          Kenali Kebutuhanmu
+        </h1>
+        <p class="text-gray-600">
+          Jawab beberapa pertanyaan singkat agar AI kami bisa memilihkan paket terbaik untukmu.
+        </p>
+      </div>
 
-                    <div class="form-control mb-6">
-                        <label class="label">
-                            <span class="label-text font-semibold">How often do you stream videos/music?</span>
-                        </label>
-                        <select name="streamingHabits" class="select select-bordered w-full bg-white text-black" required>
-                            <option value="">Select an option</option>
-                            <option value="none">Never</option>
-                            <option value="occasional">Occasionally</option>
-                            <option value="frequent">Frequently</option>
-                            <option value="daily">Daily</option>
-                        </select>
-                    </div>
-
-                    <div class="form-control mb-6">
-                        <label class="label">
-                            <span class="label-text font-semibold">How would you describe your data consumption?</span>
-                        </label>
-                        <select name="dataConsumption" class="select select-bordered w-full bg-white text-black" required>
-                            <option value="">Select an option</option>
-                            <option value="minimal">Minimal (mostly text/email)</option>
-                            <option value="moderate">Moderate (browsing, social media)</option>
-                            <option value="heavy">Heavy (streaming, downloads)</option>
-                            <option value="extreme">Extreme (4K streaming, large downloads)</option>
-                        </select>
-                    </div>
-
-                    <div class="form-control mb-6">
-                        <label class="label">
-                            <span class="label-text font-semibold">How much do you make voice calls?</span>
-                        </label>
-                        <select name="voiceUsage" class="select select-bordered w-full bg-white text-black" required>
-                            <option value="">Select an option</option>
-                            <option value="low">Low (rarely)</option>
-                            <option value="medium">Medium (few calls per day)</option>
-                            <option value="high">High (many calls daily)</option>
-                        </select>
-                    </div>
-
-                    <div class="form-control mb-6">
-                        <label class="label">
-                            <span class="label-text font-semibold">How often do you send SMS?</span>
-                        </label>
-                        <select name="smsUsage" class="select select-bordered w-full bg-white text-black" required>
-                            <option value="">Select an option</option>
-                            <option value="low">Low (rarely)</option>
-                            <option value="medium">Medium (occasionally)</option>
-                            <option value="high">High (frequently)</option>
-                        </select>
-                    </div>
-
-                    <div class="form-control mb-6">
-                        <label class="label">
-                            <span class="label-text font-semibold">Are you interested in Video on Demand (VOD) services?</span>
-                        </label>
-                        <div class="flex gap-4 mt-2">
-                            <label class="label cursor-pointer">
-                                <input type="radio" name="vodInterest" value="true" class="radio radio-primary" required />
-                                <span class="label-text ml-2">Yes</span>
-                            </label>
-                            <label class="label cursor-pointer">
-                                <input type="radio" name="vodInterest" value="false" class="radio radio-primary" required />
-                                <span class="label-text ml-2">No</span>
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="form-control mb-6">
-                        <label class="label">
-                            <span class="label-text font-semibold">What's your preferred budget range?</span>
-                        </label>
-                        <select name="budget" class="select select-bordered w-full bg-white text-black" required>
-                            <option value="">Select an option</option>
-                            <option value="budget">Budget-friendly</option>
-                            <option value="mid-range">Mid-range</option>
-                            <option value="premium">Premium</option>
-                        </select>
-                    </div>
-
-                    <div class="form-control mt-8">
-                        <button 
-                            type="submit" 
-                            class="btn bg-custom-blue text-white hover:bg-opacity-90 border-none rounded-full py-3 text-base font-medium btn-lg w-full"
-                        >
-                            Submit Questionnaire
-                            <span class="loading loading-spinner loading-sm hidden" id="submitSpinner"></span>
-                        </button>
-                    </div>
-                </form>
-            </div>
+      <form id="questionnaireForm" class="space-y-6">
+        
+        <div class="form-control">
+          <label class="label">
+            <span class="label-text font-semibold text-gray-700 text-base">Jenis layanan saat ini?</span>
+          </label>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <label class="cursor-pointer border border-gray-300 rounded-lg p-4 flex items-center hover:bg-blue-50 hover:border-custom-blue transition-all group">
+              <input type="radio" name="plan_type" value="Prepaid" class="radio radio-primary border-gray-400" required />
+              <span class="label-text ml-3 font-medium group-hover:text-custom-blue">Prabayar (Isi Ulang)</span>
+            </label>
+            <label class="cursor-pointer border border-gray-300 rounded-lg p-4 flex items-center hover:bg-blue-50 hover:border-custom-blue transition-all group">
+              <input type="radio" name="plan_type" value="Postpaid" class="radio radio-primary border-gray-400" required />
+              <span class="label-text ml-3 font-medium group-hover:text-custom-blue">Pascabayar (Tagihan)</span>
+            </label>
+          </div>
         </div>
+
+        <div class="form-control">
+          <label class="label" for="device_brand">
+            <span class="label-text font-semibold text-gray-700">Merek HP Anda?</span>
+          </label>
+          <select id="device_brand" name="device_brand" class="select select-bordered w-full bg-white text-black" required>
+            <option value="" disabled selected>Pilih Merek</option>
+            <option value="Apple">Apple (iPhone)</option>
+            <option value="Samsung">Samsung</option>
+            <option value="Oppo">Oppo</option>
+            <option value="Vivo">Vivo</option>
+            <option value="Xiaomi">Xiaomi</option>
+            <option value="Realme">Realme</option>
+            <option value="Huawei">Huawei</option>
+            <option value="Other">Lainnya</option>
+          </select>
+        </div>
+
+        <div class="form-control">
+          <label class="label" for="internet_usage">
+            <span class="label-text font-semibold text-gray-700">Penggunaan internet harian?</span>
+          </label>
+          <select id="internet_usage" name="internet_usage" class="select select-bordered w-full bg-white text-black" required>
+            <option value="" disabled selected>Pilih Penggunaan</option>
+            <option value="light">Ringan (&lt; 1 GB/hari)</option>
+            <option value="medium">Sedang (1 - 3 GB/hari)</option>
+            <option value="heavy">Berat (3 - 5 GB/hari)</option>
+            <option value="extreme">Ekstrem (&gt; 5 GB/hari)</option>
+          </select>
+        </div>
+
+        <div class="form-control">
+          <label class="label" for="streaming_freq">
+            <span class="label-text font-semibold text-gray-700">Seberapa sering streaming video?</span>
+          </label>
+          <select id="streaming_freq" name="streaming_freq" class="select select-bordered w-full bg-white text-black" required>
+            <option value="" disabled selected>Pilih Frekuensi</option>
+            <option value="rarely">Jarang (Teks/Chat)</option>
+            <option value="sometimes">Kadang-kadang (Youtube/Tiktok)</option>
+            <option value="often">Sering (Film/Series tiap hari)</option>
+          </select>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="form-control">
+            <label class="label" for="call_usage">
+              <span class="label-text font-semibold text-gray-700">Frekuensi Telepon (Seluler)?</span>
+            </label>
+            <select id="call_usage" name="call_usage" class="select select-bordered w-full bg-white text-black" required>
+              <option value="" disabled selected>Pilih Opsi</option>
+              <option value="low">Jarang (&lt; 5 menit)</option>
+              <option value="medium">Sedang (5-15 menit)</option>
+              <option value="high">Sering (&gt; 15 menit)</option>
+            </select>
+          </div>
+
+          <div class="form-control">
+            <label class="label" for="sms_usage">
+              <span class="label-text font-semibold text-gray-700">Frekuensi SMS?</span>
+            </label>
+            <select id="sms_usage" name="sms_usage" class="select select-bordered w-full bg-white text-black" required>
+              <option value="" disabled selected>Pilih Opsi</option>
+              <option value="low">Jarang (Hanya OTP)</option>
+              <option value="medium">Kadang-kadang</option>
+              <option value="high">Sering</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-control">
+          <label class="label" for="budget">
+            <span class="label-text font-semibold text-gray-700">Budget bulanan?</span>
+          </label>
+          <select id="budget" name="budget" class="select select-bordered w-full bg-white text-black" required>
+            <option value="" disabled selected>Pilih Budget</option>
+            <option value="economy">Hemat (&lt; Rp 50rb)</option>
+            <option value="standard">Standar (Rp 50rb - 100rb)</option>
+            <option value="premium">Premium (Rp 100rb - 150rb)</option>
+            <option value="vip">Sultan (&gt; Rp 150rb)</option>
+          </select>
+        </div>
+
+        <div class="form-control">
+          <label class="label" for="travel_freq">
+            <span class="label-text font-semibold text-gray-700">Seberapa sering ke luar kota?</span>
+          </label>
+          <select id="travel_freq" name="travel_freq" class="select select-bordered w-full bg-white text-black" required>
+            <option value="" disabled selected>Pilih Frekuensi</option>
+            <option value="never">Hampir Tidak Pernah</option>
+            <option value="occasionally">Kadang (1x sebulan)</option>
+            <option value="frequently">Sering (Tiap minggu)</option>
+          </select>
+        </div>
+
+        <div class="form-control mt-8 pt-4">
+          <button
+            type="submit"
+            class="btn bg-custom-blue text-white hover:bg-opacity-90 border-none rounded-full py-3 text-base font-medium w-full btn-lg"
+          >
+            <span id="btnText">Lihat Rekomendasi AI</span>
+            <span class="loading loading-spinner loading-sm hidden" id="submitSpinner"></span>
+          </button>
+        </div>
+      </form>
     </div>
+  </div>
 </div>
 
-<script>
-document.getElementById('questionnaireForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const formData = new FormData(e.target);
-    const data = {};
-    
-    for (const [key, value] of formData.entries()) {
-        if (key === 'vodInterest') {
-            data[key] = value === 'true';
-        } else {
-            data[key] = value;
-        }
-    }
+    <script>
+      // Konfigurasi URL API Backend Node.js kamu
+      // Pastikan port-nya sesuai (misal localhost:3000 atau 5000)
+      const API_BASE_URL = "http://localhost:5000/api/questionnaire";
 
-    const spinner = document.getElementById('submitSpinner');
-    const submitBtn = e.target.querySelector('button[type="submit"]');
-    
-    spinner.classList.remove('hidden');
-    submitBtn.disabled = true;
+      document
+        .getElementById("questionnaireForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
 
-    try {
-        const response = await API.submitQuestionnaire(data);
-        if (response.success) {
-            // Setelah submit, arahkan ke halaman index (landing)
-            router.navigate('/');
-        } else {
-            // Tampilkan notifikasi error
-            showNotification('error', 'Gagal mengirim questionnaire', 'Silakan coba lagi.');
-        }
-    } catch (error) {
-        showNotification('error', 'Terjadi kesalahan', 'Silakan coba lagi.');
-        console.error(error);
-    } finally {
-        spinner.classList.add('hidden');
-        submitBtn.disabled = false;
-    }
-});
-</script>
+          // UI Elements
+          const btn = e.target.querySelector("button");
+          const spinner = document.getElementById("loadingSpinner");
+          const btnText = document.getElementById("btnText");
+
+          // 1. Ambil Data Form
+          const formData = new FormData(e.target);
+          const data = Object.fromEntries(formData.entries());
+
+          // 2. Validasi Token (Asumsi tersimpan di localStorage saat Login)
+          const token = localStorage.getItem("token");
+          if (!token) {
+            alert("Anda belum login! Silakan login terlebih dahulu.");
+            window.location.href = "/login.html"; // Redirect ke login
+            return;
+          }
+
+          // 3. State Loading
+          btn.disabled = true;
+          spinner.classList.remove("hidden");
+          btnText.textContent = "Menganalisis...";
+
+          try {
+            // 4. Fetch ke Node.js Backend
+            const response = await fetch(`${API_BASE_URL}/submit`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`, // Sertakan Token
+              },
+              body: JSON.stringify(data),
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+              // Sukses
+              console.log("Hasil Rekomendasi:", result.recommendations);
+
+              // Redirect ke Dashboard / Homepage
+              // Kita bisa simpan rekomendasi sementara di localStorage jika perlu
+              // localStorage.setItem('lastRecommendation', JSON.stringify(result.recommendations));
+
+              window.location.href = "/dashboard.html";
+            } else {
+              throw new Error(result.error || "Gagal mengirim data");
+            }
+          } catch (error) {
+            console.error("Error:", error);
+            alert("Terjadi kesalahan: " + error.message);
+          } finally {
+            // Reset UI
+            btn.disabled = false;
+            spinner.classList.add("hidden");
+            btnText.textContent = "Lihat Rekomendasi";
+          }
+        });
+    </script>
+  </body>
+</html>
