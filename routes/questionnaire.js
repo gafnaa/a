@@ -4,13 +4,13 @@ const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 const axios = require("axios");
 
-// URL Flask API (Sesuaikan jika port berbeda)
+// URL Flask API
 const FLASK_API_URL = "http://127.0.0.1:5001/predict";
 
 // --- MIDDLEWARE: Verify Token ---
 const verifyToken = (req, res, next) => {
   const authHeader = req.headers.authorization;
-  const token = authHeader && authHeader.split(" ")[1]; // Bearer TOKEN
+  const token = authHeader && authHeader.split(" ")[1];
 
   if (!token) {
     return res
@@ -31,19 +31,13 @@ const verifyToken = (req, res, next) => {
 };
 
 // --- ROUTE: SUBMIT QUESTIONNAIRE ---
-// Menerima data dari form HTML, menyimpan ke DB, dan meminta prediksi ke Flask
 router.post("/submit", verifyToken, async (req, res) => {
   try {
-    const rawData = req.body; // Data mentah dari frontend (snake_case)
-
-    // 1. Cari User
+    const rawData = req.body;
     const user = await User.findById(req.userId);
-    if (!user) {
-      return res.status(404).json({ error: "User tidak ditemukan." });
-    }
+    if (!user) return res.status(404).json({ error: "User tidak ditemukan." });
 
-    // 2. Mapping Data: Frontend (snake_case) -> MongoDB Schema (camelCase)
-    // Ini PENTING karena di User.js kita pakai camelCase
+    // Mapping data
     user.questionnaireData = {
       planType: rawData.plan_type,
       deviceBrand: rawData.device_brand,
@@ -53,43 +47,30 @@ router.post("/submit", verifyToken, async (req, res) => {
       smsUsage: rawData.sms_usage,
       budget: rawData.budget,
       travelFreq: rawData.travel_freq,
-      vodInterest: rawData.vod_interest === "true", // Konversi string ke boolean jika perlu
+      vodInterest: rawData.vod_interest === "true",
     };
 
-    // 3. Integrasi AI: Kirim data ke Flask
-    let predictionResult = "General Offer"; // Default fallback jika Flask mati
-
+    // Prediksi AI
+    let predictionResult = "General Offer";
     try {
-      // Kita kirim 'rawData' karena Flask app.py sudah disetting menerima snake_case
-      // (seperti 'plan_type', 'internet_usage')
       const flaskResponse = await axios.post(FLASK_API_URL, rawData);
-
       if (flaskResponse.data && flaskResponse.data.predicted_offer) {
         predictionResult = flaskResponse.data.predicted_offer;
-        console.log(`✅ AI Prediction Success: ${predictionResult}`);
       }
     } catch (aiError) {
-      console.error(
-        "⚠️ Gagal menghubungi Service Flask (ML):",
-        aiError.message
-      );
-      // Lanjut tetap simpan data user walau AI error, biar UX tidak macet
+      console.error("⚠️ Gagal menghubungi ML Service:", aiError.message);
     }
 
-    // 4. Simpan Prediksi ke History User
-    // Sesuai schema User.js yang baru: recommendations[{ offerName, predictedAt }]
     user.recommendations.push({
       offerName: predictionResult,
       predictedAt: new Date(),
     });
 
-    // 5. Simpan Perubahan ke Database
     await user.save();
 
-    // 6. Kirim Respon ke Frontend
     res.json({
       success: true,
-      message: "Data berhasil disimpan & dianalisis.",
+      message: "Data berhasil disimpan.",
       prediction: predictionResult,
     });
   } catch (error) {
@@ -99,11 +80,8 @@ router.post("/submit", verifyToken, async (req, res) => {
 });
 
 // --- ROUTE: GET DASHBOARD DATA ---
-// Mengambil data user, questionnaire, dan history rekomendasi
 router.get("/data", verifyToken, async (req, res) => {
   try {
-    // Cari user by ID
-    // Kita select field tertentu saja untuk keamanan & efisiensi
     const user = await User.findById(req.userId).select(
       "fullName phoneNumber createdAt questionnaireData recommendations"
     );
@@ -112,23 +90,18 @@ router.get("/data", verifyToken, async (req, res) => {
       return res.status(404).json({ error: "User tidak ditemukan" });
     }
 
-    // Sort rekomendasi biar yang paling baru muncul duluan di array (optional logic)
-    const sortedRecs = user.recommendations.sort(
-      (a, b) => b.predictedAt - a.predictedAt
-    );
-
+    // PERBAIKAN DI SINI: Kirim keys yang sesuai (fullName, phoneNumber)
     res.json({
       success: true,
-      // Data User (Untuk Header Dashboard)
       user: {
-        name: user.fullName,
-        phone: user.phoneNumber,
+        fullName: user.fullName, // Dulu: name
+        phoneNumber: user.phoneNumber, // Dulu: phone
         createdAt: user.createdAt,
       },
-      // Data Kuesioner (Untuk Grid Dashboard)
       questionnaireData: user.questionnaireData,
-      // Data Rekomendasi (Untuk Logic Frontend selanjutnya jika butuh)
-      recommendations: sortedRecs,
+      recommendations: user.recommendations.sort(
+        (a, b) => b.predictedAt - a.predictedAt
+      ),
     });
   } catch (error) {
     console.error("Get dashboard data error:", error);
