@@ -4,7 +4,6 @@ const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 const axios = require("axios");
 
-// URL Flask API
 const FLASK_API_URL = "http://127.0.0.1:5001/predict";
 
 // --- MIDDLEWARE: Verify Token ---
@@ -37,7 +36,7 @@ router.post("/submit", verifyToken, async (req, res) => {
     const user = await User.findById(req.userId);
     if (!user) return res.status(404).json({ error: "User tidak ditemukan." });
 
-    // Mapping data
+    // Mapping data dari Frontend (snake_case) ke Schema (camelCase)
     user.questionnaireData = {
       planType: rawData.plan_type,
       deviceBrand: rawData.device_brand,
@@ -50,12 +49,13 @@ router.post("/submit", verifyToken, async (req, res) => {
       vodInterest: rawData.vod_interest === "true",
     };
 
-    // Prediksi AI
+    // Integrasi ke Flask ML
     let predictionResult = "General Offer";
     try {
       const flaskResponse = await axios.post(FLASK_API_URL, rawData);
       if (flaskResponse.data && flaskResponse.data.predicted_offer) {
         predictionResult = flaskResponse.data.predicted_offer;
+        console.log(`✅ AI Prediction: ${predictionResult}`);
       }
     } catch (aiError) {
       console.error("⚠️ Gagal menghubungi ML Service:", aiError.message);
@@ -90,7 +90,7 @@ router.get("/data", verifyToken, async (req, res) => {
       return res.status(404).json({ error: "User tidak ditemukan" });
     }
 
-    // PERBAIKAN DI SINI: Kirim keys yang sesuai (fullName, phoneNumber)
+    // PERBAIKAN DISINI: Menggunakan 'fullName' dan 'phoneNumber' agar cocok dengan Frontend
     res.json({
       success: true,
       user: {

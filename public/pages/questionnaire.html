@@ -1,39 +1,73 @@
-<div class="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
-  <div class="card w-full max-w-2xl bg-white shadow-xl border border-gray-200 fade-in">
+<div
+  class="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 flex items-center justify-center"
+>
+  <div
+    class="card w-full max-w-2xl bg-white shadow-xl border border-gray-200 fade-in"
+  >
     <div class="card-body p-8 sm:p-10">
-      
       <div class="text-center mb-8">
         <h1 class="text-3xl font-extrabold text-custom-blue mb-3">
           Kenali Kebutuhanmu
         </h1>
         <p class="text-gray-600">
-          Jawab beberapa pertanyaan singkat agar AI kami bisa memilihkan paket terbaik untukmu.
+          Jawab beberapa pertanyaan singkat agar AI kami bisa memilihkan paket
+          terbaik untukmu.
         </p>
       </div>
 
       <form id="questionnaireForm" class="space-y-6">
-        
         <div class="form-control">
           <label class="label">
-            <span class="label-text font-semibold text-gray-700 text-base">Jenis layanan saat ini?</span>
+            <span class="label-text font-semibold text-gray-700 text-base"
+              >Jenis layanan saat ini?</span
+            >
           </label>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <label class="cursor-pointer border border-gray-300 rounded-lg p-4 flex items-center hover:bg-blue-50 hover:border-custom-blue transition-all group">
-              <input type="radio" name="plan_type" value="Prepaid" class="radio radio-primary border-gray-400" required />
-              <span class="label-text ml-3 font-medium group-hover:text-custom-blue">Prabayar (Isi Ulang)</span>
+            <label
+              class="cursor-pointer border border-gray-300 rounded-lg p-4 flex items-center hover:bg-blue-50 hover:border-custom-blue transition-all group"
+            >
+              <input
+                type="radio"
+                name="plan_type"
+                value="Prepaid"
+                class="radio radio-primary border-gray-400"
+                required
+              />
+              <span
+                class="label-text ml-3 font-medium group-hover:text-custom-blue"
+                >Prabayar (Isi Ulang)</span
+              >
             </label>
-            <label class="cursor-pointer border border-gray-300 rounded-lg p-4 flex items-center hover:bg-blue-50 hover:border-custom-blue transition-all group">
-              <input type="radio" name="plan_type" value="Postpaid" class="radio radio-primary border-gray-400" required />
-              <span class="label-text ml-3 font-medium group-hover:text-custom-blue">Pascabayar (Tagihan)</span>
+            <label
+              class="cursor-pointer border border-gray-300 rounded-lg p-4 flex items-center hover:bg-blue-50 hover:border-custom-blue transition-all group"
+            >
+              <input
+                type="radio"
+                name="plan_type"
+                value="Postpaid"
+                class="radio radio-primary border-gray-400"
+                required
+              />
+              <span
+                class="label-text ml-3 font-medium group-hover:text-custom-blue"
+                >Pascabayar (Tagihan)</span
+              >
             </label>
           </div>
         </div>
 
         <div class="form-control">
           <label class="label" for="device_brand">
-            <span class="label-text font-semibold text-gray-700">Merek HP Anda?</span>
+            <span class="label-text font-semibold text-gray-700"
+              >Merek HP Anda?</span
+            >
           </label>
-          <select id="device_brand" name="device_brand" class="select select-bordered w-full bg-white text-black" required>
+          <select
+            id="device_brand"
+            name="device_brand"
+            class="select select-bordered w-full bg-white text-black"
+            required
+          >
             <option value="" disabled selected>Pilih Merek</option>
             <option value="Apple">Apple (iPhone)</option>
             <option value="Samsung">Samsung</option>
@@ -48,9 +82,16 @@
 
         <div class="form-control">
           <label class="label" for="internet_usage">
-            <span class="label-text font-semibold text-gray-700">Penggunaan internet harian?</span>
+            <span class="label-text font-semibold text-gray-700"
+              >Penggunaan internet harian?</span
+            >
           </label>
-          <select id="internet_usage" name="internet_usage" class="select select-bordered w-full bg-white text-black" required>
+          <select
+            id="internet_usage"
+            name="internet_usage"
+            class="select select-bordered w-full bg-white text-black"
+            required
+          >
             <option value="" disabled selected>Pilih Penggunaan</option>
             <option value="light">Ringan (&lt; 1 GB/hari)</option>
             <option value="medium">Sedang (1 - 3 GB/hari)</option>
@@ -61,9 +102,16 @@
 
         <div class="form-control">
           <label class="label" for="streaming_freq">
-            <span class="label-text font-semibold text-gray-700">Seberapa sering streaming video?</span>
+            <span class="label-text font-semibold text-gray-700"
+              >Seberapa sering streaming video?</span
+            >
           </label>
-          <select id="streaming_freq" name="streaming_freq" class="select select-bordered w-full bg-white text-black" required>
+          <select
+            id="streaming_freq"
+            name="streaming_freq"
+            class="select select-bordered w-full bg-white text-black"
+            required
+          >
             <option value="" disabled selected>Pilih Frekuensi</option>
             <option value="rarely">Jarang (Teks/Chat)</option>
             <option value="sometimes">Kadang-kadang (Youtube/Tiktok)</option>
@@ -74,9 +122,16 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div class="form-control">
             <label class="label" for="call_usage">
-              <span class="label-text font-semibold text-gray-700">Frekuensi Telepon (Seluler)?</span>
+              <span class="label-text font-semibold text-gray-700"
+                >Frekuensi Telepon (Seluler)?</span
+              >
             </label>
-            <select id="call_usage" name="call_usage" class="select select-bordered w-full bg-white text-black" required>
+            <select
+              id="call_usage"
+              name="call_usage"
+              class="select select-bordered w-full bg-white text-black"
+              required
+            >
               <option value="" disabled selected>Pilih Opsi</option>
               <option value="low">Jarang (&lt; 5 menit)</option>
               <option value="medium">Sedang (5-15 menit)</option>
@@ -86,9 +141,16 @@
 
           <div class="form-control">
             <label class="label" for="sms_usage">
-              <span class="label-text font-semibold text-gray-700">Frekuensi SMS?</span>
+              <span class="label-text font-semibold text-gray-700"
+                >Frekuensi SMS?</span
+              >
             </label>
-            <select id="sms_usage" name="sms_usage" class="select select-bordered w-full bg-white text-black" required>
+            <select
+              id="sms_usage"
+              name="sms_usage"
+              class="select select-bordered w-full bg-white text-black"
+              required
+            >
               <option value="" disabled selected>Pilih Opsi</option>
               <option value="low">Jarang (Hanya OTP)</option>
               <option value="medium">Kadang-kadang</option>
@@ -99,9 +161,16 @@
 
         <div class="form-control">
           <label class="label" for="budget">
-            <span class="label-text font-semibold text-gray-700">Budget bulanan?</span>
+            <span class="label-text font-semibold text-gray-700"
+              >Budget bulanan?</span
+            >
           </label>
-          <select id="budget" name="budget" class="select select-bordered w-full bg-white text-black" required>
+          <select
+            id="budget"
+            name="budget"
+            class="select select-bordered w-full bg-white text-black"
+            required
+          >
             <option value="" disabled selected>Pilih Budget</option>
             <option value="economy">Hemat (&lt; Rp 50rb)</option>
             <option value="standard">Standar (Rp 50rb - 100rb)</option>
@@ -112,9 +181,16 @@
 
         <div class="form-control">
           <label class="label" for="travel_freq">
-            <span class="label-text font-semibold text-gray-700">Seberapa sering ke luar kota?</span>
+            <span class="label-text font-semibold text-gray-700"
+              >Seberapa sering ke luar kota?</span
+            >
           </label>
-          <select id="travel_freq" name="travel_freq" class="select select-bordered w-full bg-white text-black" required>
+          <select
+            id="travel_freq"
+            name="travel_freq"
+            class="select select-bordered w-full bg-white text-black"
+            required
+          >
             <option value="" disabled selected>Pilih Frekuensi</option>
             <option value="never">Hampir Tidak Pernah</option>
             <option value="occasionally">Kadang (1x sebulan)</option>
@@ -128,7 +204,10 @@
             class="btn bg-custom-blue text-white hover:bg-opacity-90 border-none rounded-full py-3 text-base font-medium w-full btn-lg"
           >
             <span id="btnText">Lihat Rekomendasi AI</span>
-            <span class="loading loading-spinner loading-sm hidden" id="submitSpinner"></span>
+            <span
+              class="loading loading-spinner loading-sm hidden"
+              id="submitSpinner"
+            ></span>
           </button>
         </div>
       </form>
@@ -136,73 +215,60 @@
   </div>
 </div>
 
-    <script>
-      // Konfigurasi URL API Backend Node.js kamu
-      // Pastikan port-nya sesuai (misal localhost:3000 atau 5000)
-      const API_BASE_URL = "http://localhost:5000/api/questionnaire";
+<script>
+  // FIX: Gunakan path relative '/api' agar otomatis tersambung ke backend via proxy Vite
+  const API_SUBMIT_URL = "/api/questionnaire/submit";
 
-      document
-        .getElementById("questionnaireForm")
-        .addEventListener("submit", async (e) => {
-          e.preventDefault();
+  document
+    .getElementById("questionnaireForm")
+    .addEventListener("submit", async (e) => {
+      e.preventDefault(); // Mencegah reload halaman
 
-          // UI Elements
-          const btn = e.target.querySelector("button");
-          const spinner = document.getElementById("loadingSpinner");
-          const btnText = document.getElementById("btnText");
+      const btn = e.target.querySelector("button");
+      const spinner = document.getElementById("submitSpinner");
+      const btnText = document.getElementById("btnText");
 
-          // 1. Ambil Data Form
-          const formData = new FormData(e.target);
-          const data = Object.fromEntries(formData.entries());
+      // Ambil Data Form
+      const formData = new FormData(e.target);
+      const data = Object.fromEntries(formData.entries());
 
-          // 2. Validasi Token (Asumsi tersimpan di localStorage saat Login)
-          const token = localStorage.getItem("token");
-          if (!token) {
-            alert("Anda belum login! Silakan login terlebih dahulu.");
-            window.location.href = "/login.html"; // Redirect ke login
-            return;
-          }
+      const token = localStorage.getItem("token");
+      if (!token) {
+        alert("Anda belum login!");
+        window.location.href = "/login";
+        return;
+      }
 
-          // 3. State Loading
-          btn.disabled = true;
-          spinner.classList.remove("hidden");
-          btnText.textContent = "Menganalisis...";
+      // Loading State
+      btn.disabled = true;
+      spinner.classList.remove("hidden");
+      btnText.textContent = "Menganalisis...";
 
-          try {
-            // 4. Fetch ke Node.js Backend
-            const response = await fetch(`${API_BASE_URL}/submit`, {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`, // Sertakan Token
-              },
-              body: JSON.stringify(data),
-            });
-
-            const result = await response.json();
-
-            if (response.ok) {
-              // Sukses
-              console.log("Hasil Rekomendasi:", result.recommendations);
-
-              // Redirect ke Dashboard / Homepage
-              // Kita bisa simpan rekomendasi sementara di localStorage jika perlu
-              // localStorage.setItem('lastRecommendation', JSON.stringify(result.recommendations));
-
-              window.location.href = "/dashboard.html";
-            } else {
-              throw new Error(result.error || "Gagal mengirim data");
-            }
-          } catch (error) {
-            console.error("Error:", error);
-            alert("Terjadi kesalahan: " + error.message);
-          } finally {
-            // Reset UI
-            btn.disabled = false;
-            spinner.classList.add("hidden");
-            btnText.textContent = "Lihat Rekomendasi";
-          }
+      try {
+        const response = await fetch(API_SUBMIT_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(data),
         });
-    </script>
-  </body>
-</html>
+
+        const result = await response.json();
+
+        if (response.ok) {
+          // Redirect ke Dashboard setelah sukses
+          window.location.href = "/dashboard";
+        } else {
+          throw new Error(result.error || "Gagal mengirim data");
+        }
+      } catch (error) {
+        console.error("Error:", error);
+        alert("Terjadi kesalahan: " + error.message);
+      } finally {
+        btn.disabled = false;
+        spinner.classList.add("hidden");
+        btnText.textContent = "Lihat Rekomendasi AI";
+      }
+    });
+</script>
