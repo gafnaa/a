@@ -3,7 +3,6 @@ const mongoose = require("mongoose");
 const userSchema = new mongoose.Schema(
   {
     fullName: {
-      // Added fullName as it's used in registration
       type: String,
       required: true,
       trim: true,
@@ -14,20 +13,27 @@ const userSchema = new mongoose.Schema(
       unique: true,
       trim: true,
     },
+    // Data Kuesioner (Struktur disesuaikan dengan Input HTML & Dataset)
     questionnaireData: {
+      planType: {
+        type: String,
+        enum: ["Prepaid", "Postpaid"],
+        default: "Prepaid",
+      },
+      deviceBrand: {
+        type: String,
+        // Tidak di-enum strict supaya jika user pilih 'Other' atau brand baru tidak error
+        default: "Other",
+      },
       internetUsage: {
         type: String,
-        enum: ["low", "medium", "high", "very-high"],
+        enum: ["light", "medium", "heavy", "extreme"], // < 1GB, 1-3GB, 3-5GB, > 5GB
       },
-      streamingHabits: {
+      streamingFreq: {
         type: String,
-        enum: ["none", "occasional", "frequent", "daily"],
+        enum: ["rarely", "sometimes", "often"],
       },
-      dataConsumption: {
-        type: String,
-        enum: ["minimal", "moderate", "heavy", "extreme"],
-      },
-      voiceUsage: {
+      callUsage: {
         type: String,
         enum: ["low", "medium", "high"],
       },
@@ -35,36 +41,27 @@ const userSchema = new mongoose.Schema(
         type: String,
         enum: ["low", "medium", "high"],
       },
-      vodInterest: {
-        type: Boolean,
-        default: false,
-      },
       budget: {
         type: String,
-        enum: ["budget", "mid-range", "premium"],
+        enum: ["economy", "standard", "premium", "vip"], // Sesuai HTML value
+      },
+      travelFreq: {
+        type: String,
+        enum: ["never", "occasionally", "frequently"],
       },
     },
+    // Menyimpan hasil prediksi AI (Simple String)
     recommendations: [
       {
-        category: String,
-        score: Number,
-        updatedAt: {
+        offerName: { type: String }, // e.g., "Device Upgrade Offer"
+        predictedAt: {
           type: Date,
           default: Date.now,
         },
       },
     ],
-    // Timestamps are now handled by the schema options
-    // createdAt: {
-    //   type: Date,
-    //   default: Date.now
-    // },
-    // updatedAt: {
-    //   type: Date,
-    //   default: Date.now
-    // }
   },
   { timestamps: true }
-); // Add timestamps option
+);
 
 module.exports = mongoose.model("User", userSchema);

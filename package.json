@@ -11,7 +11,8 @@
     "server": "node server.js",
     "server:dev": "nodemon server.js",
     "start": "node server.js",
-    "seed": "node scripts/seedProducts.js"
+    "seed": "node scripts/seedProducts.js",
+    "seed:all": "node scripts/seedUsers.js && node scripts/seedProducts.js"
   },
   "keywords": [
     "telco",

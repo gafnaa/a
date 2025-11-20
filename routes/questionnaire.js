@@ -1,128 +1,112 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const User = require('../models/User');
-const jwt = require('jsonwebtoken');
+const User = require("../models/User");
+const jwt = require("jsonwebtoken");
+const axios = require("axios");
 
-// Middleware to verify token
+const FLASK_API_URL = "http://127.0.0.1:5001/predict";
+
+// --- MIDDLEWARE: Verify Token ---
 const verifyToken = (req, res, next) => {
-  const token = req.headers.authorization?.split(' ')[1];
+  const authHeader = req.headers.authorization;
+  const token = authHeader && authHeader.split(" ")[1];
 
   if (!token) {
-    return res.status(401).json({ error: 'No token provided' });
+    return res
+      .status(401)
+      .json({ error: "Akses ditolak. Token tidak ditemukan." });
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key');
+    const decoded = jwt.verify(
+      token,
+      process.env.JWT_SECRET || "your-secret-key"
+    );
     req.userId = decoded.userId;
     next();
   } catch (error) {
-    res.status(401).json({ error: 'Invalid token' });
+    res.status(401).json({ error: "Token tidak valid." });
   }
 };
 
-// Submit questionnaire
-router.post('/submit', verifyToken, async (req, res) => {
+// --- ROUTE: SUBMIT QUESTIONNAIRE ---
+router.post("/submit", verifyToken, async (req, res) => {
   try {
-    const questionnaireData = req.body;
-
+    const rawData = req.body;
     const user = await User.findById(req.userId);
-    if (!user) {
-      return res.status(404).json({ error: 'User not found' });
+    if (!user) return res.status(404).json({ error: "User tidak ditemukan." });
+
+    // Mapping data dari Frontend (snake_case) ke Schema (camelCase)
+    user.questionnaireData = {
+      planType: rawData.plan_type,
+      deviceBrand: rawData.device_brand,
+      internetUsage: rawData.internet_usage,
+      streamingFreq: rawData.streaming_freq,
+      callUsage: rawData.call_usage,
+      smsUsage: rawData.sms_usage,
+      budget: rawData.budget,
+      travelFreq: rawData.travel_freq,
+      vodInterest: rawData.vod_interest === "true",
+    };
+
+    // Integrasi ke Flask ML
+    let predictionResult = "General Offer";
+    try {
+      const flaskResponse = await axios.post(FLASK_API_URL, rawData);
+      if (flaskResponse.data && flaskResponse.data.predicted_offer) {
+        predictionResult = flaskResponse.data.predicted_offer;
+        console.log(`✅ AI Prediction: ${predictionResult}`);
+      }
+    } catch (aiError) {
+      console.error("⚠️ Gagal menghubungi ML Service:", aiError.message);
     }
 
-    user.questionnaireData = questionnaireData;
-    user.updatedAt = new Date();
-    await user.save();
+    user.recommendations.push({
+      offerName: predictionResult,
+      predictedAt: new Date(),
+    });
 
-    // Generate recommendations based on questionnaire
-    const recommendations = generateRecommendations(questionnaireData);
-    user.recommendations = recommendations;
     await user.save();
 
     res.json({
       success: true,
-      message: 'Questionnaire submitted successfully',
-      recommendations
+      message: "Data berhasil disimpan.",
+      prediction: predictionResult,
     });
   } catch (error) {
-    console.error('Questionnaire submission error:', error);
-    res.status(500).json({ error: 'Server error during questionnaire submission' });
+    console.error("Error submitting questionnaire:", error);
+    res.status(500).json({ error: "Terjadi kesalahan server." });
   }
 });
 
-// Get questionnaire data
-router.get('/data', verifyToken, async (req, res) => {
+// --- ROUTE: GET DASHBOARD DATA ---
+router.get("/data", verifyToken, async (req, res) => {
   try {
-    const user = await User.findById(req.userId);
+    const user = await User.findById(req.userId).select(
+      "fullName phoneNumber createdAt questionnaireData recommendations"
+    );
+
     if (!user) {
-      return res.status(404).json({ error: 'User not found' });
+      return res.status(404).json({ error: "User tidak ditemukan" });
     }
 
+    // PERBAIKAN DISINI: Menggunakan 'fullName' dan 'phoneNumber' agar cocok dengan Frontend
     res.json({
       success: true,
+      user: {
+        fullName: user.fullName, // Dulu: name
+        phoneNumber: user.phoneNumber, // Dulu: phone
+        createdAt: user.createdAt,
+      },
       questionnaireData: user.questionnaireData,
-      recommendations: user.recommendations
+      recommendations: user.recommendations.sort(
+        (a, b) => b.predictedAt - a.predictedAt
+      ),
     });
   } catch (error) {
-    console.error('Get questionnaire error:', error);
-    res.status(500).json({ error: 'Server error' });
+    console.error("Get dashboard data error:", error);
+    res.status(500).json({ error: "Server error" });
   }
 });
-
-// Simple recommendation logic based on questionnaire
-function generateRecommendations(data) {
-  const recommendations = [];
-  let score = 0;
-
-  // Data category scoring
-  if (data.dataConsumption === 'extreme' || data.dataConsumption === 'heavy') {
-    score = 0.9;
-  } else if (data.dataConsumption === 'moderate') {
-    score = 0.7;
-  } else {
-    score = 0.5;
-  }
-  recommendations.push({ category: 'data', score });
-
-  // Voice category scoring
-  if (data.voiceUsage === 'high') {
-    score = 0.8;
-  } else if (data.voiceUsage === 'medium') {
-    score = 0.6;
-  } else {
-    score = 0.4;
-  }
-  recommendations.push({ category: 'voice', score });
-
-  // SMS category scoring
-  if (data.smsUsage === 'high') {
-    score = 0.7;
-  } else if (data.smsUsage === 'medium') {
-    score = 0.5;
-  } else {
-    score = 0.3;
-  }
-  recommendations.push({ category: 'sms', score });
-
-  // VOD category scoring
-  if (data.vodInterest) {
-    score = data.streamingHabits === 'daily' ? 0.9 : 
-            data.streamingHabits === 'frequent' ? 0.8 : 0.6;
-  } else {
-    score = 0.2;
-  }
-  recommendations.push({ category: 'vod', score });
-
-  // Bundle category scoring (combination of multiple needs)
-  const bundleScore = (recommendations[0].score + recommendations[1].score + 
-                      recommendations[2].score) / 3;
-  recommendations.push({ category: 'bundle', score: bundleScore });
-
-  // Sort by score descending
-  recommendations.sort((a, b) => b.score - a.score);
-
-  return recommendations;
-}
 
 module.exports = router;
-

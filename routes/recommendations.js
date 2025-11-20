@@ -1,72 +1,81 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const User = require('../models/User');
-const Product = require('../models/Product');
-const jwt = require('jsonwebtoken');
+const User = require("../models/User");
+const Product = require("../models/Product");
+const jwt = require("jsonwebtoken");
 
-// Middleware to verify token
+// Middleware Verify Token (Sama seperti sebelumnya)
 const verifyToken = (req, res, next) => {
-  const token = req.headers.authorization?.split(' ')[1];
-
-  if (!token) {
-    return res.status(401).json({ error: 'No token provided' });
-  }
+  const authHeader = req.headers.authorization;
+  const token = authHeader && authHeader.split(" ")[1];
+  if (!token) return res.status(401).json({ error: "No token provided" });
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key');
+    const decoded = jwt.verify(
+      token,
+      process.env.JWT_SECRET || "your-secret-key"
+    );
     req.userId = decoded.userId;
     next();
   } catch (error) {
-    res.status(401).json({ error: 'Invalid token' });
+    res.status(401).json({ error: "Invalid token" });
   }
 };
 
-// Get user recommendations
-router.get('/user', verifyToken, async (req, res) => {
+// GET USER RECOMMENDATIONS BASED ON AI PREDICTION
+router.get("/user", verifyToken, async (req, res) => {
   try {
     const user = await User.findById(req.userId);
-    if (!user) {
-      return res.status(404).json({ error: 'User not found' });
-    }
+    if (!user) return res.status(404).json({ error: "User not found" });
 
+    // 1. Cek apakah user punya history rekomendasi
     if (!user.recommendations || user.recommendations.length === 0) {
-      return res.json({ success: true, recommendations: [], products: [] });
+      // Jika belum ada, kembalikan produk featured umum
+      const defaultProducts = await Product.find({ isFeatured: true }).limit(3);
+      return res.json({
+        success: true,
+        prediction: "Belum Ada Data",
+        products: defaultProducts,
+      });
     }
 
-    // Get top 3 recommended categories
-    const topCategories = user.recommendations
-      .sort((a, b) => b.score - a.score)
-      .slice(0, 3)
-      .map(r => r.category);
+    // 2. Ambil prediksi TERBARU (paling akhir di array)
+    // Pastikan kita mengambil elemen terakhir
+    const latestRec = user.recommendations[user.recommendations.length - 1];
+    const predictionTag = latestRec.offerName; // e.g., "Device Upgrade Offer"
 
-    // Get products for recommended categories
-    const products = await Product.find({
-      category: { $in: topCategories }
-    }).limit(12);
+    console.log(`🔍 Finding products for tag: ${predictionTag}`);
+
+    // 3. Cari produk yang sesuai tag tersebut
+    let products = await Product.find({
+      recommendationTag: predictionTag,
+    }).limit(6);
+
+    // Fallback: Jika tidak ada produk dengan tag itu, ambil general featured
+    if (products.length === 0) {
+      products = await Product.find({ isFeatured: true }).limit(6);
+    }
 
     res.json({
       success: true,
-      recommendations: user.recommendations,
-      topCategories,
-      products
+      prediction: predictionTag,
+      products: products,
     });
   } catch (error) {
-    console.error('Get recommendations error:', error);
-    res.status(500).json({ error: 'Server error' });
+    console.error("Get recommendations error:", error);
+    res.status(500).json({ error: "Server error" });
   }
 });
 
-// Get related products for a product category
-router.get('/related/:category', async (req, res) => {
+// Get related products (Opsional, sesuaikan dengan kategori baru)
+router.get("/related/:category", async (req, res) => {
   try {
     const { category } = req.params;
     const products = await Product.find({ category }).limit(6);
     res.json({ success: true, products });
   } catch (error) {
-    console.error('Get related products error:', error);
-    res.status(500).json({ error: 'Server error' });
+    res.status(500).json({ error: "Server error" });
   }
 });
 
 module.exports = router;
-

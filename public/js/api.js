@@ -99,6 +99,21 @@ const API = {
   async getRelatedProducts(category) {
     return this.request(`/api/recommendations/related/${category}`);
   },
+
+  async getProducts(filters = {}) {
+    // filters bisa berisi: { category, featured, planType, search }
+    let url = "/api/products";
+    const params = new URLSearchParams();
+
+    if (filters.category) params.append("category", filters.category);
+    if (filters.featured) params.append("featured", filters.featured);
+    if (filters.planType) params.append("planType", filters.planType);
+    if (filters.search) params.append("search", filters.search);
+
+    if (params.toString()) url += "?" + params.toString();
+
+    return this.request(url);
+  },
 };
 
 export default API;

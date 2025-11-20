@@ -18,6 +18,12 @@ body {
   border-color: #264065;
 }
 
+/* Page transition */
+#app {
+  opacity: 1;
+  transition: opacity 0.3s ease-in-out;
+}
+
 /* Navbar menu container */
 .navbar-menu-container {
   background-color: #f7f7f7;
@@ -92,10 +98,6 @@ body {
   color: #ef4444 !important;
 }
 
-/* Specific alert styles are handled by DaisyUI classes (alert, alert-success, alert-error) */
-/* We might need to add custom styles if DaisyUI doesn't cover animations/positioning */
-
-/* Ensure alerts have a base style that works with animations */
 .alert {
   margin-bottom: 1rem; /* Space between multiple alerts if they were to stack */
 }

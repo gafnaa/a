@@ -1,137 +1,407 @@
-<div class="min-h-screen bg-base-200">
-    <!-- Navigation -->
-    <div class="navbar bg-base-100 shadow-lg">
-        <div class="container mx-auto">
-            <div class="flex-1">
-                <a href="/" class="btn btn-ghost text-xl">Telco Products</a>
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              "custom-blue": "#264065",
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+  <body class="bg-gray-50 font-sans">
+    <div class="container mx-auto px-4 md:px-8 py-10 max-w-5xl">
+      <div class="mb-8">
+        <h1
+          class="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight"
+          id="headerGreeting"
+        >
+          Halo!
+        </h1>
+        <p class="text-gray-600 mt-2 text-lg">
+          Selamat datang kembali di panel profil Anda.
+        </p>
+      </div>
+
+      <div
+        class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 mb-8 transition hover:shadow-md"
+      >
+        <div
+          class="flex flex-col md:flex-row items-center md:items-start gap-6"
+        >
+          <div class="flex-shrink-0">
+            <div
+              class="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center text-gray-400 shadow-inner border-4 border-white"
+            >
+              <i class="fas fa-user text-5xl"></i>
             </div>
-            <div class="flex-none gap-2">
-                <button onclick="Auth.removeToken(); router.navigate('/login')" class="btn btn-ghost">Logout</button>
+          </div>
+
+          <div class="flex-1 text-center md:text-left w-full">
+            <div
+              class="flex flex-col md:flex-row md:justify-between md:items-center mb-2"
+            >
+              <h2 class="text-2xl font-bold text-gray-900" id="userName">
+                Memuat...
+              </h2>
+
+              <span
+                id="statusBadge"
+                class="mt-2 md:mt-0 inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800"
+              >
+                Checking...
+              </span>
             </div>
+
+            <div
+              class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 bg-gray-50 p-4 rounded-xl border border-gray-100"
+            >
+              <div class="flex items-center justify-center md:justify-start">
+                <div
+                  class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-custom-blue mr-3 shadow-sm border border-gray-100"
+                >
+                  <i class="fas fa-phone-alt text-sm"></i>
+                </div>
+                <div>
+                  <p
+                    class="text-xs text-gray-500 uppercase tracking-wider font-bold"
+                  >
+                    Nomor Telepon
+                  </p>
+                  <p class="font-semibold text-gray-800" id="userPhone">-</p>
+                </div>
+              </div>
+
+              <div class="flex items-center justify-center md:justify-start">
+                <div
+                  class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-green-600 mr-3 shadow-sm border border-gray-100"
+                >
+                  <i class="fas fa-calendar-check text-sm"></i>
+                </div>
+                <div>
+                  <p
+                    class="text-xs text-gray-500 uppercase tracking-wider font-bold"
+                  >
+                    Bergabung Sejak
+                  </p>
+                  <p class="font-semibold text-gray-800" id="memberSince">-</p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
+
+      <div>
+        <div
+          class="flex items-center justify-between mb-6 border-b border-gray-200 pb-4"
+        >
+          <h3 class="text-xl font-bold text-gray-800">Data Preferensi</h3>
+          <a
+            href="/questionnaire"
+            class="text-sm font-semibold text-custom-blue hover:text-blue-700 flex items-center transition group"
+          >
+            <span class="group-hover:underline">Edit Data</span>
+            <i class="fas fa-chevron-right ml-2 text-xs"></i>
+          </a>
+        </div>
+
+        <div id="loadingState" class="text-center py-12">
+          <div
+            class="animate-spin rounded-full h-12 w-12 border-b-2 border-custom-blue mx-auto"
+          ></div>
+          <p class="text-gray-400 mt-4 text-sm">Mengambil data...</p>
+        </div>
+
+        <div
+          id="emptyState"
+          class="hidden bg-white rounded-xl shadow-sm border border-dashed border-gray-300 p-10 text-center"
+        >
+          <div
+            class="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4 text-gray-400"
+          >
+            <i class="fas fa-clipboard-list text-2xl"></i>
+          </div>
+          <h3 class="text-lg font-bold text-gray-900">Data Belum Tersedia</h3>
+          <p class="text-gray-500 mb-6">
+            Lengkapi profil penggunaan Anda untuk hasil rekomendasi yang akurat.
+          </p>
+          <a
+            href="/questionnaire"
+            class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-custom-blue hover:bg-blue-700 transition shadow-sm"
+          >
+            Isi Kuesioner
+          </a>
+        </div>
+
+        <div
+          id="dataGrid"
+          class="hidden grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"
+        >
+          <div
+            class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 transition group"
+          >
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs font-bold text-gray-400 uppercase"
+                >Internet</span
+              >
+              <i class="fas fa-wifi text-blue-500"></i>
+            </div>
+            <p class="text-xl font-bold text-gray-800" id="valInternet">-</p>
+            <p class="text-xs text-gray-500 mt-1">Penggunaan Harian</p>
+          </div>
+
+          <div
+            class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 transition group"
+          >
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs font-bold text-gray-400 uppercase"
+                >Budget</span
+              >
+              <i class="fas fa-wallet text-green-500"></i>
+            </div>
+            <p class="text-xl font-bold text-gray-800" id="valBudget">-</p>
+            <p class="text-xs text-gray-500 mt-1">Estimasi Bulanan</p>
+          </div>
+
+          <div
+            class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 transition group"
+          >
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs font-bold text-gray-400 uppercase"
+                >Streaming</span
+              >
+              <i class="fas fa-play-circle text-red-500"></i>
+            </div>
+            <p class="text-xl font-bold text-gray-800" id="valStream">-</p>
+            <p class="text-xs text-gray-500 mt-1">Kebiasaan Nonton</p>
+          </div>
+
+          <div
+            class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 transition group"
+          >
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs font-bold text-gray-400 uppercase"
+                >Telepon</span
+              >
+              <i class="fas fa-phone text-yellow-500"></i>
+            </div>
+            <p class="text-xl font-bold text-gray-800" id="valVoice">-</p>
+            <p class="text-xs text-gray-500 mt-1">Intensitas Panggilan</p>
+          </div>
+
+          <div
+            class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 transition group"
+          >
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs font-bold text-gray-400 uppercase">SMS</span>
+              <i class="fas fa-comment-alt text-purple-500"></i>
+            </div>
+            <p class="text-xl font-bold text-gray-800" id="valSMS">-</p>
+            <p class="text-xs text-gray-500 mt-1">Penggunaan Pesan</p>
+          </div>
+
+          <div
+            class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 transition group"
+          >
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs font-bold text-gray-400 uppercase"
+                >VOD Service</span
+              >
+              <i class="fas fa-film text-indigo-500"></i>
+            </div>
+            <p class="text-xl font-bold text-gray-800" id="valVOD">-</p>
+            <p class="text-xs text-gray-500 mt-1">Minat Layanan</p>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <div class="container mx-auto px-4 py-8">
-        <h1 class="text-4xl font-bold mb-8">User Dashboard</h1>
-        
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <!-- Profile Card -->
-            <div class="card bg-base-100 shadow-xl">
-                <div class="card-body">
-                    <h2 class="card-title text-2xl mb-4">Profile Information</h2>
-                    <div id="profileInfo">
-                        <!-- Profile info will be loaded here -->
-                    </div>
-                </div>
-            </div>
+    <script>
+      // Attach function to window so app.js can call it
+      window.loadDashboard = async function () {
+        const API_BASE_URL = "/api";
+        const token = localStorage.getItem("token");
 
-            <!-- Questionnaire Data -->
-            <div class="card bg-base-100 shadow-xl">
-                <div class="card-body">
-                    <h2 class="card-title text-2xl mb-4">Questionnaire Responses</h2>
-                    <div id="questionnaireInfo">
-                        <!-- Questionnaire data will be loaded here -->
-                    </div>
-                    <div class="card-actions justify-end mt-4">
-                        <a href="/questionnaire" class="btn btn-primary">Update Questionnaire</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Current Recommendations -->
-        <div class="card bg-base-100 shadow-xl mt-6">
-            <div class="card-body">
-                <h2 class="card-title text-2xl mb-4">Current Recommendations</h2>
-                <div id="recommendationsList">
-                    <!-- Recommendations will be loaded here -->
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script>
-async function loadDashboard() {
-    try {
-        // Load user info
-        const user = await Auth.verifyToken();
-        if (user) {
-            document.getElementById('profileInfo').innerHTML = `
-                <div class="space-y-2">
-                    <p><strong>Phone Number:</strong> ${user.phoneNumber}</p>
-                    <p><strong>User ID:</strong> ${user.id}</p>
-                    <p><strong>Questionnaire Completed:</strong> ${user.hasQuestionnaire ? 'Yes' : 'No'}</p>
-                </div>
-            `;
+        if (!token) {
+          window.location.href = "/login";
+          return;
         }
 
-        // Load questionnaire data
-        const questionnaireResponse = await API.getQuestionnaireData();
-        if (questionnaireResponse.success) {
-            const data = questionnaireResponse.questionnaireData;
-            if (data && data.internetUsage) {
-                document.getElementById('questionnaireInfo').innerHTML = `
-                    <div class="space-y-2">
-                        <p><strong>Internet Usage:</strong> ${data.internetUsage || 'N/A'}</p>
-                        <p><strong>Streaming Habits:</strong> ${data.streamingHabits || 'N/A'}</p>
-                        <p><strong>Data Consumption:</strong> ${data.dataConsumption || 'N/A'}</p>
-                        <p><strong>Voice Usage:</strong> ${data.voiceUsage || 'N/A'}</p>
-                        <p><strong>SMS Usage:</strong> ${data.smsUsage || 'N/A'}</p>
-                        <p><strong>VOD Interest:</strong> ${data.vodInterest ? 'Yes' : 'No'}</p>
-                        <p><strong>Budget:</strong> ${data.budget || 'N/A'}</p>
-                    </div>
-                `;
-            } else {
-                document.getElementById('questionnaireInfo').innerHTML = `
-                    <div class="alert alert-warning">
-                        <span>No questionnaire data found. Please complete the questionnaire.</span>
-                    </div>
-                `;
+        const loadingEl = document.getElementById("loadingState");
+        const dataGridEl = document.getElementById("dataGrid");
+        const emptyStateEl = document.getElementById("emptyState");
+
+        if (loadingEl) loadingEl.classList.remove("hidden");
+        if (dataGridEl) dataGridEl.classList.add("hidden");
+        if (emptyStateEl) emptyStateEl.classList.add("hidden");
+
+        try {
+          const response = await fetch(`${API_BASE_URL}/questionnaire/data`, {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+
+          if (response.status === 401) {
+            localStorage.removeItem("token");
+            window.location.href = "/login";
+            return;
+          }
+
+          const result = await response.json();
+
+          if (!result.success) throw new Error("Gagal mengambil data");
+
+          // 1. Data Profil
+          const userData = result.user || {};
+          const fullName = userData.fullName || "Pengguna";
+
+          if (document.getElementById("headerGreeting"))
+            document.getElementById(
+              "headerGreeting"
+            ).textContent = `Halo, ${fullName}!`;
+
+          if (document.getElementById("userName"))
+            document.getElementById("userName").textContent = fullName;
+
+          if (document.getElementById("userPhone"))
+            document.getElementById("userPhone").textContent =
+              userData.phoneNumber || "-";
+
+          if (document.getElementById("memberSince") && userData.createdAt) {
+            const dateObj = new Date(userData.createdAt);
+            document.getElementById("memberSince").textContent =
+              dateObj.toLocaleDateString("id-ID", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              });
+          }
+
+          // 2. Data Kuesioner
+          const qData = result.questionnaireData || {};
+
+          const mapValue = (val, type) => {
+            if (!val) return "-";
+            const v = String(val).toLowerCase();
+            const maps = {
+              usage: {
+                low: "Rendah",
+                medium: "Sedang",
+                high: "Tinggi",
+                "very-high": "Sangat Tinggi",
+                moderate: "Moderat",
+                light: "Ringan",
+                heavy: "Berat",
+                extreme: "Ekstrem",
+              },
+              budget: {
+                economy: "Ekonomis",
+                standard: "Standar",
+                premium: "Premium",
+                "mid-range": "Menengah",
+                vip: "Sultan",
+              },
+              freq: {
+                none: "Tidak Pernah",
+                occasional: "Kadang",
+                frequent: "Sering",
+                daily: "Harian",
+                rarely: "Jarang",
+                sometimes: "Kadang",
+                often: "Sering",
+              },
+            };
+            return maps[type] && maps[type][v]
+              ? maps[type][v]
+              : v.charAt(0).toUpperCase() + v.slice(1);
+          };
+
+          if (
+            qData &&
+            Object.keys(qData).length > 0 &&
+            (qData.internetUsage || qData.planType)
+          ) {
+            const statusBadge = document.getElementById("statusBadge");
+            if (statusBadge) {
+              statusBadge.className =
+                "mt-2 md:mt-0 inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800";
+              statusBadge.innerHTML =
+                '<i class="fas fa-check-circle mr-1"></i> Profil Lengkap';
             }
 
-            // Load recommendations
-            if (questionnaireResponse.recommendations && questionnaireResponse.recommendations.length > 0) {
-                document.getElementById('recommendationsList').innerHTML = `
-                    <div class="overflow-x-auto">
-                        <table class="table table-zebra">
-                            <thead>
-                                <tr>
-                                    <th>Category</th>
-                                    <th>Recommendation Score</th>
-                                    <th>Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                ${questionnaireResponse.recommendations.map(rec => `
-                                    <tr>
-                                        <td><div class="badge badge-primary">${rec.category.toUpperCase()}</div></td>
-                                        <td>
-                                            <div class="flex items-center gap-2">
-                                                <progress class="progress progress-primary w-32" value="${rec.score * 100}" max="100"></progress>
-                                                <span>${Math.round(rec.score * 100)}%</span>
-                                            </div>
-                                        </td>
-                                        <td>${rec.score > 0.7 ? 'Highly Recommended' : rec.score > 0.5 ? 'Recommended' : 'Consider'}</td>
-                                    </tr>
-                                `).join('')}
-                            </tbody>
-                        </table>
-                    </div>
-                `;
-            } else {
-                document.getElementById('recommendationsList').innerHTML = `
-                    <div class="alert alert-info">
-                        <span>Complete the questionnaire to see your personalized recommendations.</span>
-                    </div>
-                `;
+            // Populate Grid
+            if (document.getElementById("valInternet"))
+              document.getElementById("valInternet").textContent = mapValue(
+                qData.internetUsage,
+                "usage"
+              );
+            if (document.getElementById("valBudget"))
+              document.getElementById("valBudget").textContent = mapValue(
+                qData.budget,
+                "budget"
+              );
+
+            const streamVal = qData.streamingFreq || qData.streamingHabits;
+            if (document.getElementById("valStream"))
+              document.getElementById("valStream").textContent = mapValue(
+                streamVal,
+                "freq"
+              );
+
+            const callVal = qData.callUsage || qData.voiceUsage;
+            if (document.getElementById("valVoice"))
+              document.getElementById("valVoice").textContent = mapValue(
+                callVal,
+                "usage"
+              );
+
+            if (document.getElementById("valSMS"))
+              document.getElementById("valSMS").textContent = mapValue(
+                qData.smsUsage,
+                "usage"
+              );
+
+            if (document.getElementById("valVOD")) {
+              const vodText =
+                qData.vodInterest === true ||
+                String(qData.vodInterest) === "true"
+                  ? "Berminat"
+                  : "Tidak";
+              document.getElementById("valVOD").textContent = vodText;
             }
+
+            if (loadingEl) loadingEl.classList.add("hidden");
+            if (dataGridEl) dataGridEl.classList.remove("hidden");
+          } else {
+            const statusBadge = document.getElementById("statusBadge");
+            if (statusBadge) {
+              statusBadge.className =
+                "mt-2 md:mt-0 inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800";
+              statusBadge.innerHTML =
+                '<i class="fas fa-exclamation-circle mr-1"></i> Belum Lengkap';
+            }
+            if (loadingEl) loadingEl.classList.add("hidden");
+            if (emptyStateEl) emptyStateEl.classList.remove("hidden");
+          }
+        } catch (error) {
+          console.error("Error loading dashboard:", error);
+          if (loadingEl)
+            loadingEl.innerHTML =
+              '<p class="text-red-500">Gagal memuat data.</p>';
         }
-    } catch (error) {
-        console.error('Error loading dashboard:', error);
-    }
-}
-
-// This function is called from app.js after the page loads
-</script>
-
+      };
+    </script>
+  </body>
+</html>
