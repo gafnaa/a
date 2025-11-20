@@ -348,6 +348,34 @@ document.addEventListener("DOMContentLoaded", async () => {
     window.updateNavbarAuth();
   });
 
+  // === PRODUCTS CATALOG ROUTE ===
+  router.addRoute("/products", async () => {
+    // Cek login jika perlu (optional, biasanya katalog produk bisa publik)
+    // if (!(await Auth.verifyToken())) { router.navigate("/login"); return; }
+
+    const app = document.getElementById("app");
+    const response = await fetch("/pages/products.html"); // Pastikan file ini sudah dibuat
+
+    app.innerHTML = await response.text();
+
+    // Jalankan script inline di products.html
+    // Karena innerHTML tidak mengeksekusi script tag secara otomatis:
+    const scripts = app.querySelectorAll("script");
+    scripts.forEach((oldScript) => {
+      const newScript = document.createElement("script");
+      Array.from(oldScript.attributes).forEach((attr) =>
+        newScript.setAttribute(attr.name, attr.value)
+      );
+      newScript.appendChild(document.createTextNode(oldScript.innerHTML));
+      oldScript.parentNode.replaceChild(newScript, oldScript);
+    });
+
+    // Panggil fungsi init jika perlu, tapi script di products.html di atas sudah auto run via 'script' tag replacement trick atau logic pemanggilan manual.
+    // Namun, script inline products.html di atas memanggil loadProducts() langsung, jadi aman jika script dieksekusi.
+
+    window.updateNavbarAuth();
+  });
+
   // === LOGOUT ROUTE ===
   router.addRoute("/logout", async () => {
     Auth.logout();

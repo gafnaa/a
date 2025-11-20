@@ -1,0 +1,306 @@
+<div class="min-h-screen bg-gray-50 pt-20 pb-12">
+  <div class="container mx-auto px-4 md:px-8">
+    <div class="mb-8">
+      <h1 class="text-3xl font-extrabold text-gray-900">Katalog Paket</h1>
+      <p class="text-gray-600 mt-2">
+        Temukan paket terbaik sesuai kebutuhan komunikasimu.
+      </p>
+    </div>
+
+    <div class="flex flex-col lg:flex-row gap-8">
+      <div class="w-full lg:w-1/4 space-y-6">
+        <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200">
+          <h3 class="font-bold text-gray-800 mb-4">Pencarian</h3>
+          <div class="relative">
+            <input
+              type="text"
+              id="searchInput"
+              placeholder="Cari nama paket..."
+              class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-custom-blue transition-colors"
+            />
+            <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+          </div>
+        </div>
+
+        <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200">
+          <h3 class="font-bold text-gray-800 mb-4">Tipe Layanan</h3>
+          <div class="space-y-2">
+            <label class="flex items-center cursor-pointer">
+              <input
+                type="radio"
+                name="filterPlan"
+                value="all"
+                checked
+                class="radio radio-xs radio-primary mr-2"
+              />
+              <span class="text-sm text-gray-600">Semua Tipe</span>
+            </label>
+            <label class="flex items-center cursor-pointer">
+              <input
+                type="radio"
+                name="filterPlan"
+                value="Prepaid"
+                class="radio radio-xs radio-primary mr-2"
+              />
+              <span class="text-sm text-gray-600">Prabayar (Prepaid)</span>
+            </label>
+            <label class="flex items-center cursor-pointer">
+              <input
+                type="radio"
+                name="filterPlan"
+                value="Postpaid"
+                class="radio radio-xs radio-primary mr-2"
+              />
+              <span class="text-sm text-gray-600">Pascabayar (Postpaid)</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200">
+          <h3 class="font-bold text-gray-800 mb-4">Kategori</h3>
+          <div class="space-y-2" id="categoryFilters">
+            <label class="flex items-center cursor-pointer">
+              <input
+                type="radio"
+                name="filterCategory"
+                value="all"
+                checked
+                class="radio radio-xs radio-primary mr-2"
+              />
+              <span class="text-sm text-gray-600">Semua Kategori</span>
+            </label>
+            <label class="flex items-center cursor-pointer">
+              <input
+                type="radio"
+                name="filterCategory"
+                value="Internet"
+                class="radio radio-xs radio-primary mr-2"
+              />
+              <span class="text-sm text-gray-600">Internet Data</span>
+            </label>
+            <label class="flex items-center cursor-pointer">
+              <input
+                type="radio"
+                name="filterCategory"
+                value="Voice"
+                class="radio radio-xs radio-primary mr-2"
+              />
+              <span class="text-sm text-gray-600">Telepon (Voice)</span>
+            </label>
+            <label class="flex items-center cursor-pointer">
+              <input
+                type="radio"
+                name="filterCategory"
+                value="Bundle"
+                class="radio radio-xs radio-primary mr-2"
+              />
+              <span class="text-sm text-gray-600">Bundle Hemat</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="w-full lg:w-3/4">
+        <div id="productsLoading" class="hidden text-center py-12">
+          <div
+            class="animate-spin rounded-full h-12 w-12 border-b-2 border-custom-blue mx-auto"
+          ></div>
+          <p class="text-gray-500 mt-4">Memuat produk...</p>
+        </div>
+
+        <div
+          id="productsGrid"
+          class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6"
+        ></div>
+
+        <div
+          id="productsEmpty"
+          class="hidden text-center py-16 bg-white rounded-xl border border-gray-200"
+        >
+          <div
+            class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4 text-gray-400"
+          >
+            <i class="fas fa-box-open text-2xl"></i>
+          </div>
+          <h3 class="text-lg font-bold text-gray-900">
+            Tidak ada produk ditemukan
+          </h3>
+          <p class="text-gray-500">Coba ubah filter pencarian Anda.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // State Management Sederhana
+  let currentFilters = {
+    search: "",
+    planType: "all",
+    category: "all",
+  };
+
+  // Debounce function untuk search biar gak spam API
+  function debounce(func, timeout = 500) {
+    let timer;
+    return (...args) => {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        func.apply(this, args);
+      }, timeout);
+    };
+  }
+
+  async function loadProducts() {
+    const grid = document.getElementById("productsGrid");
+    const loading = document.getElementById("productsLoading");
+    const empty = document.getElementById("productsEmpty");
+
+    // UI Reset
+    grid.innerHTML = "";
+    loading.classList.remove("hidden");
+    empty.classList.add("hidden");
+
+    try {
+      // Call API
+      const response = await API.getProducts(currentFilters);
+
+      loading.classList.add("hidden");
+
+      if (response.success && response.products.length > 0) {
+        grid.innerHTML = response.products
+          .map((product) => renderProductCard(product))
+          .join("");
+      } else {
+        empty.classList.remove("hidden");
+      }
+    } catch (error) {
+      console.error("Gagal memuat produk:", error);
+      loading.innerHTML =
+        '<p class="text-red-500">Gagal memuat data. Silakan refresh.</p>';
+    }
+  }
+
+  function renderProductCard(product) {
+    // Helper safe access details
+    const details = product.details || {};
+
+    // Badge Plan Type Color
+    const planBadgeColor =
+      product.planType === "Postpaid"
+        ? "bg-purple-100 text-purple-700 border-purple-200"
+        : "bg-green-100 text-green-700 border-green-200";
+
+    return `
+            <div class="card bg-white shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-200 group flex flex-col h-full">
+                <figure class="h-48 overflow-hidden relative bg-gray-100">
+                    <img src="${product.image}" alt="${
+      product.name
+    }" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                    <div class="absolute top-3 right-3 badge ${planBadgeColor} border font-semibold text-xs px-3 py-1 rounded-full shadow-sm">
+                        ${product.planType || "Prepaid"}
+                    </div>
+                    <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4">
+                        <span class="text-white text-xs font-bold bg-custom-blue px-2 py-1 rounded uppercase tracking-wide">
+                            ${product.category}
+                        </span>
+                    </div>
+                </figure>
+
+                <div class="card-body p-5 flex-1 flex flex-col">
+                    <div class="mb-4">
+                        <h2 class="text-lg font-bold text-gray-900 leading-tight mb-2 line-clamp-1" title="${
+                          product.name
+                        }">
+                            ${product.name}
+                        </h2>
+                        <p class="text-sm text-gray-500 line-clamp-2 h-10">
+                            ${product.description}
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-3 gap-2 mb-6 bg-gray-50 p-3 rounded-lg border border-gray-100">
+                        <div class="text-center">
+                            <div class="text-xs text-gray-400 mb-1"><i class="fas fa-wifi"></i> Data</div>
+                            <div class="text-sm font-bold text-gray-800">${
+                              details.dataAllowance || "-"
+                            }</div>
+                        </div>
+                        <div class="text-center border-l border-gray-200">
+                            <div class="text-xs text-gray-400 mb-1"><i class="fas fa-phone-alt"></i> Telp</div>
+                            <div class="text-sm font-bold text-gray-800">${
+                              details.voiceMinutes || "-"
+                            }</div>
+                        </div>
+                        <div class="text-center border-l border-gray-200">
+                            <div class="text-xs text-gray-400 mb-1"><i class="fas fa-clock"></i> Aktif</div>
+                            <div class="text-sm font-bold text-gray-800">${
+                              product.validity
+                            }</div>
+                        </div>
+                    </div>
+
+                    <div class="mt-auto flex items-center justify-between pt-4 border-t border-gray-100">
+                        <div>
+                            <p class="text-xs text-gray-400">Harga</p>
+                            <p class="text-xl font-extrabold text-custom-blue">
+                                Rp ${product.price.toLocaleString("id-ID")}
+                            </p>
+                        </div>
+                        <a href="/product/${
+                          product._id
+                        }" class="btn btn-sm bg-custom-blue text-white border-none rounded-full px-5 shadow-md hover:bg-blue-800 hover:shadow-lg transition-all">
+                            Detail
+                        </a>
+                    </div>
+                </div>
+            </div>
+        `;
+  }
+
+  // --- Event Listeners ---
+
+  // 1. Search Input
+  const searchInput = document.getElementById("searchInput");
+  searchInput.addEventListener(
+    "input",
+    debounce((e) => {
+      currentFilters.search = e.target.value;
+      loadProducts();
+    }, 600)
+  );
+
+  // 2. Plan Type Radio Buttons
+  const planRadios = document.querySelectorAll('input[name="filterPlan"]');
+  planRadios.forEach((radio) => {
+    radio.addEventListener("change", (e) => {
+      currentFilters.planType = e.target.value;
+      loadProducts();
+    });
+  });
+
+  // 3. Category Radio Buttons
+  const categoryRadios = document.querySelectorAll(
+    'input[name="filterCategory"]'
+  );
+  categoryRadios.forEach((radio) => {
+    radio.addEventListener("change", (e) => {
+      currentFilters.category = e.target.value;
+      loadProducts();
+    });
+  });
+
+  // Initial Load
+  // Cek URL params jika ada filter bawaan (opsional, misal dari homepage klik kategori)
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get("category")) {
+    currentFilters.category = urlParams.get("category");
+    // Update UI radio button
+    const radio = document.querySelector(
+      `input[name="filterCategory"][value="${currentFilters.category}"]`
+    );
+    if (radio) radio.checked = true;
+  }
+
+  loadProducts();
+</script>
