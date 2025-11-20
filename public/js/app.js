@@ -40,7 +40,7 @@ window.showNotification = function (type, title, message) {
       </div>
       <div class="flex w-full items-center justify-between">
         <div>
-          <h3 class="mb-1 text-lg font-medium text-black dark:text-white">
+          <h3 class="mb-1 text-lg font-medium text-black">
             ${title || defaultTitle}
           </h3>
           <p class="text-body-color dark:text-dark-6 text-sm">
