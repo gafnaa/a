@@ -12,8 +12,12 @@
         <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200">
           <h3 class="text-lg font-bold text-gray-800 mb-4">Pencarian</h3>
           <div class="relative">
-            <input type="text" id="searchInput" placeholder="Cari nama paket..."
-              class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-custom-blue transition-colors bg-custom-blue text-white" />
+            <input
+              type="text"
+              id="searchInput"
+              placeholder="Cari nama paket..."
+              class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-custom-blue transition-colors bg-custom-blue text-white"
+            />
             <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
           </div>
         </div>
@@ -22,15 +26,31 @@
           <h3 class="text-lg font-bold text-gray-800 mb-4">Tipe Layanan</h3>
           <div class="space-y-2">
             <label class="flex items-center cursor-pointer">
-              <input type="radio" name="filterPlan" value="all" checked class="radio radio-xs radio-primary mr-2" />
+              <input
+                type="radio"
+                name="filterPlan"
+                value="all"
+                checked
+                class="radio radio-xs radio-primary mr-2"
+              />
               <span class="text-sm text-gray-600">Semua Tipe</span>
             </label>
             <label class="flex items-center cursor-pointer">
-              <input type="radio" name="filterPlan" value="Prepaid" class="radio radio-xs radio-primary mr-2" />
+              <input
+                type="radio"
+                name="filterPlan"
+                value="Prepaid"
+                class="radio radio-xs radio-primary mr-2"
+              />
               <span class="text-sm text-gray-600">Prabayar (Prepaid)</span>
             </label>
             <label class="flex items-center cursor-pointer">
-              <input type="radio" name="filterPlan" value="Postpaid" class="radio radio-xs radio-primary mr-2" />
+              <input
+                type="radio"
+                name="filterPlan"
+                value="Postpaid"
+                class="radio radio-xs radio-primary mr-2"
+              />
               <span class="text-sm text-gray-600">Pascabayar (Postpaid)</span>
             </label>
           </div>
@@ -40,19 +60,40 @@
           <h3 class="text-lg font-bold text-gray-800 mb-4">Kategori</h3>
           <div class="space-y-2" id="categoryFilters">
             <label class="flex items-center cursor-pointer">
-              <input type="radio" name="filterCategory" value="all" checked class="radio radio-xs radio-primary mr-2" />
+              <input
+                type="radio"
+                name="filterCategory"
+                value="all"
+                checked
+                class="radio radio-xs radio-primary mr-2"
+              />
               <span class="text-sm text-gray-600">Semua Kategori</span>
             </label>
             <label class="flex items-center cursor-pointer">
-              <input type="radio" name="filterCategory" value="Internet" class="radio radio-xs radio-primary mr-2" />
+              <input
+                type="radio"
+                name="filterCategory"
+                value="Internet"
+                class="radio radio-xs radio-primary mr-2"
+              />
               <span class="text-sm text-gray-600">Internet Data</span>
             </label>
             <label class="flex items-center cursor-pointer">
-              <input type="radio" name="filterCategory" value="Voice" class="radio radio-xs radio-primary mr-2" />
+              <input
+                type="radio"
+                name="filterCategory"
+                value="Voice"
+                class="radio radio-xs radio-primary mr-2"
+              />
               <span class="text-sm text-gray-600">Telepon (Voice)</span>
             </label>
             <label class="flex items-center cursor-pointer">
-              <input type="radio" name="filterCategory" value="Bundle" class="radio radio-xs radio-primary mr-2" />
+              <input
+                type="radio"
+                name="filterCategory"
+                value="Bundle"
+                class="radio radio-xs radio-primary mr-2"
+              />
               <span class="text-sm text-gray-600">Bundle Hemat</span>
             </label>
           </div>
@@ -61,14 +102,24 @@
 
       <div class="w-full lg:w-3/4">
         <div id="productsLoading" class="hidden text-center py-12">
-          <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-custom-blue mx-auto"></div>
+          <div
+            class="animate-spin rounded-full h-12 w-12 border-b-2 border-custom-blue mx-auto"
+          ></div>
           <p class="text-gray-500 mt-4">Memuat produk...</p>
         </div>
 
-        <div id="productsGrid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6"></div>
+        <div
+          id="productsGrid"
+          class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6"
+        ></div>
 
-        <div id="productsEmpty" class="hidden text-center py-16 bg-white rounded-xl border border-gray-200">
-          <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4 text-gray-400">
+        <div
+          id="productsEmpty"
+          class="hidden text-center py-16 bg-white rounded-xl border border-gray-200"
+        >
+          <div
+            class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4 text-gray-400"
+          >
             <i class="fas fa-box-open text-2xl"></i>
           </div>
           <h3 class="text-lg font-bold text-gray-900">
@@ -82,183 +133,171 @@
 </div>
 
 <script>
-  // ----------------------------------------------------------
-// State Management
-// ----------------------------------------------------------
-let currentFilters = {
-  search: "",
-  planType: "all",
-  category: "all",
-};
+  // === FIX: Bungkus semua logic dalam fungsi initProducts ===
+  window.initProducts = function () {
+    // State Management (Reset setiap kali halaman dimuat)
+    let currentFilters = {
+      search: "",
+      planType: "all",
+      category: "all",
+    };
 
-// ----------------------------------------------------------
-// Debounce (anti-spam API)
-// ----------------------------------------------------------
-function debounce(func, timeout = 500) {
-  let timer;
-  return (...args) => {
-    clearTimeout(timer);
-    timer = setTimeout(() => func.apply(this, args), timeout);
-  };
-}
-
-// ----------------------------------------------------------
-// Load Products
-// ----------------------------------------------------------
-async function loadProducts() {
-  const grid = document.getElementById("productsGrid");
-  const loading = document.getElementById("productsLoading");
-  const empty = document.getElementById("productsEmpty");
-
-  grid.innerHTML = "";
-  loading.classList.remove("hidden");
-  empty.classList.add("hidden");
-
-  try {
-    const response = await API.getProducts(currentFilters);
-
-    loading.classList.add("hidden");
-
-    if (response.success && response.products.length > 0) {
-      grid.innerHTML = response.products
-        .map((product) => renderProductCard(product))
-        .join("");
-    } else {
-      empty.classList.remove("hidden");
+    // Debounce
+    function debounce(func, timeout = 500) {
+      let timer;
+      return (...args) => {
+        clearTimeout(timer);
+        timer = setTimeout(() => func.apply(this, args), timeout);
+      };
     }
-  } catch (error) {
-    console.error("Gagal memuat produk:", error);
-    loading.innerHTML =
-      '<p class="text-red-500">Gagal memuat data. Silakan refresh.</p>';
-  }
-}
 
-// ----------------------------------------------------------
-// Render Product Card
-// ----------------------------------------------------------
-function renderProductCard(product) {
-  const details = product.details || {};
+    // Load Products
+    async function loadProducts() {
+      const grid = document.getElementById("productsGrid");
+      const loading = document.getElementById("productsLoading");
+      const empty = document.getElementById("productsEmpty");
 
-  const planBadgeColor =
-    product.planType === "Postpaid"
-      ? "bg-purple-100 text-purple-700 border-purple-200"
-      : "bg-green-100 text-green-700 border-green-200";
+      if (grid) grid.innerHTML = "";
+      if (loading) loading.classList.remove("hidden");
+      if (empty) empty.classList.add("hidden");
 
-  return `
-    <div class="card bg-white shadow-sm hover:-translate-y-2 hover:scale-102 transition-all duration-300 border border-gray-200 group flex flex-col h-full cursor-pointer">
+      try {
+        const response = await API.getProducts(currentFilters);
 
-      <figure class="h-48 overflow-hidden relative bg-gray-100">
-        <img src="${product.image}" alt="${product.name}"
-             class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+        if (loading) loading.classList.add("hidden");
 
-        <div class="absolute top-3 right-3 badge ${planBadgeColor} border font-semibold text-xs px-3 py-1 rounded-full shadow-sm">
-          ${product.planType || "Prepaid"}
-        </div>
+        if (response.success && response.products.length > 0) {
+          if (grid) {
+            grid.innerHTML = response.products
+              .map((product) => renderProductCard(product))
+              .join("");
+          }
+        } else {
+          if (empty) empty.classList.remove("hidden");
+        }
+      } catch (error) {
+        console.error("Gagal memuat produk:", error);
+        if (loading)
+          loading.innerHTML =
+            '<p class="text-red-500">Gagal memuat data. Silakan refresh.</p>';
+      }
+    }
 
-        <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4">
-          <span class="text-white text-xs font-bold bg-custom-blue px-2 py-1 rounded uppercase tracking-wide">
-            ${product.category}
-          </span>
-        </div>
-      </figure>
+    // Render Card
+    function renderProductCard(product) {
+      const details = product.details || {};
+      const planBadgeColor =
+        product.planType === "Postpaid"
+          ? "bg-purple-100 text-purple-700 border-purple-200"
+          : "bg-green-100 text-green-700 border-green-200";
 
-      <div class="card-body p-5 flex-1 flex flex-col relative overflow-hidden bg-white rounded-b-xl">
-
-        <div class="pointer-events-none absolute inset-0 z-0 
-          bg-[radial-gradient(circle_at_85%_120%,rgba(21,76,148,0.50),rgba(38,64,101,0)_65%)]
-          opacity-80 group-hover:opacity-100 transition-opacity duration-500 rounded-b-xl">
-        </div>
-
-        <div class="relative z-10 flex-1 flex flex-col">
-
-          <div class="mb-4">
-            <h2 class="text-lg font-bold text-gray-900 leading-tight mb-2 line-clamp-1"
-                title="${product.name}">
-              ${product.name}
-            </h2>
-            <p class="text-sm text-gray-500 line-clamp-2 h-10">
-              ${product.description}
-            </p>
+      return `
+        <div class="card bg-white shadow-sm hover:-translate-y-2 hover:scale-102 transition-all duration-300 border border-gray-200 group flex flex-col h-full cursor-pointer">
+          <figure class="h-48 overflow-hidden relative bg-gray-100">
+            <img src="${product.image}" alt="${product.name}"
+                 class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+            <div class="absolute top-3 right-3 badge ${planBadgeColor} border font-semibold text-xs px-3 py-1 rounded-full shadow-sm">
+              ${product.planType || "Prepaid"}
+            </div>
+            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4">
+              <span class="text-white text-xs font-bold bg-custom-blue px-2 py-1 rounded uppercase tracking-wide">
+                ${product.category}
+              </span>
+            </div>
+          </figure>
+          <div class="card-body p-5 flex-1 flex flex-col relative overflow-hidden bg-white rounded-b-xl">
+            <div class="pointer-events-none absolute inset-0 z-0 
+              bg-[radial-gradient(circle_at_85%_120%,rgba(21,76,148,0.50),rgba(38,64,101,0)_65%)]
+              opacity-80 group-hover:opacity-100 transition-opacity duration-500 rounded-b-xl">
+            </div>
+            <div class="relative z-10 flex-1 flex flex-col">
+              <div class="mb-4">
+                <h2 class="text-lg font-bold text-gray-900 leading-tight mb-2 line-clamp-1" title="${
+                  product.name
+                }">
+                  ${product.name}
+                </h2>
+                <p class="text-sm text-gray-500 line-clamp-2 h-10">
+                  ${product.description}
+                </p>
+              </div>
+              <div class="grid grid-cols-3 gap-2 mb-6 bg-gray-50 p-3 rounded-lg border border-gray-100">
+                <div class="text-center">
+                  <div class="text-xs text-gray-400 mb-1"><i class="fas fa-wifi"></i> Data</div>
+                  <div class="text-sm font-bold text-gray-800">${
+                    details.dataAllowance || "-"
+                  }</div>
+                </div>
+                <div class="text-center border-l border-gray-200">
+                  <div class="text-xs text-gray-400 mb-1"><i class="fas fa-phone-alt"></i> Telp</div>
+                  <div class="text-sm font-bold text-gray-800">${
+                    details.voiceMinutes || "-"
+                  }</div>
+                </div>
+                <div class="text-center border-l border-gray-200">
+                  <div class="text-xs text-gray-400 mb-1"><i class="fas fa-clock"></i> Aktif</div>
+                  <div class="text-sm font-bold text-gray-800">${
+                    product.validity
+                  }</div>
+                </div>
+              </div>
+              <div class="mt-auto flex items-center justify-between pt-4 border-t border-gray-100">
+                <div>
+                  <p class="text-xs text-gray-400">Harga</p>
+                  <p class="text-xl font-extrabold text-custom-blue">
+                    Rp ${product.price.toLocaleString("id-ID")}
+                  </p>
+                </div>
+                <a href="/product/${product._id}"
+                   class="btn btn-sm bg-custom-blue text-white border-none rounded-full px-5 shadow-md hover:bg-blue-800 hover:shadow-lg transition-all">
+                  Detail
+                </a>
+              </div>
+            </div>
           </div>
-
-          <div class="grid grid-cols-3 gap-2 mb-6 bg-gray-50 p-3 rounded-lg border border-gray-100">
-            <div class="text-center">
-              <div class="text-xs text-gray-400 mb-1"><i class="fas fa-wifi"></i> Data</div>
-              <div class="text-sm font-bold text-gray-800">${details.dataAllowance || "-"}</div>
-            </div>
-            <div class="text-center border-l border-gray-200">
-              <div class="text-xs text-gray-400 mb-1"><i class="fas fa-phone-alt"></i> Telp</div>
-              <div class="text-sm font-bold text-gray-800">${details.voiceMinutes || "-"}</div>
-            </div>
-            <div class="text-center border-l border-gray-200">
-              <div class="text-xs text-gray-400 mb-1"><i class="fas fa-clock"></i> Aktif</div>
-              <div class="text-sm font-bold text-gray-800">${product.validity}</div>
-            </div>
-          </div>
-
-          <div class="mt-auto flex items-center justify-between pt-4 border-t border-gray-100">
-            <div>
-              <p class="text-xs text-gray-400">Harga</p>
-              <p class="text-xl font-extrabold text-custom-blue">
-                Rp ${product.price.toLocaleString("id-ID")}
-              </p>
-            </div>
-
-            <a href="/product/${product._id}"
-               class="btn btn-sm bg-custom-blue text-white border-none rounded-full px-5 shadow-md hover:bg-blue-800 hover:shadow-lg transition-all">
-              Detail
-            </a>
-          </div>
-
         </div>
-      </div>
-    </div>
-  `;
-}
+      `;
+    }
 
-// ----------------------------------------------------------
-// Event Listeners
-// ----------------------------------------------------------
-const searchInput = document.getElementById("searchInput");
-if (searchInput) {
-  searchInput.addEventListener(
-    "input",
-    debounce((e) => {
-      currentFilters.search = e.target.value;
-      loadProducts();
-    }, 600)
-  );
-}
+    // Event Listeners
+    const searchInput = document.getElementById("searchInput");
+    if (searchInput) {
+      searchInput.addEventListener(
+        "input",
+        debounce((e) => {
+          currentFilters.search = e.target.value;
+          loadProducts();
+        }, 600)
+      );
+    }
 
-document.querySelectorAll('input[name="filterPlan"]').forEach((radio) => {
-  radio.addEventListener("change", (e) => {
-    currentFilters.planType = e.target.value;
+    document.querySelectorAll('input[name="filterPlan"]').forEach((radio) => {
+      radio.addEventListener("change", (e) => {
+        currentFilters.planType = e.target.value;
+        loadProducts();
+      });
+    });
+
+    document
+      .querySelectorAll('input[name="filterCategory"]')
+      .forEach((radio) => {
+        radio.addEventListener("change", (e) => {
+          currentFilters.category = e.target.value;
+          loadProducts();
+        });
+      });
+
+    // URL Param Support
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get("category")) {
+      currentFilters.category = urlParams.get("category");
+      const radio = document.querySelector(
+        `input[name="filterCategory"][value="${currentFilters.category}"]`
+      );
+      if (radio) radio.checked = true;
+    }
+
+    // Initial Load
     loadProducts();
-  });
-});
-
-document.querySelectorAll('input[name="filterCategory"]').forEach((radio) => {
-  radio.addEventListener("change", (e) => {
-    currentFilters.category = e.target.value;
-    loadProducts();
-  });
-});
-
-// ----------------------------------------------------------
-// Initial Load + URL Param Support
-// ----------------------------------------------------------
-const urlParams = new URLSearchParams(window.location.search);
-
-if (urlParams.get("category")) {
-  currentFilters.category = urlParams.get("category");
-
-  const radio = document.querySelector(
-    `input[name="filterCategory"][value="${currentFilters.category}"]`
-  );
-
-  if (radio) radio.checked = true;
-}
-
-loadProducts();
-
+  };
 </script>
